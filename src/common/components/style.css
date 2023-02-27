@@ -1,0 +1,226 @@
+/* Sidebar */
+
+.left-sidebar {
+    position: fixed;
+    top: 65px;
+    left: 0;
+    bottom: 0;
+    width: 300px;
+    background-color: var(--color-primary);
+    color: var(--color-text-secondary);
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-top: 10px;
+    transition: var(--transition);
+}
+
+.left-sidebar.hide {
+    left: -300px;
+}
+
+.left-sidebar .element {
+    cursor: pointer;
+    padding: 13px 10px;
+    margin-left: 45px;
+}
+
+.left-sidebar .expanding-element {
+    cursor: pointer;
+    padding: 13px 10px;
+    margin-left: 25px;
+}
+
+.left-sidebar .header  {
+    display: flex;
+    align-items: center;
+    transition: var(--transition);
+}
+
+.left-sidebar .header:hover {
+    display: flex;
+    align-items: center;
+    color: var(--color-background);
+}
+
+.left-sidebar h3.header-name {
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 22px;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+.left-sidebar svg {
+    margin-right: 15px;
+}
+
+.left-sidebar svg.header-icon {
+    margin-right: 20px;
+    width: 18px;
+    height: 18px;
+}
+
+.left-sidebar .expanding-element.expanded ul {
+    display: block;
+    margin-bottom: 0;
+    padding-left: 75px;
+    list-style-type: none;
+}
+
+.left-sidebar .expanding-element ul {
+    display: none;
+}
+
+.left-sidebar .expanding-element li {
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 20px;
+    transition: var(--transition);
+}
+
+.left-sidebar .expanding-element li:hover {
+    color: var(--color-background);
+    text-decoration: none;
+}
+
+/* Topbar */
+.topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 65px;
+    background-color: var(--color-primary-dark);
+    color: var(--color-text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    z-index: 100;
+}
+
+.topbar a {
+    display: flex;
+}
+
+.topbar .topbar-left {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.topbar .topbar-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+}
+
+.topbar .topbar-logo p {
+    margin: 10px;
+    width: 200px;
+    font-family: 'Tinos';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 10px;
+    line-height: 11px;
+    margin-right: 25px;
+}
+
+.topbar .topbar-logo p.hide {
+    display: none;
+}
+
+.topbar .topbar-left svg {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.topbar .topbar-user svg {
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+}
+
+.topbar .topbar-user svg.active {
+    color: var(--color-background-light);
+}
+
+.topbar svg:hover {
+    color: var(--color-background);
+    transition: var(--transition);
+}
+
+.topbar .topbar-user {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+}
+
+.topbar-user-content {
+    margin-left: 17px;
+}
+
+.topbar-user p {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.profile-dropdown {
+    position: fixed;
+    top: 65px;
+    right: 0;
+    width: 200px;
+    background-color: var(--color-background-light);
+    color: var(--color-text-secondary);
+    padding: 10px 0;
+    box-shadow: var(--shadow);
+    z-index: 50;
+}
+
+.profile-dropdown.hide {
+    display: none;
+}
+
+.profile-dropdown ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.profile-dropdown li {
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--color-text-primary);
+}
+
+.profile-dropdown li:hover {
+    background-color: var(--color-background);
+}
+
+.notification-dropdown {
+    position: fixed;
+    top: 65px;
+    right: 0;
+    width: 300px;
+    background-color: var(--color-background-light);
+    color: var(--color-text-secondary);
+    padding: 10px 10px;
+    box-shadow: var(--shadow);
+    z-index: 50;
+}
+
+.notification-dropdown.hide {
+    display: none;
+}
+
+.notification-dropdown p {
+    font-weight: 400;
+    font-size: var(--font-size-body);
+    color: var(--color-text-primary);
+}

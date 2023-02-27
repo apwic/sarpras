@@ -1,14 +1,13 @@
 import "@fontsource/open-sans/variable-full.css"
+import Navbar from "./common/components/navbar"
+import Topbar from "./common/components/topbar"
 
 function App() {
 
   return (
     <div>
-      <h1>Title</h1>
-      <h2>Subtitle</h2>
-      <p>Body</p>
-      <button>Primary</button>
-      <button className="secondary">Secondary</button>
+      <Topbar/>
+      <Navbar/>
     </div>
   )
 }
