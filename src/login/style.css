@@ -8,6 +8,7 @@
   background-image: url('../common/assets/background.jpeg'), linear-gradient(to right, white, black);
   background-blend-mode: overlay;
   background-size: cover;
+  max-width: 100%;
 }
 
 .logo {

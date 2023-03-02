@@ -4,7 +4,7 @@ import { faGear } from '@fortawesome/free-solid-svg-icons'
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from 'react'
 import Modal from '../common/components/modal'
-import axios from 'axios'
+// import axios from 'axios'
 
 
 const SuperUser = () => {
@@ -18,7 +18,7 @@ const SuperUser = () => {
         <div className='container-superuser'>
             <div className='container-superuser__header'>
                 <FontAwesomeIcon icon={faGear} className="icon-superuser"/>
-                <h1>Manajemen Peran</h1>
+                <h1>Manajemen Role</h1>
             </div>
             <div className='container-superuser__body'>
                 <div className='container-superuser__body__item'>

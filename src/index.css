@@ -21,8 +21,9 @@
 
   --shadow: 0px 0px 40px #D9D9D9;
   --transition: all 0.2s linear;
+}
 
-
+#root {
   font-family: var(--font-family);
   line-height: 19px;
   font-weight: 400;
@@ -32,19 +33,39 @@
   background-color: var(--color-background);
 }
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+a:hover {
+  text-decoration: none;
+  color: inherit;
+  transition: inherit;
+}
+
+.animate {
+  transition: var(--transition);
+}
+
+
 body {
   margin: 0;
   min-width: 320px;
-  min-height: calc(100vh - 65px);
-  margin-left: 300px;
-  margin-top: 65px;
-  width: calc(100% - 300px);
-  transition: var(--transition);
+  min-height: calc(100vh - 60px);
+  margin-left: 280px;
+  margin-top: 60px;
+  width: calc(100% - 280px);
 }
 
 body.no-sidebar {
   margin-left: 0;
   width: 100%;
+}
+
+body.no-topbar {
+  margin-top: 0;
+  min-height: 100vh;
 }
 
 h1 {
@@ -79,7 +100,25 @@ button {
   transition: var(--transition);
 }
 
+button.btn {
+  font-family: var(--font-family);
+  font-size: var(--font-size-body);
+  line-height: 19px;
+  font-weight: 600;
+  color: var(--color-sidebar-active);
+  background-color: var(--color-primary);
+  border: none;
+  border-radius: var(--corner-radius);
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
 button:hover {
+  background-color: var(--color-primary-dark);
+}
+
+button.btn:hover {
   background-color: var(--color-primary-dark);
 }
 
@@ -87,13 +126,38 @@ button:active {
   background-color: var(--color-primary-dark);
 }
 
+button.btn.active {
+  background-color: var(--color-primary-dark);
+}
+
+button.btn:disabled {
+  background-color: var(--color-text-secondary);
+}
+
 button.secondary {
   background-color: var(--color-background-light);
   color: var(--color-primary);
   box-shadow: var(--shadow);
+  border: var(--color-primary) 1px solid;
+}
+
+button.btn-secondary {
+  background-color: var(--color-background-light);
+  color: var(--color-primary);
+  box-shadow: var(--shadow);
+  border: var(--color-primary) 1px solid;
 }
 
 button.secondary:hover {
   background-color: var(--color-background);
+  color: var(--color-primary);
   box-shadow: var(--shadow);
+  border: var(--color-primary) 1px solid;
+}
+
+button.btn-secondary:hover {
+  background-color: var(--color-background);
+  color: var(--color-primary);
+  box-shadow: var(--shadow);
+  border: var(--color-primary) 1px solid;
 }

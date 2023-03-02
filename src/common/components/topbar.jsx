@@ -5,12 +5,16 @@ import { faBars, faBell, faUserCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class Topbar extends React.Component {
-    state = {
-        profileDropdown: false,
-        notificationDropdown: false,
+    constructor(props) {
+        super(props);
+        this.state = {
+            profileDropdown: false,
+            notificationDropdown: false,
+        }
     }
 
     hideSidebar = () => {
+        document.querySelector('body').classList.add('animate');
         document.querySelector('.left-sidebar').classList.toggle('hide');
         document.querySelector('.topbar-logo-text').classList.toggle('hide');
         document.querySelector('body').classList.toggle('no-sidebar');
@@ -46,14 +50,14 @@ class Topbar extends React.Component {
                     <FontAwesomeIcon icon={faBars} className="topbar-menu-icon" onClick={this.hideSidebar}/>
                 </div>
                 <div className="topbar-user">
-                    <p className='topbar-user-content'>Username</p>
+                    <p className='topbar-user-content'>Arik Rayi Arkananta</p>
                     <FontAwesomeIcon icon={faBell} className={`topbar-user-content notification-icon ${notificationDropdown? 'active' : ''}`} onClick={this.notificationDropdown}/>
                     <FontAwesomeIcon icon={faUserCircle} className={`topbar-user-content profile-icon ${profileDropdown? 'active' : ''}`} onClick={this.profileDropdown}/>
                 </div>
             </div>
             <div className={`profile-dropdown ${!profileDropdown ? 'hide' : ''}`}>
                 <ul>
-                    <li>Profile</li>
+                    <li><a href="/profile">Profile</a></li>
                     <li>Logout</li>
                 </ul>
             </div>

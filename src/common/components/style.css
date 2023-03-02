@@ -1,13 +1,13 @@
 /* Sidebar */
 
 .left-sidebar {
+    color: #C1C8CE;
     position: fixed;
-    top: 65px;
+    top: 60px;
     left: 0;
     bottom: 0;
-    width: 300px;
+    width: 280px;
     background-color: var(--color-primary);
-    color: var(--color-text-secondary);
     overflow-x: hidden;
     overflow-y: auto;
     padding-top: 10px;
@@ -18,17 +18,32 @@
     left: -300px;
 }
 
+.left-sidebar .bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    color: var(--color-text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 100;
+}
+
 .left-sidebar .element {
     cursor: pointer;
     padding: 13px 10px;
-    margin-left: 45px;
+    margin-left: 25px;
 }
  
 .left-sidebar .expanding-element {
     cursor: pointer;
     padding: 13px 10px;
-    margin-left: 25px;
+    margin-left: 5px;
 }
+
 
 .left-sidebar .header  {
     display: flex;
@@ -42,12 +57,25 @@
     color: var(--color-background);
 }
 
+.left-sidebar .header.active {
+    color: var(--color-background-light);
+}
+
+.left-sidebar .expanding-element li.active {
+    color: var(--color-background-light);
+    font-weight: 700;
+}
+
 .left-sidebar h3.header-name {
     font-size: 16px;
-    font-weight: bold;
+    font-weight: 700;
     line-height: 22px;
     margin-bottom: 0;
     margin-top: 0;
+}
+
+.left-sidebar .header.active h3.header-name {
+    font-weight: 800;
 }
 
 .left-sidebar svg {
@@ -89,14 +117,18 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 65px;
+    height: 60px;
     background-color: var(--color-primary-dark);
-    color: var(--color-text-secondary);
+    color: var(--color-background);
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 10px;
     z-index: 100;
+}
+
+.topbar.hide {
+    display: none;
 }
 
 .topbar a {
@@ -113,7 +145,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 20px;
+    margin-right: 15px;
+}
+
+.topbar .topbar-logo img {
+    width: 30px;
+    height: 30px;
 }
 
 .topbar .topbar-logo p {
@@ -124,6 +161,7 @@
     font-weight: 700;
     font-size: 10px;
     line-height: 11px;
+    margin-left: 15px;
     margin-right: 25px;
 }
 
@@ -131,13 +169,7 @@
     display: none;
 }
 
-.topbar .topbar-left svg {
-    width: 25px;
-    height: 25px;
-    cursor: pointer;
-}
-
-.topbar .topbar-user svg {
+.topbar svg {
     width: 22px;
     height: 22px;
     cursor: pointer;
@@ -148,7 +180,7 @@
 }
 
 .topbar svg:hover {
-    color: var(--color-background);
+    color: var(--color-background-light);
     transition: var(--transition);
 }
 
@@ -166,11 +198,12 @@
 .topbar-user p {
     font-weight: 600;
     font-size: 14px;
+    margin: 0;
 }
 
 .profile-dropdown {
     position: fixed;
-    top: 65px;
+    top: 60px;
     right: 0;
     width: 200px;
     background-color: var(--color-background-light);
@@ -205,7 +238,7 @@
 
 .notification-dropdown {
     position: fixed;
-    top: 65px;
+    top: 60px;
     right: 0;
     width: 300px;
     background-color: var(--color-background-light);
