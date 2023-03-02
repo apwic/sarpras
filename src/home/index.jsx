@@ -20,7 +20,9 @@ class Home extends React.Component {
     }
 
     componentDidMount() {
-        this.props.getUserFunction();
+        if (storage.getToken() !== null) {
+            this.props.getUserFunction();
+        }
     }
 
     componentDidUpdate(prevProps) {
