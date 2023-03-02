@@ -25,6 +25,8 @@ class Navbar extends React.Component {
             case '/profile':
                 this.setState({ Active: 'none', BookingExpand: false, AdminExpand: false});
                 break;
+            case '/role-management':
+                this.setState({ Active: 'Role-Management', BookingExpand: false, AdminExpand: true});
             default:
                 break;
         }
@@ -85,7 +87,7 @@ class Navbar extends React.Component {
                             <li>Ruangan</li>
                             <li>Selasar</li>
                             <li>Kendaraan</li>
-                            <li>Manajemen Role</li>
+                            <li className={`${Active === 'Role-Management' ? 'active' : ''}`}><a href="/role-management">Manajemen Role</a></li>
                         </ul>
                     </div>
                     <div className="element">

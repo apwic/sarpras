@@ -61,6 +61,11 @@
     color: var(--color-background-light);
 }
 
+.left-sidebar .expanding-element li.active {
+    color: var(--color-background-light);
+    font-weight: 700;
+}
+
 .left-sidebar h3.header-name {
     font-size: 16px;
     font-weight: 700;

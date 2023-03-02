@@ -11,6 +11,7 @@ import Navbar from "./common/components/navbar"
 import Login from "./login"
 import Dashboard from "./dashboard"
 import Profile from "./profile";
+import SuperUser from "./superuser";
 
 function App() {
 	return (
@@ -23,6 +24,13 @@ function App() {
 							<Topbar />
 							<Navbar />
 							<Profile />
+						</div>
+					}/>
+					<Route path="/role-management" element={
+						<div>
+							<Topbar />
+							<Navbar />
+							<SuperUser />
 						</div>
 					}/>
 					<Route path="*" element={
