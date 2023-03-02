@@ -1,8 +1,11 @@
 import React from 'react';
-import './style.css'
-import logo from '../assets/logo.svg'
 import { faBars, faBell, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { connect } from 'react-redux';
+
+import './style.css'
+import logo from '../assets/logo.svg'
+import { getUser, logout } from '../auth/action';
 
 class Topbar extends React.Component {
     constructor(props) {
@@ -10,6 +13,17 @@ class Topbar extends React.Component {
         this.state = {
             profileDropdown: false,
             notificationDropdown: false,
+            user: {}
+        }
+    }
+
+    componentDidMount() {
+        this.props.getUserFunction();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.user !== this.props.user) {
+            this.setState({ user: this.props.user });
         }
     }
 
@@ -34,6 +48,10 @@ class Topbar extends React.Component {
         }
     }
 
+    logoutOnClick = () => {
+        this.props.logoutFunction();
+    }
+
     render() {
         let profileDropdown = this.state.profileDropdown;
         let notificationDropdown = this.state.notificationDropdown;
@@ -50,15 +68,15 @@ class Topbar extends React.Component {
                     <FontAwesomeIcon icon={faBars} className="topbar-menu-icon" onClick={this.hideSidebar}/>
                 </div>
                 <div className="topbar-user">
-                    <p className='topbar-user-content'>Arik Rayi Arkananta</p>
+                    <p className='topbar-user-content'>{this.state.user.name}</p>
                     <FontAwesomeIcon icon={faBell} className={`topbar-user-content notification-icon ${notificationDropdown? 'active' : ''}`} onClick={this.notificationDropdown}/>
                     <FontAwesomeIcon icon={faUserCircle} className={`topbar-user-content profile-icon ${profileDropdown? 'active' : ''}`} onClick={this.profileDropdown}/>
                 </div>
             </div>
             <div className={`profile-dropdown ${!profileDropdown ? 'hide' : ''}`}>
                 <ul>
-                    <li><a href="/profile">Profile</a></li>
-                    <li>Logout</li>
+                    <a href="/profile"><li>Profile</li></a>
+                    <li onClick={this.logoutOnClick}>Logout</li>
                 </ul>
             </div>
             <div className={`notification-dropdown ${!notificationDropdown ? 'hide' : ''}`}>
@@ -69,4 +87,18 @@ class Topbar extends React.Component {
     }
 }
 
-export default Topbar;
+const mapStateToProps = (state) => {
+    return {
+        calendarModalOpen: state.dashboard.calendarModalOpen,
+        user: state.auth.user
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+		logoutFunction: () => dispatch(logout()),
+        getUserFunction: () => dispatch(getUser()),
+    }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(Topbar)

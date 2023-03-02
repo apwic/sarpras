@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChartLine, faCaretDown, faCaretRight, faBookOpen, faFlag, faCog } from '@fortawesome/free-solid-svg-icons';
 import { connect } from 'react-redux';
 import { setCalendar } from '../../dashboard/action';
+import { getUser } from '../auth/action';
 
 class Navbar extends React.Component {
     constructor(props) {
@@ -11,12 +12,14 @@ class Navbar extends React.Component {
         this.state = {
             BookingExpand: false,
             AdminExpand: false,
-            Active: 'Dashboard'
+            Active: 'Dashboard',
+            user: {}
         }
         this.sidebarRef = React.createRef();
     }
 
     componentDidMount() {
+        this.props.getUserFunction();
         this.sidebarRef.current.addEventListener('transitionend', this.handleTransitionEnd);
         switch (document.location.pathname) {
             case '/':
@@ -29,6 +32,12 @@ class Navbar extends React.Component {
                 this.setState({ Active: 'Role-Management', BookingExpand: false, AdminExpand: true});
             default:
                 break;
+        }
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.user !== this.props.user) {
+            this.setState({ user: this.props.user });
         }
     }
 
@@ -57,51 +66,67 @@ class Navbar extends React.Component {
                             <h3 className="header-name"><a href='/'>Dashboard</a></h3>
                         </div>
                     </div>
-                    <div className={`expanding-element ${BookingExpand ? 'expanded' : ''}`}>
-                        <div className='header' onClick={() => this.setState({ BookingExpand: !BookingExpand })}>
-                            <FontAwesomeIcon icon={BookingExpand ? faCaretDown : faCaretRight}/>
-                            <FontAwesomeIcon className="header-icon" icon={faBookOpen}/>
-                            <h3 className="header-name">Sewa</h3>
+                    { this.state.user.role === 'BASIC_USER' &&
+                        <div className={`expanding-element ${BookingExpand ? 'expanded' : ''}`}>
+                            <div className='header' onClick={() => this.setState({ BookingExpand: !BookingExpand })}>
+                                <FontAwesomeIcon icon={BookingExpand ? faCaretDown : faCaretRight}/>
+                                <FontAwesomeIcon className="header-icon" icon={faBookOpen}/>
+                                <h3 className="header-name">Sewa</h3>
+                            </div>
+                            <ul>
+                                <li>Gedung</li>
+                                <li>Ruangan</li>
+                                <li>Selasar</li>
+                                <li>Kendaraan</li>
+                            </ul>
+                        </div> 
+                    }
+                    { this.state.user.role === 'BASIC_USER' &&
+                        <div className="element">
+                            <div className="header">
+                                <FontAwesomeIcon className="header-icon" icon={faFlag}/>
+                                <h3 className="header-name">Keluhan</h3>
+                            </div>
                         </div>
-                        <ul>
-                            <li>Gedung</li>
-                            <li>Ruangan</li>
-                            <li>Selasar</li>
-                            <li>Kendaraan</li>
-                        </ul>
-                    </div>
-                    <div className="element">
-                        <div className="header">
-                            <FontAwesomeIcon className="header-icon" icon={faFlag}/>
-                            <h3 className="header-name">Keluhan</h3>
+                    }
+                    { this.state.user.role === 'ADMIN' || this.state.user.role === 'SUPER_USER' &&
+                        <div className={`expanding-element ${AdminExpand ? 'expanded' : ''}`}>
+                            <div className="header" onClick={() => this.setState({ AdminExpand: !AdminExpand })}>
+                                <FontAwesomeIcon icon={AdminExpand ? faCaretDown : faCaretRight}/>
+                                <FontAwesomeIcon className="header-icon" icon={faCog}/>
+                                <h3 className="header-name">Admin</h3>
+                            </div>
+                            <ul>
+                                { this.state.user.role === 'ADMIN' &&
+                                <div>
+                                    <li>Gedung</li>
+                                    <li>Ruangan</li>
+                                    <li>Selasar</li>
+                                    <li>Kendaraan</li>
+                                </div>
+                                }
+                                { this.state.user.role === 'SUPER_USER' &&
+                                    <li className={`${Active === 'Role-Management' ? 'active' : ''}`}><a href="/role-management">Manajemen Role</a></li>
+                                }
+                            </ul>
                         </div>
-                    </div>
-                    <div className={`expanding-element ${AdminExpand ? 'expanded' : ''}`}>
-                        <div className="header" onClick={() => this.setState({ AdminExpand: !AdminExpand })}>
-                            <FontAwesomeIcon icon={AdminExpand ? faCaretDown : faCaretRight}/>
-                            <FontAwesomeIcon className="header-icon" icon={faCog}/>
-                            <h3 className="header-name">Admin</h3>
+                    }
+                    { this.state.user.role === 'BOOKING_STAFF' &&
+                        <div className="element">
+                            <div className="header">
+                                <FontAwesomeIcon className="header-icon" icon={faBookOpen}/>
+                                <h3 className="header-name">Manajemen Sewa</h3>
+                            </div>
                         </div>
-                        <ul>
-                            <li>Gedung</li>
-                            <li>Ruangan</li>
-                            <li>Selasar</li>
-                            <li>Kendaraan</li>
-                            <li className={`${Active === 'Role-Management' ? 'active' : ''}`}><a href="/role-management">Manajemen Role</a></li>
-                        </ul>
-                    </div>
-                    <div className="element">
-                        <div className="header">
-                            <FontAwesomeIcon className="header-icon" icon={faBookOpen}/>
-                            <h3 className="header-name">Manajemen Sewa</h3>
+                    }
+                    { this.state.user.role === 'SANITATION_STAFF' || this.state.user.role === 'DEFECT_STAFF' || this.state.user.role === 'SAFETY_STAFF' || this.state.user.role === 'LOSS_STAFF' &&
+                        <div className="element">
+                            <div className="header">
+                                <FontAwesomeIcon className="header-icon" icon={faFlag}/>
+                                <h3 className="header-name">Manajemen Keluhan</h3>
+                            </div>
                         </div>
-                    </div>
-                    <div className="element">
-                        <div className="header">
-                            <FontAwesomeIcon className="header-icon" icon={faFlag}/>
-                            <h3 className="header-name">Manajemen Keluhan</h3>
-                        </div>
-                    </div>
+                    }
                 </div>
                 <div className='bottom'>
                     <p className="bottom-text">Copyright Sarpras ITB Version 1.0.0</p>
@@ -111,16 +136,17 @@ class Navbar extends React.Component {
     }
 }
 
-
 const mapStateToProps = (state) => {
     return {
-        calendarRef: state.dashboard.calendarRef
+        calendarRef: state.dashboard.calendarRef,
+        user: state.auth.user
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setCalendarFunction: (calendarRef) => dispatch(setCalendar(calendarRef))
+        setCalendarFunction: (calendarRef) => dispatch(setCalendar(calendarRef)),
+        getUserFunction: () => dispatch(getUser())
     }
 }
 
