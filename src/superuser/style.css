@@ -64,14 +64,19 @@
       background-color: var(--color-background-light);
       min-height: 80vh;
       max-height: 80vh;
-      height: fit-content;
       width: 43vh;
       display: flex;
       flex-direction: column;
       border-radius: var(--corner-radius-large);
       box-shadow: var(--shadow);
       padding: 20px;
+      position: relative;
   }
+  .item__header{
+    /* background-color: antiquewhite; */
+    height: 5%;
+  }
+  
   
   
   .item__header h2{
@@ -80,32 +85,49 @@
       
   }
   
+
+  
+  
   .item__body{
-      height: 100%;
+
+    /* background-color: aquamarine; */
+      height: 85%;
       width: 100%;
+      overflow-y: scroll;
+  }
+
+
+  .row__staff{
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+
+  .name__staff{
+    width: 80%;
+  }
+
+  .name__staff h2{
+    font-size: 17px;
+    margin: 0;
+  }
+  .name__staff p{
+    margin: 0;
+  }
+
+  .button__delete{
+    width: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
-  .item__body p{
-      line-height: 19px;
-      font-weight: 400;
-      color: var(--color-text-primary);
-      margin: 10px 0;
+  .button__addStaff{
+    height: 10%;
+    width: 100%;
+    /* background-color: antiquewhite; */
+    display: flex;
+    align-items: center;
+    bottom: 30px;
+    justify-content: center;
   }
-  
-  
-  .container-superuser__body .container-superuser__body__calendar{
-      border-radius: var(--corner-radius-large);
-      padding: 30px;
-      background-color: var(--color-background-light);
-      width: auto;
-      height: 100%;
-      box-shadow: var(--shadow);
-  }
-  
-  
-  
-  
-  /* CALENDAR */
-  
-  
-  
