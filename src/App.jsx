@@ -3,6 +3,8 @@ import Navbar from "./common/components/navbar"
 import Topbar from "./common/components/topbar"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import Login from "./login"
+import Dashboard from "./dashboard"
+import Profile from "./profile"
 
 function App() {
 
@@ -16,6 +18,8 @@ function App() {
           </div>
         } />
         <Route path="/login" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </Router>
   )

@@ -6,13 +6,15 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from '@fullcalendar/interaction';
 import { useRef } from 'react';
-
-
+import Topbar from '../common/components/topbar';
+import Navbar from '../common/components/navbar';
 
 const Dashboard = () => {
     const calendarRef = useRef(null);
     return(
         <div className='container-dashboard'>
+            <Topbar />
+            <Navbar />
             <div className='container-dashboard__header'>
                 <FontAwesomeIcon icon={faChartLine} className="icon-dashboard"/>
                 <h1>Dashboard</h1>
