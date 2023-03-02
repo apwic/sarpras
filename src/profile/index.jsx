@@ -1,14 +1,10 @@
 import "./style.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import Topbar from '../common/components/topbar';
-import Navbar from '../common/components/navbar';
 
 const Profile = () => {
     return(
         <div className='container-profile'>
-            <Topbar />
-            <Navbar />
             <div className='container-profile__header'>
                 <FontAwesomeIcon icon={faUserCircle} className="icon-profile"/>
                 <h1>Profile</h1>
