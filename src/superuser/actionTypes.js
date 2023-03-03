@@ -1,0 +1,3 @@
+export const OPEN_MODAL_SU = 'OPEN_MODAL_SU';
+export const CLOSE_MODAL_SU = 'CLOSE_MODAL_SU';
+export const GET_ALL_ASSIGNED_STAFF = 'GET_ALL_ASSIGNED_STAFF';
