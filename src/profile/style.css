@@ -44,16 +44,40 @@
 }
 
 .profile-photo {
-    width: 20%;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 20%;
 }
 
-.profile-photo img {
+.profile-photo-circle {
     width: 20vh;
     height: 20vh;
+    position: relative;
     border-radius: 50%;
+    background: url(https://www.w3schools.com/howto/img_avatar.png);
+    background-size: cover;
+    overflow: hidden;
+}
+
+#profile-photo-file {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    padding: 2vh 2vh;
+    transition: 0.5s;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: rgba(0, 0, 0, 0);
+    opacity: 0;
+}
+
+#profile-photo-file::-webkit-file-upload-button {
+    visibility: hidden;
+}
+
+#profile-photo-file:hover {
+    opacity: 1;
 }
 
 .profile-details {

@@ -1,14 +1,14 @@
 import React from 'react';
 import "./style.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import { faUserCircle, faCamera } from '@fortawesome/free-solid-svg-icons';
 
 class Profile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             isOnEdit: false,
-            role: 'Staff Kebersihan',
+            role: 'Staff Keamanan',
             email: '13520000@staff.itb.ac.id',
             phone: '081234567890',
         }
@@ -46,7 +46,9 @@ class Profile extends React.Component {
                 <div className='container-profile__body'>
                     <div className="container-profile__body__header">
                         <div className="profile-photo">
-                            <img src="https://www.w3schools.com/howto/img_avatar.png" alt="profile" />
+                            <div className='profile-photo-circle'>
+                                <input type="file" id="profile-photo-file" />
+                            </div>
                         </div>
                         <div className="profile-details">
                             <h2>Arik Rayi Arkananta</h2>
