@@ -17,9 +17,27 @@ class Login extends React.Component {
 
 	render() {
 		return (
-			<div className="container">
+			<div className="container-login">
 				<div className="left-container">
-					<h1>Hello, welcome back!</h1>
+					<div className="description-container">
+						<div className="description-box">
+							<h1>Layanan Sarana dan Prasarana ITB</h1>
+							<p>
+								Sebuah aplikasi untuk mempermudah pengelolaan sarana dan prasarana ITB.
+								Aplikasi ini melayani penyewaan gedung, ruangan, dan kendaraan.
+								Pengguna juga dapat melaporkan keluhan berupa kerusakan, kehilangan, keamanan, 
+								dan kebersihan di lingkungan kampus ITB.
+							</p>
+							<p>
+								Aplikasi ini dirancang agar layanan terkait sarana dan prasarana dapat 
+								berjalan dengan cepat dan efisien demi menciptakan lingkungan yang nyaman 
+								bagi seluruh civitas akademika ITB.
+							</p>
+						</div>
+					</div>
+					<div className="footer">
+						<p>Copyright Sarpras ITB Version 1.0.0</p>
+					</div>
 				</div>
 				<div className="right-container">
 					<div className="login-box">
@@ -28,8 +46,8 @@ class Login extends React.Component {
 							<p>DIREKTORAT SARANA DAN PRASARANA INSTITUT TEKNOLOGI BANDUNG</p>
 						</div>
 						<h2>Login</h2>
-						<p>Have an SSO/INA account?</p>
-						<button onClick={this.loginOnClick}>Login With SSO/INA</button>
+						<p>Punya akun SSO/INA?</p>
+						<button onClick={this.loginOnClick}>Login dengan SSO/INA</button>
 					</div>
 				</div>
 			</div>
