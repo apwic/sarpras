@@ -1,20 +1,20 @@
 import { call, takeLatest, put } from '@redux-saga/core/effects'
 
 import { GET_ALL_ASSIGNED_STAFF } from "./actionTypes";
-import { getAllAsignedStaffAction } from "./action";
-import { getAllAssignedStaffApi } from "./apiSuperUser";
+import { setAllAssignedStaff } from "./action";
+import { getAllAssignedStaffApi } from "./api";
 
-function* getAllAsignedStaff() {
+function* getAllAssignedStaff() {
     try {
         const response = yield call(getAllAssignedStaffApi);
-        yield put(getAllAsignedStaffAction(response.data))
+        yield put(setAllAssignedStaff(response.data))
     } catch (error) {
         console.log(error)
     }
 }
 
 const superUserSaga = [
-    takeLatest(GET_ALL_ASSIGNED_STAFF, getAllAsignedStaff),
+    takeLatest(GET_ALL_ASSIGNED_STAFF, getAllAssignedStaff),
 ];
 
 export default superUserSaga;

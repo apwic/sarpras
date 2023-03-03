@@ -1,4 +1,4 @@
-import { OPEN_MODAL_SU, CLOSE_MODAL_SU, GET_ALL_ASSIGNED_STAFF } from "./actionTypes";
+import { OPEN_MODAL_SU, CLOSE_MODAL_SU, SET_ALL_ASSIGNED_STAFF } from "./actionTypes";
 
 const initialState = {
     superUserModalOpen: false,
@@ -12,7 +12,7 @@ function supeUserReducer(state = initialState, action) {
             return { ...state, superUserModalOpen: true, selectedRole: action.selectedRole};
         case CLOSE_MODAL_SU:
             return { ...state, superUserModalOpen: false, selectedRole: null};
-        case GET_ALL_ASSIGNED_STAFF:
+        case SET_ALL_ASSIGNED_STAFF:
             return { ...state, allAssignedStaff: action.payload};
         default:
             return state;

@@ -2,29 +2,38 @@ import './style.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGear } from '@fortawesome/free-solid-svg-icons'
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
-import { useEffect, useState } from 'react'
-import { openModalSU, closeModalSU, getAllAsignedStaffAction } from './action'
+import { openModalSU, closeModalSU, getAllAssignedStaffAction } from './action'
 import { connect, useDispatch } from 'react-redux'
 import SuperUserModal from '../common/components/superUserModal'
 import React from 'react'
-
-// import axios from 'axios'
-
-
 
 class SuperUser extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            booking_staff: this.props.getAllAsignedStaffActionFunction().booking_staff,
-            sanitation_staff: this.props.getAllAsignedStaffActionFunction().sanitation_staff,
-            defect_staff: this.props.getAllAsignedStaffActionFunction().defect_staff,
-            safety_staff: this.props.getAllAsignedStaffActionFunction().safety_staff,
-            loss_staff: this.props.getAllAsignedStaffActionFunction().loss_staff,
+            booking_staff: {},
+            sanitation_staff: {},
+            defect_staff: {},
+            safety_staff: {},
+            loss_staff: {}
         }
     }
 
+    componentDidMount() {
+        this.props.getAllAssignedStaffActionFunction();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.allAssignedStaff !== this.props.allAssignedStaff) {
+            this.setState({ booking_staff: this.props.allAssignedStaff.booking_staff });
+            this.setState({ sanitation_staff: this.props.allAssignedStaff.sanitation_staff });
+            this.setState({ defect_staff: this.props.allAssignedStaff.defect_staff });
+            this.setState({ safety_staff: this.props.allAssignedStaff.safety_staff });
+            this.setState({ loss_staff: this.props.allAssignedStaff.loss_staff });
+            console.log(this.props.allAssignedStaff.super_user);
+        }
+    }
 
     handleTambahStaffClicked = (type) => { 
         this.props.openModalSUFunction(type);
@@ -204,6 +213,7 @@ class SuperUser extends React.Component {
 const mapStateToProps = (state) => {
     return {
         superUserModalOpen: state.superuser.superUserModalOpen,
+        allAssignedStaff: state.superuser.allAssignedStaff,
     }
 }
 
@@ -212,7 +222,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         openModalSUFunction: (selectedRole) => dispatch(openModalSU(selectedRole)),
         closeModalSUFunction: () => dispatch(closeModalSU()),
-        getAllAsignedStaffActionFunction: () => dispatch(getAllAsignedStaffAction()),
+        getAllAssignedStaffActionFunction: () => dispatch(getAllAssignedStaffAction()),
     }
 }
 

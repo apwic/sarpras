@@ -1,4 +1,4 @@
-import { OPEN_MODAL_SU, CLOSE_MODAL_SU, GET_ALL_ASSIGNED_STAFF } from "./actionTypes";
+import { OPEN_MODAL_SU, CLOSE_MODAL_SU, GET_ALL_ASSIGNED_STAFF, SET_ALL_ASSIGNED_STAFF } from "./actionTypes";
 
 
 export function openModalSU(selectedRole) {
@@ -14,9 +14,15 @@ export function closeModalSU() {
     };
 }
 
-export function getAllAsignedStaffAction() {
+export function getAllAssignedStaffAction() {
     return {
         type: GET_ALL_ASSIGNED_STAFF,
-        payload: [],
+    };
+}
+
+export function setAllAssignedStaff(staff) {
+    return {
+        type: SET_ALL_ASSIGNED_STAFF,
+        payload: staff,
     };
 }
