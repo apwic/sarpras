@@ -26,6 +26,10 @@ export const getUserApi = () => {
 		.error(400, (error) => {
 			return (JSON.parse(error.message))
 		})
+		.error(401, (error) => {
+			console.log('Unauthorized')
+			return (JSON.parse(error.message))
+		})
 		.json((response) => {
 			return response
 		}
