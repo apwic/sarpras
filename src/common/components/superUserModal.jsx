@@ -4,7 +4,9 @@ import { connect } from 'react-redux';
 import { closeModalSU, openModalSU, getAllUnsignedStaffAction, setStafftoRole } from "../../superuser/action";
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { faClose, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Table } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 class SuperUserModal extends React.Component {
 
@@ -16,6 +18,10 @@ class SuperUserModal extends React.Component {
             selectedId : null,
             allUnsignedStaff : []
         }
+    }
+
+    componentDidMount() {
+        this.props.getAllUnsignedStaffFunction();
     }
 
 
@@ -82,9 +88,16 @@ class SuperUserModal extends React.Component {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className="search__bar">
-                    <input type="text" placeholder="Pencarian"/>
+                    <div className="search__bar input-group form-group-lg">
+                        <div className="form-outline">
+                            <input type="search" className="form-control search-bar col-lg-2" placeholder="Pencarian"/>
+                        </div>
+                        <button type="button" className="btn btn-search">
+                            <FontAwesomeIcon icon={faSearch} />
+                        </button>
                     </div>
+                </Modal.Body>
+                <Modal.Body className="staff-list border-top">
                     {this.state.allUnsignedStaff.length > 0 ? this.unsignedStaffList(this.state.allUnsignedStaff) : this.noUnsignedStaff()}
                 </Modal.Body>
                 <Modal.Footer>

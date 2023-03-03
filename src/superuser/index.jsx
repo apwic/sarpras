@@ -31,7 +31,6 @@ class SuperUser extends React.Component {
             this.setState({ defect_staff: this.props.allAssignedStaff.defect_staff });
             this.setState({ safety_staff: this.props.allAssignedStaff.safety_staff });
             this.setState({ loss_staff: this.props.allAssignedStaff.loss_staff });
-            console.log(this.props.allAssignedStaff.super_user);
         }
     }
 

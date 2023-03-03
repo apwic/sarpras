@@ -46,8 +46,8 @@
 .item{
     background-color: var(--color-background-light);
     min-height: 80vh;
-    max-height: 80vh;
-    width: 30%;
+    width: calc(100% / 3 - 2rem);
+    min-width: 300px;
     display: flex;
     flex-direction: column;
     border-radius: var(--corner-radius-large);
@@ -72,11 +72,10 @@
   
   
 .item__body{
-
-  /* background-color: aquamarine; */
     height: 85%;
     width: 100%;
-    overflow-y: scroll;
+    max-height: 85%;
+    overflow-y: auto;
 }
 
 

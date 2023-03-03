@@ -34,12 +34,19 @@ class CalendarModal extends React.Component {
             </Modal.Header>
             <Modal.Body>
                 <form>
-                    <label className="form-label" for="booking-type">Pilih Jenis: </label>
-                    <select className="form-select" id="booking-type" name="booking-type">
+                    <label className="form-label" htmlFor="booking-type">Pilih Jenis: </label>
+                    <select className="form-select" style={{"borderRadius": "10px"}} id="booking-type" name="booking-type">
                         <option value="Gedung">Gedung</option>
                         <option value="Ruangan">Ruangan</option>
                         <option value="Selasar">Selasar</option>
                         <option value="Kendaraan">Kendaraan</option>
+                    </select>
+                    <label className="form-label" htmlFor="booking-type">Pilih Gedung: </label>
+                    <select className="form-select" style={{"borderRadius": "10px"}} id="booking-type" name="booking-type">
+                        <option value="Gedung">CRCS</option>
+                        <option value="Ruangan">Labtek V</option>
+                        <option value="Selasar">Labtek I</option>
+                        <option value="Kendaraan">Labtek 0</option>
                     </select>
                 </form>
             </Modal.Body>

@@ -38,6 +38,8 @@ function* setStaffToRole(userId, role) {
         const response = yield call(setStaffToRoleApi, userId, role);
         if (response.status === 200){
             yield put(setStafftoRole(userId, role));
+            yield put(getAllUnsignedStaff());
+            yield put(getAllAssignedStaff());
         }
     } catch (error) {
         console.log(error)

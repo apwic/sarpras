@@ -44,8 +44,8 @@
 .item__dashboard{
     background-color: var(--color-background-light);
     min-height: 15vh;
-    min-width: 25vh;
-    width: 30%;
+    min-width: 30vh;
+    width: calc(100% / 3 - 2rem);
     border-radius: var(--corner-radius-large);
     box-shadow: var(--shadow);
     padding: 20px;
@@ -77,6 +77,7 @@
 .item__body{
     height: 100%;
     width: 100%;
+    overflow-y: hidden;
 }
 
 .item__body p{
@@ -85,7 +86,6 @@
     color: var(--color-text-primary);
     margin: 10px 0;
 }
-
 
 .container-dashboard__body .container-dashboard__body__calendar{
     border-radius: var(--corner-radius-large);

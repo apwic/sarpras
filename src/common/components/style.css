@@ -261,16 +261,18 @@
 
 
 /* Modal */
+.modal-body.staff-list {
+    max-height: 60vh;
+    overflow-y: auto;
+}
  
 .row__staff__modal{
     border: 1px solid var(--color-text-secondary);
     border-radius: var(--corner-radius);
-    /* display: flex;
-    justify-content: center;
-    align-items: center; */
     margin-bottom: 15px;
     height: 11%;
     display: flex;
+    padding: 5px;
     padding-left: 20px;
     align-items: center;
     transition: var(--transition);
@@ -294,31 +296,29 @@
 
 
 .row__staff__modal h2{
-    font-size: 17px;
+    font-size: 15px;
     margin: 0;
+    line-height: normal;
 }
 .row__staff__modal p{
+    font-size: 12px;
     margin: 0;
+    line-height: normal;
 }
-
 
 .search__bar{
     height: 10%;
-    /* background-color: #D70D0D; */
     display: flex;
-    /* background-color: rgb(5, 92, 168); */
     align-items: center;
-    margin-bottom: 15px;
 }
 
-.search__bar input{
-    
-    text-indent: 20px;
-    height: 70%;
+.search__bar input.search-bar{
     border: 1px solid var(--color-text-secondary);
-    border-radius: 30px;
+    border-radius: 10px 0 0 10px;
     font-size: 16px;
 }
-.search__bar input:onfocus{
-    
+
+button.btn-search {
+    border-radius: 0 10px 10px 0;
+    height: 10%;
 }

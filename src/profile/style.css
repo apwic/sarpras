@@ -132,6 +132,10 @@
     box-shadow: var(--shadow);
 }
 
+.total-text {
+    z-index: 1;
+}
+
 .total-container .total-box .total-number {
     display: flex;
     align-items: center;

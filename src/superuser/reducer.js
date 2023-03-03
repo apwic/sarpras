@@ -19,8 +19,6 @@ function supeUserReducer(state = initialState, action) {
             return { ...state, allAssignedStaff: state.allAssignedStaff.filter((staff) => staff.id !== action.payload)};
         case SET_ALL_UNSIGNED_STAFF:
             return { ...state, allUnsignedStaff: action.payload};
-        case SET_STAFF_TO_ROLE:
-            return { ...state, allAssignedStaff: state.allAssignedStaff.action.payload.role.add(action.payload.userId), allUnsignedStaff: state.allUnsignedStaff.filter((staff) => staff.id !== action.payload.userId)};
         default:
             return state;
     }
