@@ -1,7 +1,7 @@
 import React from "react";
 import './style.css';
 import { connect } from 'react-redux';
-import { closeModalSU, openModalSU } from "../../superuser/action";
+import { closeModalSU, openModalSU, getAllUnsignedStaffAction, setStafftoRole } from "../../superuser/action";
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { faClose, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { Modal, Button } from "react-bootstrap";
@@ -12,7 +12,9 @@ class SuperUserModal extends React.Component {
         super(props);
         this.state = {
             show: props.show,
-            selectedRole: props.selectedRole
+            selectedRole: props.selectedRole,
+            selectedId : null,
+            allUnsignedStaff : []
         }
     }
 
@@ -24,6 +26,50 @@ class SuperUserModal extends React.Component {
         if (prevProps.selectedRole !== this.props.selectedRole) {
             this.setState({ selectedRole: this.props.selectedRole });
         }
+        if (prevProps.allUnsignedStaff !== this.props.allUnsignedStaff) {
+            this.setState({ allUnsignedStaff: this.props.allUnsignedStaff });
+        }
+    }
+    
+    handleAddStafftoRole = () => {
+        if (this.state.selectedId !== null){
+            this.props.addStafftoRoleFunction(this.state.selectedId, this.state.selectedRole);
+        }
+        this.props.closeModalFunction();
+    }
+
+    handleRowClicked = (id) => {
+        this.setState({ selectedId: id });
+    }
+
+
+    unsignedStaffList = (data) => {
+        return(
+            data.map((staff) => {
+                const isSelected = this.state.selectedId === staff.id;
+                const rowClassName = `row__staff__modal${isSelected ? " selected" : ""}`;
+                return (
+                    <div
+                    key={staff.id} 
+                    className={rowClassName}
+                    onClick={() => this.handleRowClicked(staff.id)}
+                    >
+                        <div className="name__staff__modal">
+                            <h2>{staff.name}</h2>
+                            <p>{staff.email}</p>
+                        </div>
+                    </div>
+                )
+            })
+        )
+    }
+
+    noUnsignedStaff = () => {
+        return(
+            <div className="no__unsigned__staff">
+                <p>Tidak ada staff yang belum ditambahkan</p>
+            </div>
+        )
     }
 
     render(){
@@ -39,59 +85,14 @@ class SuperUserModal extends React.Component {
                     <div className="search__bar">
                     <input type="text" placeholder="Pencarian"/>
                     </div>
-                    <div className="row__staff__modal">
-                        <div className="name__staff__modal">
-                            <h2>Sopo Jarwo</h2>
-                            <p>sopoJarwo@gmail.com</p>
-                        </div>
-                    </div>
-                    <div className="row__staff__modal">
-                        <div className="name__staff__modal">
-                            <h2>Sopo Jarwo</h2>
-                            <p>sopoJarwo@gmail.com</p>
-                        </div>
-                    </div>
+                    {this.state.allUnsignedStaff.length > 0 ? this.unsignedStaffList(this.state.allUnsignedStaff) : this.noUnsignedStaff()}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={this.props.closeModalFunction}>Batalkan</Button>
-                    <Button variant="primary" onClick={this.props.closeModalFunction}>Tambahkan</Button>
+                    <Button variant="primary" onClick={() => this.handleAddStafftoRole()}>Tambahkan</Button>
                 </Modal.Footer>
                 </Modal>
             </div>
-
-            // <div className="container__modal">
-            //     <div className="overlay__modal"></div>
-            //     <div className="modal__content">
-            //         <div className="modal__header">
-            //             <h2>HALO</h2>
-            //         </div>
-            //         <div className="modal__body">
-                        // <div className="search__bar">
-                        //     <input type="text" placeholder="Pencarian"/>
-                        // </div>
-                        // <div className="row__staff__modal">
-                        //     <div className="name__staff__modal">
-                        //         <h2>Sopo Jarwo</h2>
-                        //         <p>sopoJarwo@gmail.com</p>
-                        //     </div>
-                        // </div>
-                        // <div className="row__staff__modal">
-                        //     <div className="name__staff__modal">
-                        //         <h2>Sopo Jarwo</h2>
-                        //         <p>sopoJarwo@gmail.com</p>
-                        //     </div>
-                        // </div>
-            //         </div>    
-            //         <div className="modal__footer">
-            //             <div className="cancel__side">
-            //                 <button className="button__cancel" onClick={this.props.onClose}>Cancel</button>
-            //             </div>
-            //             <div className="add__side">
-            //                 <button className="button__add" onClick={this.props.onClose}>Tambah</button>
-            //             </div>
-            //         </div>
-            //     </div>
-            // </div>
         );
     }
 }
@@ -99,14 +100,17 @@ class SuperUserModal extends React.Component {
 const mapStateToProps = (state) => {
     return {
         superUserModalOpen: state.superuser.superUserModalOpen,
-        selectedRole: state.superuser.selectedRole
+        selectedRole: state.superuser.selectedRole,
+        allUnsignedStaff : state.superuser.allUnsignedStaff
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         openModalFunction: (selectedRole) => dispatch(openModalSU(selectedRole)),
-        closeModalFunction: () => dispatch(closeModalSU())
+        closeModalFunction: () => dispatch(closeModalSU()),
+        getAllUnsignedStaffFunction: () => dispatch(getAllUnsignedStaffAction()),
+        addStafftoRoleFunction: (staffId, roleId) => dispatch(setStafftoRole(staffId, roleId))
     }
 }
 

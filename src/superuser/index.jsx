@@ -2,8 +2,8 @@ import './style.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGear } from '@fortawesome/free-solid-svg-icons'
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
-import { openModalSU, closeModalSU, getAllAssignedStaffAction } from './action'
-import { connect, useDispatch } from 'react-redux'
+import { openModalSU, closeModalSU, getAllAssignedStaffAction, revokeRoleAsync } from './action'
+import { connect } from 'react-redux'
 import SuperUserModal from '../common/components/superUserModal'
 import React from 'react'
 
@@ -39,6 +39,40 @@ class SuperUser extends React.Component {
         this.props.openModalSUFunction(type);
     };
 
+    handleDeleteStaffClicked = (id) => {
+        this.props.revokeRoleAsyncFunction(id);
+    }
+
+    
+    staffList = (data) => {
+        return(
+            data.map((staff) => {
+                return (
+                    <div key={staff.id} className="row__staff">
+                        <div className="name__staff">
+                            <h2>{staff.name}</h2>
+                            <p>{staff.email}</p>
+                        </div>
+                        <div className="button__delete">
+                            <button onClick={() => this.handleDeleteStaffClicked(staff.id)} className='icon__garbage'>
+                                <FontAwesomeIcon icon={faTrashAlt} className="icon-garbage"/>
+                            </button>
+                        </div>
+                    </div>
+                )})
+            
+        )
+    }
+
+    noStaff = () => {
+        return(
+            <div className="row__staff">
+                <div className="name__staff">
+                </div>
+            </div>
+        )
+    }
+
     render() {
         return(
             <div className='container-superuser'>
@@ -54,37 +88,12 @@ class SuperUser extends React.Component {
                             </div>
                             <div className='item__body'>
                                 {/* Item Staff */}
-                                {this.state.booking_staff.map((staff) => {
-                                    return (
-                                        <div className="row__staff">
-                                            <div className="name__staff">
-                                                <h2>{staff.name}</h2>
-                                                <p>{staff.email}</p>
-                                            </div>
-                                            <div className="button__delete">
-                                                <button className='icon__garbage'>
-                                                    <FontAwesomeIcon icon={faTrashAlt} className="icon-garbage"/>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    )})}
-                                
-
-                                {/* <div className="row__staff">
-                                    <div className="name__staff">
-                                        <h2>Sopo Jarwo</h2>
-                                        <p>sopeJarwo@gmai.com</p>
-                                    </div>
-                                    <div className="button__delete">
-                                        <button className='icon__garbage'>
-                                            <FontAwesomeIcon icon={faTrashAlt} className="icon-garbage"/>
-                                        </button>
-                                    </div>
-                                </div> */}
+                                { !(Object.keys(this.state.booking_staff).length > 0) ? this.noStaff()  : 
+                                 this.staffList(this.state.booking_staff)}
                                 
                             </div>
                             <div className="button__addStaff">
-                                <button onClick={() => this.handleTambahStaffClicked("peminjaman")}>Tambah Staff</button>
+                                <button onClick={() => this.handleTambahStaffClicked("booking_staff")}>Tambah Staff</button>
                             </div>
                         </div>
                         <div className='item'>
@@ -93,24 +102,12 @@ class SuperUser extends React.Component {
                             </div>
                             <div className='item__body'>
                                 {/* Item Admin */}
-                                {this.state.sanitation_staff.map((staff) => {
-                                    return (
-                                        <div className="row__staff">
-                                            <div className="name__staff">
-                                                <h2>{staff.name}</h2>
-                                                <p>{staff.email}</p>
-                                            </div>
-                                            <div className="button__delete">
-                                                <button className='icon__garbage'>
-                                                    <FontAwesomeIcon icon={faTrashAlt} className="icon-garbage"/>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    )})}
+                                { !(Object.keys(this.state.sanitation_staff).length > 0) ? this.noStaff() :
+                                this.staffList(this.state.sanitation_staff) }
                                 
                             </div>
                             <div className="button__addStaff">
-                                <button onClick={() => this.handleTambahStaffClicked("kebersihan")}>Tambah Staff</button>
+                                <button onClick={() => this.handleTambahStaffClicked("sanitation_staff")}>Tambah Staff</button>
                             </div>
                         </div>
                         <div className='item'>
@@ -119,23 +116,12 @@ class SuperUser extends React.Component {
                             </div>
                             <div className='item__body'>
                                 {/* Item Admin */}
-                                {this.state.defect_staff.map((staff) => {
-                                    return (
-                                        <div className="row__staff">
-                                            <div className="name__staff">
-                                                <h2>{staff.name}</h2>
-                                                <p>{staff.email}</p>
-                                            </div>
-                                            <div className="button__delete">
-                                                <button className='icon__garbage'>
-                                                    <FontAwesomeIcon icon={faTrashAlt} className="icon-garbage"/>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    )})}
+                                { !(Object.keys(this.state.defect_staff).length > 0) ?  this.noStaff() :
+                                this.staffList(this.state.defect_staff)
+                                 }
                             </div>
                             <div className="button__addStaff">
-                                <button onClick={() => this.handleTambahStaffClicked("kerusakan")}>Tambah Staff</button>
+                                <button onClick={() => this.handleTambahStaffClicked("defect_staff")}>Tambah Staff</button>
                             </div>
                         </div>
                         <div className='item'>
@@ -144,23 +130,12 @@ class SuperUser extends React.Component {
                             </div>
                             <div className='item__body'>
                                 {/* Item Admin */}
-                                {this.state.loss_staff.map((staff) => {
-                                    return (
-                                        <div className="row__staff">
-                                            <div className="name__staff">
-                                                <h2>{staff.name}</h2>
-                                                <p>{staff.email}</p>
-                                            </div>
-                                            <div className="button__delete">
-                                                <button className='icon__garbage'>
-                                                    <FontAwesomeIcon icon={faTrashAlt} className="icon-garbage"/>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    )})}
+                                { !(Object.keys(this.state.loss_staff).length > 0) ?  this.noStaff() :
+                                this.staffList(this.state.loss_staff)
+                                 }
                             </div>
                             <div className="button__addStaff">
-                                <button onClick={() => this.handleTambahStaffClicked("kehilangan")}>Tambah Staff</button>
+                                <button onClick={() => this.handleTambahStaffClicked("loss_staff")}>Tambah Staff</button>
                             </div>
                         </div>
                         <div className='item'>
@@ -169,37 +144,11 @@ class SuperUser extends React.Component {
                             </div>
                             <div className='item__body'>
                                 {/* Item Admin */}
-                                {
-                                    this.state.safety_staff.map((staff) => {
-                                        return (
-                                            <div className="row__staff">
-                                                <div className="name__staff">
-                                                    <h2>{staff.name}</h2>
-                                                    <p>{staff.email}</p>
-                                                </div>
-                                                <div className="button__delete">
-                                                    <button className='icon__garbage'>
-                                                        <FontAwesomeIcon icon={faTrashAlt} className="icon-garbage"/>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        )})
-                                }
+                                { !(Object.keys(this.state.safety_staff).length > 0) ? this.noStaff() : 
+                                this.staffList(this.state.safety_staff) }
                             </div>
                             <div className="button__addStaff">
-                                <button onClick={() => this.handleTambahStaffClicked("keamanan")}>Tambah Staff</button>
-                            </div>
-                        </div>
-                        <div className='item'>
-                            <div className='item__header'>
-                                <h2>Staff Keluhan</h2>
-                            </div>
-                            <div className='item__body'>
-                                {/* Item staff */}
-                                
-                            </div>
-                            <div className="button__addStaff">
-                                <button onClick={() => this.handleTambahStaffClicked("keluhan")}>Tambah Staff</button>
+                                <button onClick={() => this.handleTambahStaffClicked("safety_staff")}>Tambah Staff</button>
                             </div>
                         </div>
                         <SuperUserModal/>
@@ -223,6 +172,7 @@ const mapDispatchToProps = (dispatch) => {
         openModalSUFunction: (selectedRole) => dispatch(openModalSU(selectedRole)),
         closeModalSUFunction: () => dispatch(closeModalSU()),
         getAllAssignedStaffActionFunction: () => dispatch(getAllAssignedStaffAction()),
+        revokeRoleAsyncFunction: (id) => dispatch(revokeRoleAsync(id)),
     }
 }
 

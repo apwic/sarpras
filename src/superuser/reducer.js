@@ -1,9 +1,10 @@
-import { OPEN_MODAL_SU, CLOSE_MODAL_SU, SET_ALL_ASSIGNED_STAFF } from "./actionTypes";
+import { OPEN_MODAL_SU, CLOSE_MODAL_SU, SET_ALL_ASSIGNED_STAFF, REVOKE_ROLE, SET_ALL_UNSIGNED_STAFF, SET_STAFF_TO_ROLE } from "./actionTypes";
 
 const initialState = {
     superUserModalOpen: false,
     selectedRole: null,
-    allAssignedStaff: []
+    allAssignedStaff: [],
+    allUnsignedStaff: [],
 };
 
 function supeUserReducer(state = initialState, action) {
@@ -14,6 +15,12 @@ function supeUserReducer(state = initialState, action) {
             return { ...state, superUserModalOpen: false, selectedRole: null};
         case SET_ALL_ASSIGNED_STAFF:
             return { ...state, allAssignedStaff: action.payload};
+        case REVOKE_ROLE:
+            return { ...state, allAssignedStaff: state.allAssignedStaff.filter((staff) => staff.id !== action.payload)};
+        case SET_ALL_UNSIGNED_STAFF:
+            return { ...state, allUnsignedStaff: action.payload};
+        case SET_STAFF_TO_ROLE:
+            return { ...state, allAssignedStaff: state.allAssignedStaff.action.payload.role.add(action.payload.userId), allUnsignedStaff: state.allUnsignedStaff.filter((staff) => staff.id !== action.payload.userId)};
         default:
             return state;
     }
