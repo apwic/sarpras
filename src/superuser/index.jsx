@@ -16,7 +16,8 @@ class SuperUser extends React.Component {
             sanitation_staff: {},
             defect_staff: {},
             safety_staff: {},
-            loss_staff: {}
+            loss_staff: {},
+            admin: {},
         }
     }
 
@@ -31,6 +32,7 @@ class SuperUser extends React.Component {
             this.setState({ defect_staff: this.props.allAssignedStaff.defect_staff });
             this.setState({ safety_staff: this.props.allAssignedStaff.safety_staff });
             this.setState({ loss_staff: this.props.allAssignedStaff.loss_staff });
+            this.setState({ admin: this.props.allAssignedStaff.admin });
         }
     }
 
@@ -81,6 +83,19 @@ class SuperUser extends React.Component {
                 </div>
                 <div className='container-superuser__body'>
                     <div className='container-superuser__body__item'>
+                        {/* <div className='item'>
+                            <div className='item__header'>
+                                <h2>Admin</h2>
+                            </div>
+                            <div className='item__body'>
+                                { !(Object.keys(this.state.admin).length > 0) ? this.noStaff() :
+                                this.staffList(this.state.admin) }
+                                
+                            </div>
+                            <div className="button__addStaff">
+                                <button onClick={() => this.handleTambahStaffClicked("admin")}>Tambah Staff</button>
+                            </div>
+                        </div> */}
                         <div className='item'>
                             <div className='item__header'>
                                 <h2>Staff Peminjaman</h2>

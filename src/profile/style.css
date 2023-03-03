@@ -51,13 +51,34 @@
 }
 
 .profile-photo-circle {
-    width: 20vh;
-    height: 20vh;
+    aspect-ratio : 1 / 1;
+    width: 80%;
     position: relative;
     border-radius: 50%;
-    background: url(https://www.w3schools.com/howto/img_avatar.png);
-    background-size: cover;
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-size: cover; 
     overflow: hidden;
+}
+
+.profile-photo-label {
+    color: var(--color-background);
+    display: none;
+}
+
+.profile-photo-circle:hover .profile-photo-label {
+    color: var(--color-background);
+    display: block;
+    position: absolute;
+    bottom: -48%;
+    margin: 0;
+    padding: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    z-index: 3;
+    cursor: pointer;
 }
 
 #profile-photo-file {
@@ -65,19 +86,22 @@
     height: 100%;
     cursor: pointer;
     padding: 2vh 2vh;
-    transition: 0.5s;
+    transition: var(--transition);
     border-radius: 50%;
     background-color: rgba(0, 0, 0, 0.5);
     color: rgba(0, 0, 0, 0);
     opacity: 0;
+    z-index: 2;
 }
 
 #profile-photo-file::-webkit-file-upload-button {
     visibility: hidden;
+    z-index: 2;
 }
 
 #profile-photo-file:hover {
     opacity: 1;
+    z-index: 2;
 }
 
 .profile-details {
@@ -172,7 +196,7 @@
 .container-profile__body__content input {
     width: 40%;
     font-weight: bold;
-    padding: 20px;
+    padding: 15px;
     font-size: var(--font-size-body);
     color: var(--color-text-primary);
     border-radius: var(--corner-radius-large);
@@ -193,4 +217,28 @@
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
+}
+
+.icon-pencil {
+    display: initial;
+    width: 2vh;
+    height: 2vh;
+    margin-left: 1vh;
+    cursor: pointer;
+}
+
+.icon-pencil.hide {
+    display: none;
+}
+
+.icon-save {
+    display: initial;
+    width: 2vh;
+    height: 2vh;
+    margin-left: 1vh;
+    cursor: pointer;
+}
+
+.icon-save.hide {
+    display: none;
 }

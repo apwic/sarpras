@@ -38,7 +38,7 @@ export const revokeRoleApi = (userId) => {
 
 export const getAllUnsignedStaffApi = () => {
 	return wretch()
-		.url(import.meta.env.VITE_REST_API_URL + '/role/unsigned')
+		.url(import.meta.env.VITE_REST_API_URL + '/role/unassigned')
 		.headers({
 			'Content-Type': 'application/json',
 			'Authorization': 'Bearer ' + storage.getToken()

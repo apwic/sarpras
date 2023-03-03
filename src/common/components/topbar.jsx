@@ -75,8 +75,8 @@ class Topbar extends React.Component {
             </div>
             <div className={`profile-dropdown ${!profileDropdown ? 'hide' : ''}`}>
                 <ul>
-                    <a href="/profile"><li>Profile</li></a>
-                    <li onClick={this.logoutOnClick}>Logout</li>
+                    <a href="/profile"><li>Profil</li></a>
+                    <li onClick={this.logoutOnClick}>Keluar</li>
                 </ul>
             </div>
             <div className={`notification-dropdown ${!notificationDropdown ? 'hide' : ''}`}>
