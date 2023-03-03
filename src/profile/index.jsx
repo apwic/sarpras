@@ -51,6 +51,7 @@ class Profile extends React.Component {
     handleImageChange = (event) => {
         const url = URL.createObjectURL(event.target.files[0]);
         this.props.openModalFunction(url);
+        document.getElementById('profile-photo-file').value = '';
     }
 
     render() {
