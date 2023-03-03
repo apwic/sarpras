@@ -5,6 +5,7 @@
     padding-right: 7vh;
     padding-top: 3vh;
     padding-bottom: 4vh;
+    min-height: 100vh;
 }
 
 .container-profile__header {

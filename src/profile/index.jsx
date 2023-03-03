@@ -8,6 +8,7 @@ class Profile extends React.Component {
         super(props);
         this.state = {
             isOnEdit: false,
+            role: 'Staff Kebersihan',
             email: '13520000@staff.itb.ac.id',
             phone: '081234567890',
         }
@@ -15,22 +16,16 @@ class Profile extends React.Component {
 
     handleEditProfile = () => {
         if (this.state.isOnEdit) {
-            document.getElementById('email').disabled = true;
-            document.getElementById('phone').disabled = true;
             document.getElementById('edit-profile-btn').classList.add('secondary');
             document.getElementById('edit-profile-btn').innerHTML = 'Edit';
+            document.getElementById('phone').disabled = true;
             this.setState({ isOnEdit: false });
         } else {
-            document.getElementById('email').disabled = false;
-            document.getElementById('phone').disabled = false;
             document.getElementById('edit-profile-btn').classList.remove('secondary');
             document.getElementById('edit-profile-btn').innerHTML = 'Save';
+            document.getElementById('phone').disabled = false;
             this.setState({ isOnEdit: true });
         }
-    }
-
-    handleEmailChange = (event) => {
-        this.setState({ email: event.target.value });
     }
 
     handlePhoneChange = (event) => {
@@ -38,7 +33,7 @@ class Profile extends React.Component {
     }
 
     render() {
-        let isOnEdit = this.state.isOnEdit;
+        let role = this.state.role;
         let emailValue = this.state.email;
         let phoneValue = this.state.phone;
 
@@ -55,7 +50,7 @@ class Profile extends React.Component {
                         </div>
                         <div className="profile-details">
                             <h2>Arik Rayi Arkananta</h2>
-                            <p>Dosen</p>
+                            <p>{role}</p>
                             <p>13520000</p>
                         </div>
                         <div className="total-container">
@@ -75,13 +70,13 @@ class Profile extends React.Component {
                                 <tr>
                                     <th>Email</th>
                                     <td>
-                                        <input type="text" name="email" id="email" value={emailValue} onChange={this.handleEmailChange} {...isOnEdit ?  "" : "disabled"}/>
+                                        <input type="text" name="email" id="email" value={emailValue} disabled/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>Phone</th>
                                     <td>
-                                        <input type="number" name="phone" id="phone" value={phoneValue} onChange={this.handlePhoneChange} {...isOnEdit ?  "" : "disabled"}/>
+                                        <input type="number" name="phone" id="phone" value={phoneValue} onChange={this.handlePhoneChange} disabled/>
                                     </td>
                                 </tr>   
                             </tbody>
