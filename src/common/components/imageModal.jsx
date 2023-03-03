@@ -56,10 +56,10 @@ class ProfilePictureCropperModal extends Component {
                 </div>
             </Modal.Body>
             <Modal.Footer>
-                <button variant="secondary" onClick={this.props.closeModalFunction}>
+                <button className='secondary' onClick={this.props.closeModalFunction}>
                     Batalkan
                 </button>
-                <button variant="primary" onClick={this.handleCropComplete}>
+                <button className="primary" onClick={this.handleCropComplete}>
                     Potong
                 </button>
             </Modal.Footer>
