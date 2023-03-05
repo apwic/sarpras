@@ -27,9 +27,21 @@ class ProfilePictureCropperModal extends Component {
         }
     }
 
+    base64ToBlob(base64Data) {
+        const byteCharacters = atob(base64Data.split(',')[1]);
+        const byteArrays = [];
+        for (let i = 0; i < byteCharacters.length; i++) {
+            byteArrays.push(byteCharacters.charCodeAt(i));
+        }
+        const blob = new Blob([new Uint8Array(byteArrays)], { type: 'image/png' });
+        return blob;
+    }
+
     handleCropComplete = () => {
-        this.props.setUserFunction({ ...this.props.user, image: this.cropperRef.current.getCroppedCanvas().toDataURL() });
         this.props.closeModalFunction();
+        let formData = new FormData();
+        formData.append('image', this.base64ToBlob(this.cropperRef.current.getCroppedCanvas().toDataURL()), 'image.png');
+        this.props.donefunction(formData);
     };
 
     render() {

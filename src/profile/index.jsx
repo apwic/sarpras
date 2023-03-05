@@ -5,21 +5,25 @@ import { connect } from 'react-redux';
 
 import "./style.css"
 import { getUser } from '../common/auth/action';
-import { openModal } from './action';
+import { editProfile, openModal } from './action';
 import ProfilePictureCropperModal from '../common/components/imageModal';
+import AlertModal from '../common/components/alertModal';
 
 class Profile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             isOnEdit: false,
+            showAlertModal: false,
+            alertMessage: '',
             user: {
                 name: '',
                 nim_nip: '',
                 email: '',
                 no_telp: '',
                 image: ''
-            }
+            },
+            no_telp: ''
         }
     }
 
@@ -29,23 +33,37 @@ class Profile extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (prevProps.user !== this.props.user) {
-            this.setState({ user: this.props.user });
+            this.setState({ 
+                user: {
+                    ...this.props.user,
+                    image: import.meta.env.VITE_REST_API_URL + '/uploads/' + this.props.user.image
+                },
+                no_telp: this.props.user.no_telp
+            });
         }
     }
 
-    handleEditProfile = () => {
+    handleEditPhone = () => {
         const { isOnEdit } = this.state;
+        if (isOnEdit && this.state.no_telp !== '' && this.state.no_telp !== null && this.state.no_telp !== undefined && this.state.no_telp !== this.state.user.no_telp) {
+            let formData = new FormData();
+            formData.append('no_telp', this.state.no_telp);
+            this.props.editProfileFunction(formData);
+            this.setState({showAlertModal: true, alertMessage: 'Nomor telepon berhasil diubah!'});
+        }
         document.getElementById('phone').disabled = isOnEdit;
         this.setState({ isOnEdit: !isOnEdit });
         document.getElementById('save-button').classList.toggle('hide');
         document.getElementById('edit-button').classList.toggle('hide');
     }
 
+    handleEditImage = (formData) => {
+        this.props.editProfileFunction(formData);
+        this.setState({showAlertModal: true, alertMessage: 'Foto profil berhasil diubah!'});
+    }
+
     handlePhoneChange = (event) => {
-        this.setState({ user: { 
-            ...this.state.user,
-            no_telp: event.target.value
-        } });
+        this.setState({ no_telp: event.target.value });
     }
 
     handleImageChange = (event) => {
@@ -54,10 +72,14 @@ class Profile extends React.Component {
         document.getElementById('profile-photo-file').value = '';
     }
 
+    closeAlertModal = () => {
+        this.setState({showAlertModal: false, alertMessage: ''});
+    }
+
     render() {
         let role = this.state.user.role;
         let emailValue = this.state.user.email;
-        let phoneValue = this.state.user.no_telp;
+        let phoneValue = this.state.no_telp;
 
         return (
             <div className='container-profile'>
@@ -102,15 +124,16 @@ class Profile extends React.Component {
                                     <th>Telepon</th>
                                     <td>
                                         <input type="text" name="phone" id="phone" value={phoneValue} onChange={this.handlePhoneChange} disabled/>
-                                        <FontAwesomeIcon icon={faPencil} className="icon-pencil" id="edit-button" onClick={this.handleEditProfile}/>
-                                        <FontAwesomeIcon icon={faSave} className="icon-save hide" id="save-button" onClick={this.handleEditProfile}/>
+                                        <FontAwesomeIcon icon={faPencil} className="icon-pencil" id="edit-button" onClick={this.handleEditPhone}/>
+                                        <FontAwesomeIcon icon={faSave} className="icon-save hide" id="save-button" onClick={this.handleEditPhone}/>
                                     </td>
                                 </tr>   
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <ProfilePictureCropperModal/>
+                <ProfilePictureCropperModal donefunction={this.handleEditImage}/>
+                <AlertModal show={this.state.showAlertModal} message={this.state.alertMessage} closeModalFunction={this.closeAlertModal}/>
             </div>
         );
     }
@@ -126,6 +149,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getUserFunction: () => dispatch(getUser()),
         openModalFunction: (imgUrl) => dispatch(openModal(imgUrl)),
+        editProfileFunction: (user) => dispatch(editProfile(user))
     }
 }
 

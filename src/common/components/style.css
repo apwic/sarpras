@@ -175,6 +175,13 @@
     cursor: pointer;
 }
 
+.topbar img {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
 .topbar .topbar-user svg.active {
     color: var(--color-background-light);
 }
@@ -321,4 +328,8 @@
 button.btn-search {
     border-radius: 0 10px 10px 0;
     height: 10%;
+}
+
+.alert-modal-title {
+    border: none;
 }
