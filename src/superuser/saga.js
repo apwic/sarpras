@@ -1,7 +1,7 @@
 import { call, takeLatest, put } from '@redux-saga/core/effects'
 
-import { GET_ALL_ASSIGNED_STAFF, REVOKE_ROLE, GET_ALL_UNSIGNED_STAFF, SET_STAFF_TO_ROLE } from "./actionTypes";
-import { setAllAssignedStaff, revokeRoleAsync, setAllUnsignedStaff, setStafftoRole } from "./action";
+import { GET_ALL_ASSIGNED_STAFF, GET_ALL_UNSIGNED_STAFF, REVOKE_ROLE_START, SET_STAFF_TO_ROLE_START } from "./actionTypes";
+import { setAllAssignedStaff, revokeRoleSuccess, revokeRoleFail, setAllUnsignedStaff, setStaffToRoleSuccess, setStaffToRoleFail } from "./action";
 import { getAllAssignedStaffApi, revokeRoleApi, getAllUnsignedStaffApi, setStaffToRoleApi } from "./api";
 
 function* getAllAssignedStaff() {
@@ -13,14 +13,13 @@ function* getAllAssignedStaff() {
     }
 }
 
-function* revokeRole() {
+function* revokeRole(action) {
+    const { id, role } = action.payload;
     try {
-        const response = yield call(revokeRoleApi, userId);
-        if (response.status === 200){
-            yield put(revokeRoleAsync(userId));
-        }
+        yield call(revokeRoleApi, id);
+        yield put(revokeRoleSuccess(id, role));
     } catch (error) {
-        console.log(error)
+        yield put(revokeRoleFail(error));
     }
 }
 
@@ -33,24 +32,21 @@ function* getAllUnsignedStaff() {
     }
 }
 
-function* setStaffToRole(userId, role) {
+function* setStaffToRole(action) {
+    const { id, role } = action.payload;
     try {
-        const response = yield call(setStaffToRoleApi, userId, role);
-        if (response.status === 200){
-            yield put(setStafftoRole(userId, role));
-            yield put(getAllUnsignedStaff());
-            yield put(getAllAssignedStaff());
-        }
+        yield call(setStaffToRoleApi, id, role);
+        yield put(setStaffToRoleSuccess(id, role));
     } catch (error) {
-        console.log(error)
+        yield put(setStaffToRoleFail(error));
     }
 }
 
 const superUserSaga = [
     takeLatest(GET_ALL_ASSIGNED_STAFF, getAllAssignedStaff),
-    takeLatest(REVOKE_ROLE, revokeRole),
+    takeLatest(REVOKE_ROLE_START, revokeRole),
     takeLatest(GET_ALL_UNSIGNED_STAFF, getAllUnsignedStaff),
-    takeLatest(SET_STAFF_TO_ROLE, setStaffToRole),
+    takeLatest(SET_STAFF_TO_ROLE_START, setStaffToRole),
 ];
 
 export default superUserSaga;

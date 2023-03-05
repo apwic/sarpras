@@ -1,7 +1,7 @@
 import React from "react";
 import './style.css';
 import { connect } from 'react-redux';
-import { closeModalSU, openModalSU, getAllUnsignedStaffAction, setStafftoRole } from "../../superuser/action";
+import { closeModalSU, openModalSU, getAllUnsignedStaffAction, setStaffToRoleStart } from "../../superuser/action";
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { faClose, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { Modal, Button, Table } from "react-bootstrap";
@@ -14,11 +14,14 @@ class SuperUserModal extends React.Component {
         super(props);
         this.state = {
             show: props.show,
-            selectedRole: props.selectedRole,
+            selectedRole: this.props.selectedRole,
             selectedId : null,
-            allUnsignedStaff : []
+            allUnsignedStaff : [],
+            searchQuery: ""
         }
     }
+
+
 
     componentDidMount() {
         this.props.getAllUnsignedStaffFunction();
@@ -27,7 +30,7 @@ class SuperUserModal extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (prevProps.superUserModalOpen !== this.props.superUserModalOpen) {
-            this.setState({ show: this.props.superUserModalOpen });
+            this.setState({ show: this.props.superUserModalOpen, searchQuery: "", allUnsignedStaff: this.props.allUnsignedStaff, selectedId: null });
         }
         if (prevProps.selectedRole !== this.props.selectedRole) {
             this.setState({ selectedRole: this.props.selectedRole });
@@ -39,14 +42,30 @@ class SuperUserModal extends React.Component {
     
     handleAddStafftoRole = () => {
         if (this.state.selectedId !== null){
-            this.props.addStafftoRoleFunction(this.state.selectedId, this.state.selectedRole);
+            console.log("terpilih", this.state.selectedId, "untuk role", this.state.selectedRole)
+            this.props.addStafftoRoleFunction(this.state.selectedId.toString(), this.state.selectedRole);
+            this.props.closeModalFunction();
         }
-        this.props.closeModalFunction();
     }
 
     handleRowClicked = (id) => {
-        this.setState({ selectedId: id });
+        if (this.state.selectedId === id) {
+            this.setState({ selectedId: null });
+        } else{
+            this.setState({ selectedId: id });
+        }
     }
+
+    handleSearchQueryChange = (event) => {
+        const query = event.target.value;
+        const filteredData = this.props.allUnsignedStaff.filter((staff) => 
+            staff.name.toLowerCase().includes(query.toLowerCase()) ||
+            staff.email.toLowerCase().includes(query.toLowerCase())
+        );
+        this.setState({ allUnsignedStaff: filteredData, searchQuery: query });
+        
+    }
+
 
 
     unsignedStaffList = (data) => {
@@ -60,6 +79,9 @@ class SuperUserModal extends React.Component {
                     className={rowClassName}
                     onClick={() => this.handleRowClicked(staff.id)}
                     >
+                        <div className="profile__picture">
+                            <img src={staff.image ? staff.image : "https://www.w3schools.com/howto/img_avatar.png"} alt="profile_picture"/>
+                        </div>
                         <div className="name__staff__modal">
                             <h2>{staff.name}</h2>
                             <p>{staff.email}</p>
@@ -90,11 +112,8 @@ class SuperUserModal extends React.Component {
                 <Modal.Body>
                     <div className="search__bar input-group form-group-lg">
                         <div className="form-outline">
-                            <input type="search" className="form-control search-bar col-lg-2" placeholder="Pencarian"/>
+                            <input type="text" value={this.state.searchQuery} onChange={this.handleSearchQueryChange} className="form-control search-bar col-lg-2" placeholder="Pencarian"/>
                         </div>
-                        <button type="button" className="btn btn-search">
-                            <FontAwesomeIcon icon={faSearch} />
-                        </button>
                     </div>
                 </Modal.Body>
                 <Modal.Body className="staff-list border-top">
@@ -102,7 +121,7 @@ class SuperUserModal extends React.Component {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={this.props.closeModalFunction}>Batalkan</Button>
-                    <Button variant="primary" onClick={() => this.handleAddStafftoRole()}>Tambahkan</Button>
+                    <Button className="button__add" variant="primary" onClick={() => this.handleAddStafftoRole()} disabled={this.state.selectedId === null ? true : false}>Tambahkan</Button>
                 </Modal.Footer>
                 </Modal>
             </div>
@@ -123,7 +142,7 @@ const mapDispatchToProps = (dispatch) => {
         openModalFunction: (selectedRole) => dispatch(openModalSU(selectedRole)),
         closeModalFunction: () => dispatch(closeModalSU()),
         getAllUnsignedStaffFunction: () => dispatch(getAllUnsignedStaffAction()),
-        addStafftoRoleFunction: (staffId, roleId) => dispatch(setStafftoRole(staffId, roleId))
+        addStafftoRoleFunction: (staffId, roleId) => dispatch(setStaffToRoleStart(staffId, roleId))
     }
 }
 

@@ -67,6 +67,19 @@
     margin-bottom: 10px;
     
 }
+.profile__picture{
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.profile__picture img {
+    margin-right: 15px;
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+    border-radius: 50%;
+}
   
 
   
@@ -95,6 +108,7 @@
 }
 .name__staff p{
 	margin: 0;
+    margin-bottom: 5px;
 }
 
 .button__delete{

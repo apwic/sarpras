@@ -1,8 +1,16 @@
 export const OPEN_MODAL_SU = 'OPEN_MODAL_SU';
 export const CLOSE_MODAL_SU = 'CLOSE_MODAL_SU';
+// get assigned staff
 export const GET_ALL_ASSIGNED_STAFF = 'GET_ALL_ASSIGNED_STAFF';
 export const SET_ALL_ASSIGNED_STAFF = 'SET_ALL_ASSIGNED_STAFF';
-export const REVOKE_ROLE = 'REVOKE_ROLE';
+// revoke role
+export const REVOKE_ROLE_START = 'REVOKE_ROLE_START';
+export const REVOKE_ROLE_SUCCESS = 'REVOKE_ROLE_SUCCESS';
+export const REVOKE_ROLE_FAIL = 'REVOKE_ROLE_FAIL';
+// get unsigned staff
 export const GET_ALL_UNSIGNED_STAFF = 'GET_UNSIGNED_STAFF';
 export const SET_ALL_UNSIGNED_STAFF = 'SET_ALL_UNSIGNED_STAFF';
-export const SET_STAFF_TO_ROLE = 'SET_STAFF_TO_ROLE';
+// set staff to role
+export const SET_STAFF_TO_ROLE_START = 'SET_STAFF_TO_ROLE_START';
+export const SET_STAFF_TO_ROLE_SUCCESS = 'SET_STAFF_TO_ROLE_SUCCESS';
+export const SET_STAFF_TO_ROLE_FAIL = 'SET_STAFF_TO_ROLE_FAIL';

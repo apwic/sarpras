@@ -2,10 +2,11 @@ import './style.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGear } from '@fortawesome/free-solid-svg-icons'
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
-import { openModalSU, closeModalSU, getAllAssignedStaffAction, revokeRoleAsync } from './action'
+import { openModalSU, closeModalSU, getAllAssignedStaffAction, revokeRoleStart } from './action'
 import { connect } from 'react-redux'
 import SuperUserModal from '../common/components/superUserModal'
 import React from 'react'
+import { isEqual } from 'lodash'
 
 class SuperUser extends React.Component {
 
@@ -26,13 +27,20 @@ class SuperUser extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.allAssignedStaff !== this.props.allAssignedStaff) {
-            this.setState({ booking_staff: this.props.allAssignedStaff.booking_staff });
-            this.setState({ sanitation_staff: this.props.allAssignedStaff.sanitation_staff });
-            this.setState({ defect_staff: this.props.allAssignedStaff.defect_staff });
-            this.setState({ safety_staff: this.props.allAssignedStaff.safety_staff });
-            this.setState({ loss_staff: this.props.allAssignedStaff.loss_staff });
-            this.setState({ admin: this.props.allAssignedStaff.admin });
+        if (
+            prevProps.booking_staff !== this.props.booking_staff
+            || prevProps.sanitation_staff !== this.props.sanitation_staff
+            || prevProps.defect_staff !== this.props.defect_staff
+            || prevProps.safety_staff !== this.props.safety_staff
+            || prevProps.loss_staff !== this.props.loss_staff
+            ) {
+            this.setState({
+                booking_staff: this.props.booking_staff,
+                sanitation_staff: this.props.sanitation_staff,
+                defect_staff: this.props.defect_staff,
+                safety_staff: this.props.safety_staff,
+                loss_staff: this.props.loss_staff
+            })
         }
     }
 
@@ -40,8 +48,8 @@ class SuperUser extends React.Component {
         this.props.openModalSUFunction(type);
     };
 
-    handleDeleteStaffClicked = (id) => {
-        this.props.revokeRoleAsyncFunction(id);
+    handleDeleteStaffClicked = (id, role) => {
+        this.props.revokeRoleStartFunction(id.toString(), role);
     }
 
     
@@ -50,12 +58,15 @@ class SuperUser extends React.Component {
             data.map((staff) => {
                 return (
                     <div key={staff.id} className="row__staff">
+                        <div className="profile__picture">
+                            <img src={staff.image ? staff.image : "https://www.w3schools.com/howto/img_avatar.png"} alt="profile_picture"/>
+                        </div>
                         <div className="name__staff">
                             <h2>{staff.name}</h2>
                             <p>{staff.email}</p>
                         </div>
                         <div className="button__delete">
-                            <button onClick={() => this.handleDeleteStaffClicked(staff.id)} className='icon__garbage'>
+                            <button onClick={() => this.handleDeleteStaffClicked(staff.id, staff.role)} className='icon__garbage'>
                                 <FontAwesomeIcon icon={faTrashAlt} className="icon-garbage"/>
                             </button>
                         </div>
@@ -107,7 +118,7 @@ class SuperUser extends React.Component {
                                 
                             </div>
                             <div className="button__addStaff">
-                                <button onClick={() => this.handleTambahStaffClicked("booking_staff")}>Tambah Staff</button>
+                                <button onClick={() => this.handleTambahStaffClicked("BOOKING_STAFF")}>Tambah Staff</button>
                             </div>
                         </div>
                         <div className='item'>
@@ -121,7 +132,7 @@ class SuperUser extends React.Component {
                                 
                             </div>
                             <div className="button__addStaff">
-                                <button onClick={() => this.handleTambahStaffClicked("sanitation_staff")}>Tambah Staff</button>
+                                <button onClick={() => this.handleTambahStaffClicked("SANITATION_STAFF")}>Tambah Staff</button>
                             </div>
                         </div>
                         <div className='item'>
@@ -135,7 +146,7 @@ class SuperUser extends React.Component {
                                  }
                             </div>
                             <div className="button__addStaff">
-                                <button onClick={() => this.handleTambahStaffClicked("defect_staff")}>Tambah Staff</button>
+                                <button onClick={() => this.handleTambahStaffClicked("DEFECT_STAFF")}>Tambah Staff</button>
                             </div>
                         </div>
                         <div className='item'>
@@ -149,7 +160,7 @@ class SuperUser extends React.Component {
                                  }
                             </div>
                             <div className="button__addStaff">
-                                <button onClick={() => this.handleTambahStaffClicked("loss_staff")}>Tambah Staff</button>
+                                <button onClick={() => this.handleTambahStaffClicked("LOSS_STAFF")}>Tambah Staff</button>
                             </div>
                         </div>
                         <div className='item'>
@@ -162,7 +173,7 @@ class SuperUser extends React.Component {
                                 this.staffList(this.state.safety_staff) }
                             </div>
                             <div className="button__addStaff">
-                                <button onClick={() => this.handleTambahStaffClicked("safety_staff")}>Tambah Staff</button>
+                                <button onClick={() => this.handleTambahStaffClicked("SAFETY_STAFF")}>Tambah Staff</button>
                             </div>
                         </div>
                         <SuperUserModal/>
@@ -176,7 +187,11 @@ class SuperUser extends React.Component {
 const mapStateToProps = (state) => {
     return {
         superUserModalOpen: state.superuser.superUserModalOpen,
-        allAssignedStaff: state.superuser.allAssignedStaff,
+        booking_staff : state.superuser.booking_staff,
+        sanitation_staff : state.superuser.sanitation_staff,
+        defect_staff : state.superuser.defect_staff,
+        safety_staff : state.superuser.safety_staff,
+        loss_staff : state.superuser.loss_staff,
     }
 }
 
@@ -186,7 +201,8 @@ const mapDispatchToProps = (dispatch) => {
         openModalSUFunction: (selectedRole) => dispatch(openModalSU(selectedRole)),
         closeModalSUFunction: () => dispatch(closeModalSU()),
         getAllAssignedStaffActionFunction: () => dispatch(getAllAssignedStaffAction()),
-        revokeRoleAsyncFunction: (id) => dispatch(revokeRoleAsync(id)),
+        revokeRoleStartFunction: (id, role) => dispatch(revokeRoleStart(id, role))
+
     }
 }
 
