@@ -42,7 +42,6 @@ class SuperUserModal extends React.Component {
     
     handleAddStafftoRole = () => {
         if (this.state.selectedId !== null){
-            console.log("terpilih", this.state.selectedId, "untuk role", this.state.selectedRole)
             this.props.addStafftoRoleFunction(this.state.selectedId.toString(), this.state.selectedRole);
             this.props.closeModalFunction();
         }

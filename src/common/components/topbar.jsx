@@ -34,7 +34,6 @@ class Topbar extends React.Component {
 
     toggleSidebar = () => {
         localStorage.setItem('showSidebar', localStorage.getItem('showSidebar') ? !JSON.parse(localStorage.getItem('showSidebar')) : true);
-        console.log(localStorage.getItem('showSidebar'));
         document.querySelector('body').classList.add('animate');
         document.querySelector('.left-sidebar').classList.toggle('hide');
         document.querySelector('.topbar-logo-text').classList.toggle('hide');

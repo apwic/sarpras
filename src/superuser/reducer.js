@@ -9,6 +9,7 @@ const initialState = {
     defect_staff: [],
     safety_staff: [],
     loss_staff: [],
+    admin: [],
     allUnsignedStaff: [],
 };
 
@@ -24,7 +25,8 @@ function supeUserReducer(state = initialState, action) {
                 sanitation_staff: action.payload.sanitation_staff,
                 defect_staff: action.payload.defect_staff, 
                 safety_staff: action.payload.safety_staff, 
-                loss_staff: action.payload.loss_staff
+                loss_staff: action.payload.loss_staff,
+                admin: action.payload.admin,
             };
         case REVOKE_ROLE_SUCCESS:
             const id_revoke = action.payload.id;
