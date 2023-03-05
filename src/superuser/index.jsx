@@ -33,13 +33,15 @@ class SuperUser extends React.Component {
             || prevProps.defect_staff !== this.props.defect_staff
             || prevProps.safety_staff !== this.props.safety_staff
             || prevProps.loss_staff !== this.props.loss_staff
+            || prevProps.admin !== this.props.admin
             ) {
             this.setState({
                 booking_staff: this.props.booking_staff,
                 sanitation_staff: this.props.sanitation_staff,
                 defect_staff: this.props.defect_staff,
                 safety_staff: this.props.safety_staff,
-                loss_staff: this.props.loss_staff
+                loss_staff: this.props.loss_staff,
+                admin: this.props.admin,
             })
         }
     }
@@ -94,7 +96,7 @@ class SuperUser extends React.Component {
                 </div>
                 <div className='container-superuser__body'>
                     <div className='container-superuser__body__item'>
-                        {/* <div className='item'>
+                        <div className='item'>
                             <div className='item__header'>
                                 <h2>Admin</h2>
                             </div>
@@ -104,9 +106,9 @@ class SuperUser extends React.Component {
                                 
                             </div>
                             <div className="button__addStaff">
-                                <button onClick={() => this.handleTambahStaffClicked("admin")}>Tambah Staff</button>
+                                <button onClick={() => this.handleTambahStaffClicked("ADMIN")}>Tambah Staff</button>
                             </div>
-                        </div> */}
+                        </div>
                         <div className='item'>
                             <div className='item__header'>
                                 <h2>Staff Peminjaman</h2>
@@ -192,6 +194,7 @@ const mapStateToProps = (state) => {
         defect_staff : state.superuser.defect_staff,
         safety_staff : state.superuser.safety_staff,
         loss_staff : state.superuser.loss_staff,
+        admin : state.superuser.admin,
     }
 }
 
