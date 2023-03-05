@@ -19,7 +19,10 @@ class Topbar extends React.Component {
 
     componentDidMount() {
         this.props.getUserFunction();
-        if (!localStorage.getItem('showSidebar') || localStorage.getItem('showSidebar') === 'false') {
+        if (localStorage.getItem('showSidebar') === null) {
+            localStorage.setItem('showSidebar', true);
+        }
+        if (localStorage.getItem('showSidebar') === 'false') {
             document.querySelector('.left-sidebar').classList.add('hide');
             document.querySelector('.topbar-logo-text').classList.add('hide');
             document.querySelector('body').classList.add('no-sidebar');
