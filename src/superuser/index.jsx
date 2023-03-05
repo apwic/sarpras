@@ -7,18 +7,19 @@ import { connect } from 'react-redux'
 import SuperUserModal from '../common/components/superUserModal'
 import React from 'react'
 import { isEqual } from 'lodash'
+import LoadingScreen from '../common/components/loadingScreen'
 
 class SuperUser extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            booking_staff: {},
-            sanitation_staff: {},
-            defect_staff: {},
-            safety_staff: {},
-            loss_staff: {},
-            admin: {},
+            booking_staff: null,
+            sanitation_staff: null,
+            defect_staff: null,
+            safety_staff: null,
+            loss_staff: null,
+            admin: null,
         }
     }
 
@@ -88,6 +89,11 @@ class SuperUser extends React.Component {
     }
 
     render() {
+        if (this.state.booking_staff === null){
+            return (
+            <LoadingScreen/>
+            )
+        }
         return(
             <div className='container-superuser'>
                 <div className='container-superuser__header'>
