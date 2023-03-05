@@ -10,6 +10,8 @@ import { connect } from 'react-redux';
 import React from 'react';
 import { openModal, setCalendar } from './action';
 import CalendarModal from '../common/components/calendarModal';
+import { getUser } from '../common/auth/action';
+import LoadingScreen from '../common/components/loadingScreen';
 
 class Dashboard extends React.Component {
     constructor(props) {
@@ -17,12 +19,20 @@ class Dashboard extends React.Component {
         this.calendarRef = React.createRef();
         this.state = {
             showModal: false,
-            selectedDate: null
+            selectedDate: null,
+            user: null
         }
     }
 
     componentDidMount() {
+        this.props.getUserFunction();
         this.props.setCalendarFunction(this.calendarRef);
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.user !== this.props.user) {
+            this.setState({ user: this.props.user });
+        }
     }
 
     handleDateClick = (arg) => {
@@ -30,6 +40,11 @@ class Dashboard extends React.Component {
     };
 
     render() {
+        if (this.state.user === null) {
+            return (
+                <LoadingScreen/>
+            )
+        }
         return(
             <div className='container-dashboard'>
                 <div className='container-dashboard__header'>
@@ -152,6 +167,7 @@ class Dashboard extends React.Component {
 const mapStateToProps = (state) => {
     return {
         calendarModalOpen: state.dashboard.calendarModalOpen,
+        user: state.auth.user
     }
 }
 
@@ -159,7 +175,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         setCalendarFunction: (calendarRef) => dispatch(setCalendar(calendarRef)),
         openModalFunction: (selectedDate) => dispatch(openModal(selectedDate)),
-        closeModalFunction: () => dispatch(closeModal())
+        closeModalFunction: () => dispatch(closeModal()),
+        getUserFunction: () => dispatch(getUser())
     }
 }
 

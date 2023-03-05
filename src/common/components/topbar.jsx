@@ -13,12 +13,17 @@ class Topbar extends React.Component {
         this.state = {
             profileDropdown: false,
             notificationDropdown: false,
-            user: {}
+            user: {},
         }
     }
 
     componentDidMount() {
         this.props.getUserFunction();
+        if (!localStorage.getItem('showSidebar') || localStorage.getItem('showSidebar') === 'false') {
+            document.querySelector('.left-sidebar').classList.add('hide');
+            document.querySelector('.topbar-logo-text').classList.add('hide');
+            document.querySelector('body').classList.add('no-sidebar');
+        }
     }
 
     componentDidUpdate(prevProps) {
@@ -27,7 +32,9 @@ class Topbar extends React.Component {
         }
     }
 
-    hideSidebar = () => {
+    toggleSidebar = () => {
+        localStorage.setItem('showSidebar', localStorage.getItem('showSidebar') ? !JSON.parse(localStorage.getItem('showSidebar')) : true);
+        console.log(localStorage.getItem('showSidebar'));
         document.querySelector('body').classList.add('animate');
         document.querySelector('.left-sidebar').classList.toggle('hide');
         document.querySelector('.topbar-logo-text').classList.toggle('hide');
@@ -65,7 +72,7 @@ class Topbar extends React.Component {
                         </a>
                         <p className="topbar-logo-text">DIREKTORAT SARANA DAN PRASARANA INSTITUT TEKNOLOGI BANDUNG</p>
                     </div>
-                    <FontAwesomeIcon icon={faBars} className="topbar-menu-icon" onClick={this.hideSidebar}/>
+                    <FontAwesomeIcon icon={faBars} className="topbar-menu-icon" onClick={this.toggleSidebar}/>
                 </div>
                 <div className="topbar-user">
                     <p className='topbar-user-content'>{this.state.user.name}</p>

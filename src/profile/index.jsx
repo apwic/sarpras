@@ -8,6 +8,7 @@ import { getUser } from '../common/auth/action';
 import { editProfile, openModal } from './action';
 import ProfilePictureCropperModal from '../common/components/imageModal';
 import AlertModal from '../common/components/alertModal';
+import LoadingScreen from '../common/components/loadingScreen';
 
 class Profile extends React.Component {
     constructor(props) {
@@ -81,6 +82,11 @@ class Profile extends React.Component {
         let emailValue = this.state.user.email;
         let phoneValue = this.state.no_telp;
 
+        if (this.state.user.name === '') {
+            return (
+                <LoadingScreen/>
+            );
+        }
         return (
             <div className='container-profile'>
                 <div className='container-profile__header'>

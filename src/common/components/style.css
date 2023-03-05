@@ -333,3 +333,13 @@ button.btn-search {
 .alert-modal-title {
     border: none;
 }
+
+.loading-screen {
+    display: flex;
+    flex-direction: column;
+    padding-left: 7vh;
+    padding-right: 7vh;
+    padding-top: calc(50vh - 60px);
+    min-height: calc(100vh - 60px);
+    align-items: center;
+}
