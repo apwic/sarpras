@@ -6,8 +6,9 @@ import { openModalSU, closeModalSU, getAllAssignedStaffAction, revokeRoleStart }
 import { connect } from 'react-redux'
 import SuperUserModal from '../common/components/superUserModal'
 import React from 'react'
-import { isEqual } from 'lodash'
 import LoadingScreen from '../common/components/loadingScreen'
+import { Modal, Button } from 'react-bootstrap'
+import AlertDeleteModal from '../common/components/alertDeleteModal'
 
 class SuperUser extends React.Component {
 
@@ -20,6 +21,10 @@ class SuperUser extends React.Component {
             safety_staff: null,
             loss_staff: null,
             admin: null,
+            showAlertDelete : false,
+            alertDeleteMessage : "",
+            alertDeleteId : null,
+            alertDeleteRole : null,
         }
     }
 
@@ -53,6 +58,7 @@ class SuperUser extends React.Component {
 
     handleDeleteStaffClicked = (id, role) => {
         this.props.revokeRoleStartFunction(id.toString(), role);
+        this.closeAlertModal();
     }
 
     
@@ -69,7 +75,7 @@ class SuperUser extends React.Component {
                             <p>{staff.email}</p>
                         </div>
                         <div className="button__delete">
-                            <button onClick={() => this.handleDeleteStaffClicked(staff.id, staff.role)} className='icon__garbage'>
+                            <button onClick={() => this.openAlertModal(staff.id, staff.role, staff.name)} className='icon__garbage'>
                                 <FontAwesomeIcon icon={faTrashAlt} className="icon-garbage"/>
                             </button>
                         </div>
@@ -86,6 +92,19 @@ class SuperUser extends React.Component {
                 </div>
             </div>
         )
+    }
+
+    closeAlertModal = () => {
+        this.setState({showAlertDelete: false, alertDeleteMessage: '', alertDeleteId: null, alertDeleteRole: null});
+    }
+
+    openAlertModal = (id, role, name) => {
+        this.setState({
+            alertDeleteId: id,
+            alertDeleteRole: role,
+            showAlertDelete: true, 
+            alertDeleteMessage: "Apakah anda yakin ingin menghapus akun " + name + " dari role " + role.toLowerCase().charAt(0).toUpperCase() + role.toLowerCase().slice(1) + "?", 
+        });
     }
 
     render() {
@@ -185,6 +204,12 @@ class SuperUser extends React.Component {
                             </div>
                         </div>
                         <SuperUserModal/>
+                        <AlertDeleteModal 
+                        show={this.state.showAlertDelete} message={this.state.alertDeleteMessage}
+                        closeAlertFunction={this.closeAlertModal} handleCancelAlert={this.closeAlertModal}
+                        handleYesAlert={() => this.handleDeleteStaffClicked(this.state.alertDeleteId, this.state.alertDeleteRole)}
+
+                        />
                     </div>
                 </div>
             </div>
