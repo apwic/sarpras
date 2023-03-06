@@ -36,6 +36,10 @@ class Home extends React.Component {
         }
     }
 
+    componentWillUnmount() {
+        clearInterval(this.intervalId);
+    }
+
     render() {
         if (storage.getToken() === null) {
             return (
