@@ -146,6 +146,7 @@
     align-items: center;
     justify-content: center;
     margin-right: 15px;
+    cursor: pointer;
 }
 
 .topbar .topbar-logo img {

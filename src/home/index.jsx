@@ -43,25 +43,29 @@ class Home extends React.Component {
         }
         return (
                 <div>
-                    <Topbar/>
-                    <Navbar />
                     <BrowserRouter>
                         <Routes>
                             <Route path="/login" element={<Login/>} />
                             <Route path="/profile" element={
                                 <div>
+                                    <Topbar/>
+                                    <Navbar />
                                     <Profile />
                                 </div>
                             }/>
                             { this.state.user.role === "SUPER_USER" &&
                             <Route path="/role-management" element={
                                 <div>
+                                    <Topbar/>
+                                    <Navbar />
                                     <SuperUser />
                                 </div>
                             }/>
                             }
                             <Route path="*" element={
                                 <div>
+                                    <Topbar/>
+                                    <Navbar />
                                     <Dashboard />
                                 </div>
                             }/>

@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import './style.css'
 import logo from '../assets/logo.svg'
 import { getUser, logout } from '../auth/action';
+import { withRouter } from '../withRouter';
 
 class Topbar extends React.Component {
     constructor(props) {
@@ -33,6 +34,13 @@ class Topbar extends React.Component {
         if (prevProps.user !== this.props.user) {
             this.setState({ user: this.props.user });
         }
+    }
+
+    handleRouteOnclick = (route) => {
+        if (route === '/profile') {
+            this.profileDropdown();
+        }
+        this.props.navigate(route);
     }
 
     toggleSidebar = () => {
@@ -68,10 +76,8 @@ class Topbar extends React.Component {
         <div>
             <div className="topbar">
                 <div className='topbar-left'>
-                    <div className="topbar-logo">
-                        <a href="/">
-                            <img src={logo} alt="logo"/>
-                        </a>
+                    <div className="topbar-logo" onClick={() => this.handleRouteOnclick('/')}>
+                        <img src={logo} alt="logo"/>
                         <p className="topbar-logo-text">DIREKTORAT SARANA DAN PRASARANA INSTITUT TEKNOLOGI BANDUNG</p>
                     </div>
                     <FontAwesomeIcon icon={faBars} className="topbar-menu-icon" onClick={this.toggleSidebar}/>
@@ -88,7 +94,7 @@ class Topbar extends React.Component {
             </div>
             <div className={`profile-dropdown ${!profileDropdown ? 'hide' : ''}`}>
                 <ul>
-                    <a href="/profile"><li>Profil</li></a>
+                    <li onClick={() => this.handleRouteOnclick('/profile')}>Profil</li>
                     <li onClick={this.logoutOnClick}>Keluar</li>
                 </ul>
             </div>
@@ -114,4 +120,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(Topbar)
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(Topbar))

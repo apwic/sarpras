@@ -5,6 +5,7 @@ import { faChartLine, faCaretDown, faCaretRight, faBookOpen, faFlag, faCog } fro
 import { connect } from 'react-redux';
 import { setCalendar } from '../../dashboard/action';
 import { getUser } from '../auth/action';
+import { withRouter } from '../withRouter';
 
 class Navbar extends React.Component {
     constructor(props) {
@@ -39,6 +40,20 @@ class Navbar extends React.Component {
         if (prevProps.user !== this.props.user) {
             this.setState({ user: this.props.user });
         }
+        if (this.props.location !== prevProps.location) {
+            switch (document.location.pathname) {
+                case '/':
+                    this.setState({ Active: 'Dashboard'});
+                    break;
+                case '/profile':
+                    this.setState({ Active: 'none'});
+                    break;
+                case '/role-management':
+                    this.setState({ Active: 'Role-Management'});
+                default:
+                    break;
+            }
+        }
     }
 
     componentWillUnmount() {
@@ -52,6 +67,10 @@ class Navbar extends React.Component {
         document.querySelector('body').classList.remove('animate');
     };
 
+    handleRouteOnclick = (route) => {
+        this.props.navigate(route);
+    }
+
     render() {
         let BookingExpand = this.state.BookingExpand;
         let AdminExpand = this.state.AdminExpand;
@@ -63,7 +82,7 @@ class Navbar extends React.Component {
                     <div className="element">
                         <div className={`header ${Active === 'Dashboard' ? 'active' : ''}`}>
                             <FontAwesomeIcon className="header-icon" icon={faChartLine}/>
-                            <h3 className="header-name"><a href='/'>Dashboard</a></h3>
+                            <h3 className="header-name" onClick={() => this.handleRouteOnclick("/")}>Dashboard</h3>
                         </div>
                     </div>
                     { this.state.user.role === 'BASIC_USER' &&
@@ -106,7 +125,7 @@ class Navbar extends React.Component {
                                 </div>
                                 }
                                 { this.state.user.role === 'SUPER_USER' &&
-                                    <li className={`${Active === 'Role-Management' ? 'active' : ''}`}><a href="/role-management">Manajemen Role</a></li>
+                                    <li className={`${Active === 'Role-Management' ? 'active' : ''}`} onClick={() => this.handleRouteOnclick("/role-management")}>Manajemen Role</li>
                                 }
                             </ul>
                         </div>
@@ -150,4 +169,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(Navbar)
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(Navbar))
