@@ -17,19 +17,25 @@ class Profile extends React.Component {
             isOnEdit: false,
             showAlertModal: false,
             alertMessage: '',
-            user: {
-                name: '',
-                nim_nip: '',
+            user: this.props.user ? {
+                ...this.props.user,
+                image: import.meta.env.VITE_REST_API_URL + '/uploads/' + this.props.user.image
+            } : {
+                name : '',
                 email: '',
-                no_telp: '',
-                image: ''
+                role: '',
+                nim_nip: '',
+                image: '',
+                no_telp: ''
             },
-            no_telp: ''
+            no_telp: this.props.user ? this.props.user.no_telp : ''
         }
     }
 
     componentDidMount() {
-        this.props.getUserFunction();
+        if (this.props.user === null) {
+            this.props.getUserFunction();
+        }
     }
 
     componentDidUpdate(prevProps) {

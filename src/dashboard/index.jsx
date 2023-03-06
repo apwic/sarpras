@@ -20,12 +20,14 @@ class Dashboard extends React.Component {
         this.state = {
             showModal: false,
             selectedDate: null,
-            user: null
+            user: this.props.user ? this.props.user : null
         }
     }
 
     componentDidMount() {
-        this.props.getUserFunction();
+        if (this.props.user === null) {
+            this.props.getUserFunction();
+        }
         this.props.setCalendarFunction(this.calendarRef);
     }
 
