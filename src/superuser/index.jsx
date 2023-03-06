@@ -9,27 +9,30 @@ import React from 'react'
 import LoadingScreen from '../common/components/loadingScreen'
 import { Modal, Button } from 'react-bootstrap'
 import AlertDeleteModal from '../common/components/alertDeleteModal'
+import { withRouter } from '../common/withRouter'
 
 class SuperUser extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            booking_staff: null,
-            sanitation_staff: null,
-            defect_staff: null,
-            safety_staff: null,
-            loss_staff: null,
-            admin: null,
+            booking_staff: this.props.booking_staff,
+            sanitation_staff: this.props.sanitation_staff,
+            defect_staff: this.props.defect_staff,
+            safety_staff: this.props.safety_staff,
+            loss_staff: this.props.loss_staff,
+            admin: this.props.admin,
             showAlertDelete : false,
             alertDeleteMessage : "",
             alertDeleteId : null,
             alertDeleteRole : null,
+            loading: true
         }
     }
 
     componentDidMount() {
         this.props.getAllAssignedStaffActionFunction();
+
     }
 
     componentDidUpdate(prevProps) {
@@ -48,6 +51,13 @@ class SuperUser extends React.Component {
                 safety_staff: this.props.safety_staff,
                 loss_staff: this.props.loss_staff,
                 admin: this.props.admin,
+                loading: false
+            })
+        }
+        if (this.props.location !== prevProps.location) {
+            this.props.getAllAssignedStaffActionFunction();
+            this.setState({
+                loading: true
             })
         }
     }
@@ -108,7 +118,7 @@ class SuperUser extends React.Component {
     }
 
     render() {
-        if (this.state.booking_staff === null){
+        if (this.state.loading){
             return (
             <LoadingScreen/>
             )
@@ -240,4 +250,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SuperUser)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SuperUser))

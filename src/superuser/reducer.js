@@ -4,13 +4,13 @@ import { OPEN_MODAL_SU, CLOSE_MODAL_SU, SET_ALL_ASSIGNED_STAFF, REVOKE_ROLE_SUCC
 const initialState = {
     superUserModalOpen: false,
     selectedRole: null,
-    booking_staff: [],
-    sanitation_staff: [],
-    defect_staff: [],
-    safety_staff: [],
-    loss_staff: [],
-    admin: [],
-    allUnsignedStaff: [],
+    booking_staff: null,
+    sanitation_staff: null,
+    defect_staff: null,
+    safety_staff: null,
+    loss_staff: null,
+    admin: null,
+    allUnsignedStaff: null,
 };
 
 function supeUserReducer(state = initialState, action) {
