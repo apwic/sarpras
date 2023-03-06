@@ -23,6 +23,11 @@ class Home extends React.Component {
         if (storage.getToken() !== null) {
             this.props.getUserFunction();
         }
+        this.intervalId = setInterval(() => {
+            if (storage.getToken() !== null) {
+                this.props.getUserFunction();
+            }
+        }, 300000);
     }
 
     componentDidUpdate(prevProps) {
