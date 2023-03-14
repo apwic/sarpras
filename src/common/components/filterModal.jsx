@@ -1,10 +1,10 @@
 import React from "react";
 import './style.css';
 import { Modal, Button} from "react-bootstrap";
-import { closeModalFilterVehicle, openModalFilterVehicle } from "../../booking_facility/vehicle/action";
+import { closeModalFilter, openModalFilter } from "../../booking_facility/vehicle/action";
 import { connect } from "react-redux";
 
-class FilterVehicleModal extends React.Component {
+class FilterModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -12,8 +12,8 @@ class FilterVehicleModal extends React.Component {
         }
     }
     componentDidUpdate(prevProps) {
-        if (prevProps.filterVehicleModalOpen !== this.props.filterVehicleModalOpen) {
-            this.setState({ showModal: this.props.filterVehicleModalOpen });
+        if (prevProps.filterModalOpen !== this.props.filterModalOpen) {
+            this.setState({ showModal: this.props.filterModalOpen });
         }
     }   
     
@@ -42,15 +42,15 @@ class FilterVehicleModal extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        filterVehicleModalOpen: state.vehicle.filterVehicleModalOpen
+        filterModalOpen: state.bookingFacility.filterModalOpen
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        openModalFunction: () => dispatch(openModalFilterVehicle()),
-        closeModalFunction: () => dispatch(closeModalFilterVehicle()),
+        openModalFunction: () => dispatch(openModalFilter()),
+        closeModalFunction: () => dispatch(closeModalFilter()),
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(FilterVehicleModal);
+export default connect(mapStateToProps, mapDispatchToProps)(FilterModal);

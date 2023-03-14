@@ -2,12 +2,28 @@ import '../style.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTruck , faFilter} from '@fortawesome/free-solid-svg-icons'
 import React from 'react'
-import { closeModalFilterVehicle, openModalFilterVehicle } from './action'
+import { closeModalFilter, openModalFilter } from './action'
 import { connect } from 'react-redux'
-import FilterVehicleModal from '../../common/components/filterVehicleModal'
+import FilterModal from '../../common/components/filterModal'
+import BookingFacilityList from '../../common/components/bookingFacilityList'
 
 
 class BookingVehicle extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            facilities: [
+                {image : '', name: "Mobil", capacity: 4, license_plate: "B 1234 ABC", price: 100000},
+                {image : '', name: "Mobil", capacity: 4, license_plate: "B 1234 ABC", price: 100000},
+                {image : '', name: "Mobil", capacity: 4, license_plate: "B 1234 ABC", price: 100000},
+                {image : '', name: "Mobil", capacity: 4, license_plate: "B 1234 ABC", price: 100000},
+                {image : '', name: "Mobil", capacity: 4, license_plate: "B 1234 ABC", price: 100000},
+                {image : '', name: "Mobil", capacity: 4, license_plate: "B 1234 ABC", price: 100000},
+                {image : '', name: "Mobil", capacity: 4, license_plate: "B 1234 ABC", price: 100000},
+            ],
+        }
+    }
 
     render() {
         return(
@@ -18,128 +34,17 @@ class BookingVehicle extends React.Component {
                 </div>
                 <div className='container-booking-facility__body'>
                     <div className="search__bar input-group form-group-lg">
-                        <div className="form-outline">
+                        <div className="form-outline search__bar__form">
                             <input type="text" className="form-control search-bar col-lg-2" placeholder="Pencarian"/>
                         </div>
-                    </div>
-                    <div className="filter__items">
-                        <FontAwesomeIcon icon={faFilter} onClick={() => this.props.openModalFunction()} className="icon-filter-item"/>
+                        <div className="filter__items">
+                            <FontAwesomeIcon icon={faFilter} onClick={() => this.props.openModalFunction()} className="icon-filter-item"/>
+                        </div>
                     </div>
                     <div className='container-booking-facility__body__item'>
-                        <div className='item-booking-facility'>
-                            <div className='item-booking-facility__image'>
-                                <img src="https://www.w3schools.com/howto/img_avatar.png" alt="" />
-                            </div>
-                            <div className='item-booking-facility__body'>
-                                <div className="item-description">
-                                    <h2>Toyota Innova</h2>
-                                    <p>Kapasitas 4</p>
-                                    <p>B 8263 SAV</p>
-                                    <p className='harga'>Rp100.000 / hari</p>
-                                </div>
-                                <div className="button__book">
-                                    <button>Book</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='item-booking-facility'>
-                            <div className='item-booking-facility__image'>
-                                <img src="https://www.w3schools.com/howto/img_avatar.png" alt="" />
-                            </div>
-                            <div className='item-booking-facility__body'>
-                                <div className="item-description">
-                                    <h2>Toyota Innova</h2>
-                                    <p>Kapasitas 4</p>
-                                    <p>B 8263 SAV</p>
-                                    <p className='harga'>Rp100.000 / hari</p>
-                                </div>
-                                <div className="button__book">
-                                    <button>Book</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='item-booking-facility'>
-                            <div className='item-booking-facility__image'>
-                                <img src="https://www.w3schools.com/howto/img_avatar.png" alt="" />
-                            </div>
-                            <div className='item-booking-facility__body'>
-                                <div className="item-description">
-                                    <h2>Toyota Innova</h2>
-                                    <p>Kapasitas 4</p>
-                                    <p>B 8263 SAV</p>
-                                    <p className='harga'>Rp100.000 / hari</p>
-                                </div>
-                                <div className="button__book">
-                                    <button>Book</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='item-booking-facility'>
-                            <div className='item-booking-facility__image'>
-                                <img src="https://www.w3schools.com/howto/img_avatar.png" alt="" />
-                            </div>
-                            <div className='item-booking-facility__body'>
-                                <div className="item-description">
-                                    <h2>Toyota Innova</h2>
-                                    <p>Kapasitas 4</p>
-                                    <p>B 8263 SAV</p>
-                                    <p className='harga'>Rp100.000 / hari</p>
-                                </div>
-                                <div className="button__book">
-                                    <button>Book</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='item-booking-facility'>
-                            <div className='item-booking-facility__image'>
-                                <img src="https://www.w3schools.com/howto/img_avatar.png" alt="" />
-                            </div>
-                            <div className='item-booking-facility__body'>
-                                <div className="item-description">
-                                    <h2>Toyota Innova</h2>
-                                    <p>Kapasitas 4</p>
-                                    <p>B 8263 SAV</p>
-                                    <p className='harga'>Rp100.000 / hari</p>
-                                </div>
-                                <div className="button__book">
-                                    <button>Book</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='item-booking-facility'>
-                            <div className='item-booking-facility__image'>
-                                <img src="https://www.w3schools.com/howto/img_avatar.png" alt="" />
-                            </div>
-                            <div className='item-booking-facility__body'>
-                                <div className="item-description">
-                                    <h2>Toyota Innova</h2>
-                                    <p>Kapasitas 4</p>
-                                    <p>B 8263 SAV</p>
-                                    <p className='harga'>Rp100.000 / hari</p>
-                                </div>
-                                <div className="button__book">
-                                    <button>Book</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='item-booking-facility'>
-                            <div className='item-booking-facility__image'>
-                                <img src="https://www.w3schools.com/howto/img_avatar.png" alt="" />
-                            </div>
-                            <div className='item-booking-facility__body'>
-                                <div className="item-description">
-                                    <h2>Toyota Innova</h2>
-                                    <p>Kapasitas 4</p>
-                                    <p>B 8263 SAV</p>
-                                    <p className='harga'>Rp100.000 / hari</p>
-                                </div>
-                                <div className="button__book">
-                                    <button>Book</button>
-                                </div>
-                            </div>
-                        </div>
+                        <BookingFacilityList facilities={this.state.facilities} />
                     </div>
-                    <FilterVehicleModal/>
+                    <FilterModal/>
                 </div>
             </div>
         )
@@ -148,14 +53,14 @@ class BookingVehicle extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        filterVehicleModalOpen: state.vehicle.filterVehicleModalOpen,
+        filterModalOpen: state.bookingFacility.filterModalOpen,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        openModalFunction: () => dispatch(openModalFilterVehicle()),
-        closeModalFunction: () => dispatch(closeModalFilterVehicle()),
+        openModalFunction: () => dispatch(openModalFilter()),
+        closeModalFunction: () => dispatch(closeModalFilter()),
     }
 }
 

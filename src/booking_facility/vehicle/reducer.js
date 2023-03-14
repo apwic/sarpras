@@ -1,18 +1,18 @@
-import { CLOSE_MODAL_FILTER_VEHICLE, OPEN_MODAL_FILTER_VEHICLE } from "./actionTypes";
+import { CLOSE_MODAL_FILTER, OPEN_MODAL_FILTER } from "./actionTypes";
 
 const initialState = {
-    filterVehicleModalOpen: false,
+    filterModalOpen: false,
 };
 
-function vehicleReducer(state = initialState, action) {
+function bookingFacilityReducer(state = initialState, action) {
     switch (action.type) {
-        case OPEN_MODAL_FILTER_VEHICLE:
-            return { ...state, filterVehicleModalOpen: true};
-        case CLOSE_MODAL_FILTER_VEHICLE:
-            return { ...state, filterVehicleModalOpen: false};
+        case OPEN_MODAL_FILTER:
+            return { ...state, filterModalOpen: true};
+        case CLOSE_MODAL_FILTER:
+            return { ...state, filterModalOpen: false};
         default:
             return state;
     }
 }
 
-export default vehicleReducer;
+export default bookingFacilityReducer;

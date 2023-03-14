@@ -1,13 +1,13 @@
-import { OPEN_MODAL_FILTER_VEHICLE, CLOSE_MODAL_FILTER_VEHICLE } from "./actionTypes";
+import { OPEN_MODAL_FILTER, CLOSE_MODAL_FILTER } from "./actionTypes";
 
-export function openModalFilterVehicle() {
+export function openModalFilter() {
     return {
-        type: OPEN_MODAL_FILTER_VEHICLE,
+        type: OPEN_MODAL_FILTER,
     };
 }
 
-export function closeModalFilterVehicle() {
+export function closeModalFilter() {
     return {
-        type: CLOSE_MODAL_FILTER_VEHICLE,
+        type: CLOSE_MODAL_FILTER,
     };
 }
