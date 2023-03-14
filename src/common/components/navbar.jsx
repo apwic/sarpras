@@ -148,7 +148,9 @@ class Navbar extends React.Component {
                     }
                 </div>
                 <div className='bottom'>
-                    <p className="bottom-text">Copyright Sarpras ITB Version 1.0.0</p>
+                    <p className="bottom-text">&#169; 2023</p>
+                    <p className='bottom-text'>Direktorat Sarana & Prasarana ITB</p>
+                    <p className='bottom-text'>{import.meta.env.VITE_VERSION}</p>
                 </div>
             </div>
         );

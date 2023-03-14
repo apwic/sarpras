@@ -25,11 +25,16 @@
     right: 0;
     height: 60px;
     color: var(--color-text-secondary);
-    display: flex;
+    display: block;
     align-items: center;
     justify-content: space-between;
-    padding: 0 20px;
+    padding: 0px 20px;
+    margin-bottom: 20px;
     z-index: 100;
+}
+
+.left-sidebar .bottom .bottom-text {
+    font-size: 13px;
 }
 
 .left-sidebar .element {
