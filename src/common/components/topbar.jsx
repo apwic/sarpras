@@ -86,7 +86,7 @@ class Topbar extends React.Component {
                     <p className='topbar-user-content'>{this.state.user.name}</p>
                     <FontAwesomeIcon icon={faBell} className={`topbar-user-content notification-icon ${notificationDropdown? 'active' : ''}`} onClick={this.notificationDropdown}/>
                     {this.state.user.image ? 
-                        <img src={import.meta.env.VITE_REST_API_URL + '/uploads/' + this.state.user.image} alt="profile" className={`topbar-user-content profile-photo ${profileDropdown? 'active' : ''}`} onClick={this.profileDropdown}/>
+                        <img src={this.state.user.image} alt="profile" className={`topbar-user-content profile-photo ${profileDropdown? 'active' : ''}`} onClick={this.profileDropdown}/>
                         :
                         <FontAwesomeIcon icon={faUserCircle} className={`topbar-user-content profile-icon ${profileDropdown? 'active' : ''}`} onClick={this.profileDropdown}/>
                     }

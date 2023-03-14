@@ -13,11 +13,20 @@ class AlertModal extends React.Component {
         if (prevProps.show !== this.props.show) {
             this.setState({ show: this.props.show });
         }
+        if (this.props.show === true) {
+            clearInterval(this.intervalId);
+            this.intervalId = setInterval(() => {
+                this.props.closeModalFunction();
+            }, 5000);
+        }
+        if (this.props.show === false) {
+            clearInterval(this.intervalId);
+        }
     }
 
     render() {
         return (
-            <Modal show={this.state.show} onHide={this.props.closeModalFunction} backdrop={false}>
+            <Modal show={this.state.show} onHide={this.props.closeModalFunction} backdrop={false} className="no-background">
                 <Modal.Header closeButton className='alert-modal-title'>
                     {this.props.message}
                 </Modal.Header>

@@ -19,7 +19,7 @@ class Profile extends React.Component {
             alertMessage: '',
             user: this.props.user ? {
                 ...this.props.user,
-                image: import.meta.env.VITE_REST_API_URL + '/uploads/' + this.props.user.image
+                image: this.props.user.image
             } : {
                 name : '',
                 email: '',
@@ -43,7 +43,7 @@ class Profile extends React.Component {
             this.setState({ 
                 user: {
                     ...this.props.user,
-                    image: import.meta.env.VITE_REST_API_URL + '/uploads/' + this.props.user.image
+                    image: this.props.user.image
                 },
                 no_telp: this.props.user.no_telp
             });
