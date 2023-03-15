@@ -1,0 +1,116 @@
+.container-mybooking-detail{
+    display: flex;
+    flex-direction: column;
+    padding-left: 7vh;
+    padding-right: 7vh;
+    padding-top: 3vh;
+    min-height: calc(100vh - 60px);
+    padding-bottom: 4vh;
+}
+
+.container-mybooking-detail__header{
+    width: 100%;
+    height: 7vh;
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid var(--color-text-secondary);
+}
+
+.container-mybooking-detail__header .icon-mybooking-detail{
+    width: 2.5vh;
+    height: 2.5vh;
+    margin-right: 1vh;
+}
+
+.container-mybooking-detail__body{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-top: 3vh;
+    row-gap: 1.5rem;
+}
+
+.container-mybooking-detail__body__item{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    gap: 3rem;
+    row-gap: 3rem;
+    flex-flow: row wrap;
+    position: relative;
+}
+
+.item-container{
+    background-color: var(--color-background-light);
+    min-height: fit-content;
+    height: fit-content;
+    width: calc(100% / 2 - 2rem);
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--corner-radius-large);
+    box-shadow: var(--shadow);
+    padding: 35px;
+    position: relative;
+    gap: 1rem;
+}
+
+h3.item-title{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.item-detail{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.item-detail table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.item-detail tr{
+    height: 2rem;
+}
+
+.item-detail td.item-detail__label{
+    font-weight: bold;
+}
+
+.booking-status{
+    width: fit-content;
+    padding: 10px;
+    border-radius: var(--corner-radius);
+    color: white;
+}
+
+.booking-status.pending{
+    background-color: #ED9121;
+}
+
+.total-price{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+h3.total-price__label {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+h3.total-price__value {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.booking-description p{
+    line-height: 1.5rem;
+    text-align: justify;
+}

@@ -38,6 +38,7 @@
     margin-top: 0;
     border-radius: var(--corner-radius);
     background-color: var(--color-background-light);
+    border: 1px solid #ced4da;
 }
 
 .search-bar__input{
