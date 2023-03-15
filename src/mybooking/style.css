@@ -28,7 +28,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 2vh;
 }
 
 .search-bar{
@@ -72,9 +71,9 @@
     height: auto;
     display: flex;
     flex-direction: column;
-    padding: 35px;
+    padding: 24px 35px 24px 35px;
     gap: 16px;
-    border-radius: var(--corner-radius);
+    border-radius: var(--corner-radius-large);
     background-color: var(--color-background-light);
     box-shadow: var(--shadow);
 }
@@ -121,7 +120,7 @@
 }
 
 h3.item-name{
-    font-size: 24px;
+    font-size: 20px;
     font-weight: bold;
     margin: 0;
 }
