@@ -9,6 +9,7 @@ import { editProfile, openModal } from './action';
 import ProfilePictureCropperModal from '../common/components/imageModal';
 import AlertModal from '../common/components/alertModal';
 import LoadingScreen from '../common/components/loadingScreen';
+import { findRoleName } from '../common/constants/roleConstant';
 
 class Profile extends React.Component {
     constructor(props) {
@@ -109,7 +110,7 @@ class Profile extends React.Component {
                         </div>
                         <div className="profile-details">
                             <h2>{this.state.user.name}</h2>
-                            <p>{role}</p>
+                            <p>{findRoleName(role)}</p>
                             <p>{this.state.user.nim_nip}</p>
                         </div>
                         <div className="total-container">

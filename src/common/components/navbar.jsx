@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { setCalendar } from '../../dashboard/action';
 import { getUser } from '../auth/action';
 import { withRouter } from '../withRouter';
+import roleConstant from '../constants/roleConstant';
 
 class Navbar extends React.Component {
     constructor(props) {
@@ -85,7 +86,7 @@ class Navbar extends React.Component {
                             <h3 className="header-name" onClick={() => this.handleRouteOnclick("/")}>Dashboard</h3>
                         </div>
                     </div>
-                    { this.state.user.role === 'BASIC_USER' &&
+                    { this.state.user.role === roleConstant.BASIC.name &&
                         <div className={`expanding-element ${BookingExpand ? 'expanded' : ''}`}>
                             <div className='header' onClick={() => this.setState({ BookingExpand: !BookingExpand })}>
                                 <FontAwesomeIcon icon={BookingExpand ? faCaretDown : faCaretRight}/>
@@ -100,7 +101,7 @@ class Navbar extends React.Component {
                             </ul>
                         </div> 
                     }
-                    { this.state.user.role === 'BASIC_USER' &&
+                    { this.state.user.role === roleConstant.BASIC.name &&
                         <div className="element">
                             <div className="header">
                                 <FontAwesomeIcon className="header-icon" icon={faFlag}/>
@@ -108,7 +109,7 @@ class Navbar extends React.Component {
                             </div>
                         </div>
                     }
-                    { this.state.user.role === 'ADMIN' || this.state.user.role === 'SUPER_USER' &&
+                    { this.state.user.role === roleConstant.ADMIN.name || this.state.user.role === roleConstant.SUPER_USER.name &&
                         <div className={`expanding-element ${AdminExpand ? 'expanded' : ''}`}>
                             <div className="header" onClick={() => this.setState({ AdminExpand: !AdminExpand })}>
                                 <FontAwesomeIcon icon={AdminExpand ? faCaretDown : faCaretRight}/>
@@ -116,7 +117,7 @@ class Navbar extends React.Component {
                                 <h3 className="header-name">Admin</h3>
                             </div>
                             <ul>
-                                { this.state.user.role === 'ADMIN' &&
+                                { this.state.user.role === roleConstant.ADMIN.name &&
                                 <div>
                                     <li>Gedung</li>
                                     <li>Ruangan</li>
@@ -124,13 +125,13 @@ class Navbar extends React.Component {
                                     <li>Kendaraan</li>
                                 </div>
                                 }
-                                { this.state.user.role === 'SUPER_USER' &&
+                                { this.state.user.role === roleConstant.SUPER_USER.name &&
                                     <li className={`${Active === 'Role-Management' ? 'active' : ''}`} onClick={() => this.handleRouteOnclick("/role-management")}>Manajemen Role</li>
                                 }
                             </ul>
                         </div>
                     }
-                    { this.state.user.role === 'BOOKING_STAFF' &&
+                    { this.state.user.role === roleConstant.BOOKING_STAFF.name &&
                         <div className="element">
                             <div className="header">
                                 <FontAwesomeIcon className="header-icon" icon={faBookOpen}/>
@@ -138,7 +139,7 @@ class Navbar extends React.Component {
                             </div>
                         </div>
                     }
-                    { this.state.user.role === 'SANITATION_STAFF' || this.state.user.role === 'DEFECT_STAFF' || this.state.user.role === 'SAFETY_STAFF' || this.state.user.role === 'LOSS_STAFF' &&
+                    { this.state.user.role === roleConstant.SANITATION_STAFF.name || this.state.user.role === roleConstant.DEFECT_STAFF.name || this.state.user.role === roleConstant.SAFETY_STAFF.name || this.state.user.role === roleConstant.LOSS_STAFF.name &&
                         <div className="element">
                             <div className="header">
                                 <FontAwesomeIcon className="header-icon" icon={faFlag}/>

@@ -10,6 +10,9 @@ import Profile from "../profile";
 import SuperUser from "../superuser";
 import { storage } from "../common/storage";
 import { getUser } from "../common/auth/action";
+import InsertVehicle from "../insertFacility/insertvehicle";
+import BookingReview from "../review/bookingReview";
+import roleConstant from "../common/constants/roleConstant";
 
 class Home extends React.Component {
     constructor(props) {
@@ -62,7 +65,7 @@ class Home extends React.Component {
                                     <Profile />
                                 </div>
                             }/>
-                            { this.state.user.role === "SUPER_USER" &&
+                            { this.state.user.role === roleConstant.SUPER_USER.name &&
                             <Route path="/role-management" element={
                                 <div>
                                     <Topbar/>
@@ -71,6 +74,13 @@ class Home extends React.Component {
                                 </div>
                             }/>
                             }
+                            <Route path="/insert-vehicle" element={
+                                <div>
+                                    <Topbar/>
+                                    <Navbar />
+                                    <BookingReview />
+                                </div>
+                            }/>
                             <Route path="*" element={
                                 <div>
                                     <Topbar/>
