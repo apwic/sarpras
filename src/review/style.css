@@ -1,0 +1,124 @@
+.container-review{
+    display: flex;
+    flex-direction: column;
+    padding-left: 7vh;
+    padding-right: 7vh;
+    padding-top: 3vh;
+    min-height: calc(100vh - 60px);
+    padding-bottom: 4vh;
+}
+
+button.back-btn {
+    display: flex;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding-left: 5px;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    padding-top: 0;
+    color: var(--color-text-primary);
+    align-items: center;
+    font-size: 18px;
+}
+  
+.container-review__header{
+    /* background-color: antiquewhite; */
+    width: 100%;
+    height: 7vh;
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid var(--color-text-secondary);
+}
+  
+.container-review__header .icon-review{
+    width: 2.5vh;
+    height: 2.5vh;
+    margin-right: 1vh;
+}
+  
+.container-review__body{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-top: 3vh;
+    row-gap: 1.5rem;
+}
+
+.container-review__body .container-review__body__item{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    gap: 3rem;
+    row-gap: 3rem;
+    flex-flow: row wrap;
+    position: relative;
+}
+
+.container-review .item{
+    background-color: var(--color-background-light);
+    min-height: fit-content;
+    height: fit-content;
+    width: 100%;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--corner-radius-large);
+    box-shadow: var(--shadow);
+    padding: 40px;
+    position: relative;
+}
+
+.container-review .item__header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    row-gap: 1rem;
+}
+
+.container-review .item__header__status {
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: end;
+}
+
+.container-review .form-stars {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    row-gap: 1rem;
+}
+
+.container-review .icon-star {
+    width: 40px;
+    height: 40px;
+}
+
+.container-review .icon-star-selected {
+    color: orange;
+}
+
+.container-review .btn-submit-right {
+    margin-left: auto;
+}
+
+.container-review .btn-submit {
+    width: 6rem;
+}

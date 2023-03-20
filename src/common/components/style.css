@@ -368,3 +368,25 @@ button.btn-primary:disabled{
 .no-background .modal-dialog {
     margin-bottom: 0;
 }
+
+.status-label {
+    padding: 5px 10px;
+    border-radius: 10px;
+    margin-right: 10px;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+}
+
+.status-label-status {
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--color-background-light);
+}
+
+.icon-status-label {
+    color: var(--color-background-light);
+    width: 18px;
+    height: 18px;
+    margin-right: 5px;
+}
