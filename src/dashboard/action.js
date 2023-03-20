@@ -1,4 +1,4 @@
-import { SET_CALENDAR, OPEN_MODAL, CLOSE_MODAL } from "./actionTypes";
+import { SET_CALENDAR, OPEN_MODAL, CLOSE_MODAL } from './actionTypes';
 
 export function setCalendar(calendarRef) {
     return {

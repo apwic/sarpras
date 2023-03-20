@@ -89,7 +89,7 @@ button.back-btn {
     margin-left: auto;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 10px;
     align-items: end;
 }
 

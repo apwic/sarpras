@@ -6,7 +6,7 @@ class AlertDeleteModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            show: props.show
+            show: props.show,
         };
     }
     componentDidUpdate(prevProps) {
@@ -17,20 +17,34 @@ class AlertDeleteModal extends React.Component {
 
     render() {
         return (
-            <Modal show={this.state.show} onHide={this.props.closeAlertFunction} centered>
-            <Modal.Header closeButton>
-                <Modal.Title>Hapus Role</Modal.Title>
-            </Modal.Header>
+            <Modal
+                show={this.state.show}
+                onHide={this.props.closeAlertFunction}
+                centered
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title>Hapus Role</Modal.Title>
+                </Modal.Header>
 
-            <Modal.Body>
-                <p>{this.props.message}</p>
-            </Modal.Body>
+                <Modal.Body>
+                    <p>{this.props.message}</p>
+                </Modal.Body>
 
-            <Modal.Footer>
-                <Button onClick={this.props.handleCancelAlert} variant="secondary">Batal</Button>
-                <Button onClick={this.props.handleYesAlert} variant="primary">Hapus</Button>
-            </Modal.Footer>
-        </Modal>
+                <Modal.Footer>
+                    <Button
+                        onClick={this.props.handleCancelAlert}
+                        variant="secondary"
+                    >
+                        Batal
+                    </Button>
+                    <Button
+                        onClick={this.props.handleYesAlert}
+                        variant="primary"
+                    >
+                        Hapus
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         );
     }
 }

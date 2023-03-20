@@ -13,14 +13,14 @@ const rootReducer = combineReducers({
     auth: authReducer,
     profile: profileReducer,
     bookingFacility: bookingFacilityReducer,
-})
+});
 
 const sagaMiddleware = createSagaMiddleware();
 
-const enhancers = applyMiddleware(sagaMiddleware)
+const enhancers = applyMiddleware(sagaMiddleware);
 
-const store = createStore(rootReducer, enhancers)
+const store = createStore(rootReducer, enhancers);
 
 export default store;
 
-sagaMiddleware.run(rootSaga)
+sagaMiddleware.run(rootSaga);

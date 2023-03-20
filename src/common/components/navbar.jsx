@@ -1,7 +1,14 @@
 import React from 'react';
-import './style.css'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChartLine, faCaretDown, faCaretRight, faBookOpen, faFlag, faCog } from '@fortawesome/free-solid-svg-icons';
+import './style.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+    faChartLine,
+    faCaretDown,
+    faCaretRight,
+    faBookOpen,
+    faFlag,
+    faCog,
+} from '@fortawesome/free-solid-svg-icons';
 import { connect } from 'react-redux';
 import { setCalendar } from '../../dashboard/action';
 import { getUser } from '../auth/action';
@@ -15,25 +22,38 @@ class Navbar extends React.Component {
             BookingExpand: false,
             AdminExpand: false,
             Active: 'Dashboard',
-            user: {}
-        }
+            user: {},
+        };
         this.sidebarRef = React.createRef();
     }
 
     componentDidMount() {
         this.props.getUserFunction();
-        this.sidebarRef.current.addEventListener('transitionend', this.handleTransitionEnd);
+        this.sidebarRef.current.addEventListener(
+            'transitionend',
+            this.handleTransitionEnd,
+        );
         switch (document.location.pathname) {
             case '/':
-                this.setState({ Active: 'Dashboard', BookingExpand: false, AdminExpand: false});
+                this.setState({
+                    Active: 'Dashboard',
+                    BookingExpand: false,
+                    AdminExpand: false,
+                });
                 break;
             case '/profile':
-                this.setState({ Active: 'none', BookingExpand: false, AdminExpand: false});
+                this.setState({
+                    Active: 'none',
+                    BookingExpand: false,
+                    AdminExpand: false,
+                });
                 break;
             case '/role-management':
-                this.setState({ Active: 'Role-Management', BookingExpand: false, AdminExpand: true});
-            default:
-                break;
+                this.setState({
+                    Active: 'Role-Management',
+                    BookingExpand: false,
+                    AdminExpand: true,
+                });
         }
     }
 
@@ -44,21 +64,22 @@ class Navbar extends React.Component {
         if (this.props.location !== prevProps.location) {
             switch (document.location.pathname) {
                 case '/':
-                    this.setState({ Active: 'Dashboard'});
+                    this.setState({ Active: 'Dashboard' });
                     break;
                 case '/profile':
-                    this.setState({ Active: 'none'});
+                    this.setState({ Active: 'none' });
                     break;
                 case '/role-management':
-                    this.setState({ Active: 'Role-Management'});
-                default:
-                    break;
+                    this.setState({ Active: 'Role-Management' });
             }
         }
     }
 
     componentWillUnmount() {
-        this.sidebarRef.current.removeEventListener('transitionend', this.handleTransitionEnd);
+        this.sidebarRef.current.removeEventListener(
+            'transitionend',
+            this.handleTransitionEnd,
+        );
     }
 
     handleTransitionEnd = () => {
@@ -70,7 +91,7 @@ class Navbar extends React.Component {
 
     handleRouteOnclick = (route) => {
         this.props.navigate(route);
-    }
+    };
 
     render() {
         let BookingExpand = this.state.BookingExpand;
@@ -79,18 +100,50 @@ class Navbar extends React.Component {
 
         return (
             <div className="left-sidebar" ref={this.sidebarRef}>
-                <div className='top'>
+                <div className="top">
                     <div className="element">
-                        <div className={`header ${Active === 'Dashboard' ? 'active' : ''}`}>
-                            <FontAwesomeIcon className="header-icon" icon={faChartLine}/>
-                            <h3 className="header-name" onClick={() => this.handleRouteOnclick("/")}>Dashboard</h3>
+                        <div
+                            className={`header ${
+                                Active === 'Dashboard' ? 'active' : ''
+                            }`}
+                        >
+                            <FontAwesomeIcon
+                                className="header-icon"
+                                icon={faChartLine}
+                            />
+                            <h3
+                                className="header-name"
+                                onClick={() => this.handleRouteOnclick('/')}
+                            >
+                                Dashboard
+                            </h3>
                         </div>
                     </div>
-                    { this.state.user.role === roleConstant.BASIC.name &&
-                        <div className={`expanding-element ${BookingExpand ? 'expanded' : ''}`}>
-                            <div className='header' onClick={() => this.setState({ BookingExpand: !BookingExpand })}>
-                                <FontAwesomeIcon icon={BookingExpand ? faCaretDown : faCaretRight}/>
-                                <FontAwesomeIcon className="header-icon" icon={faBookOpen}/>
+                    {this.state.user.role === roleConstant.BASIC.name && (
+                        <div
+                            className={`expanding-element ${
+                                BookingExpand ? 'expanded' : ''
+                            }`}
+                        >
+                            <div
+                                className="header"
+                                onClick={() =>
+                                    this.setState({
+                                        BookingExpand: !BookingExpand,
+                                    })
+                                }
+                            >
+                                <FontAwesomeIcon
+                                    icon={
+                                        BookingExpand
+                                            ? faCaretDown
+                                            : faCaretRight
+                                    }
+                                />
+                                <FontAwesomeIcon
+                                    className="header-icon"
+                                    icon={faBookOpen}
+                                />
                                 <h3 className="header-name">Sewa</h3>
                             </div>
                             <ul>
@@ -99,59 +152,119 @@ class Navbar extends React.Component {
                                 <li>Selasar</li>
                                 <li>Kendaraan</li>
                             </ul>
-                        </div> 
-                    }
-                    { this.state.user.role === roleConstant.BASIC.name &&
+                        </div>
+                    )}
+                    {this.state.user.role === roleConstant.BASIC.name && (
                         <div className="element">
                             <div className="header">
-                                <FontAwesomeIcon className="header-icon" icon={faFlag}/>
+                                <FontAwesomeIcon
+                                    className="header-icon"
+                                    icon={faFlag}
+                                />
                                 <h3 className="header-name">Keluhan</h3>
                             </div>
                         </div>
-                    }
-                    { this.state.user.role === roleConstant.ADMIN.name || this.state.user.role === roleConstant.SUPER_USER.name &&
-                        <div className={`expanding-element ${AdminExpand ? 'expanded' : ''}`}>
-                            <div className="header" onClick={() => this.setState({ AdminExpand: !AdminExpand })}>
-                                <FontAwesomeIcon icon={AdminExpand ? faCaretDown : faCaretRight}/>
-                                <FontAwesomeIcon className="header-icon" icon={faCog}/>
-                                <h3 className="header-name">Admin</h3>
-                            </div>
-                            <ul>
-                                { this.state.user.role === roleConstant.ADMIN.name &&
-                                <div>
-                                    <li>Gedung</li>
-                                    <li>Ruangan</li>
-                                    <li>Selasar</li>
-                                    <li>Kendaraan</li>
+                    )}
+                    {this.state.user.role === roleConstant.ADMIN.name ||
+                        (this.state.user.role ===
+                            roleConstant.SUPER_USER.name && (
+                            <div
+                                className={`expanding-element ${
+                                    AdminExpand ? 'expanded' : ''
+                                }`}
+                            >
+                                <div
+                                    className="header"
+                                    onClick={() =>
+                                        this.setState({
+                                            AdminExpand: !AdminExpand,
+                                        })
+                                    }
+                                >
+                                    <FontAwesomeIcon
+                                        icon={
+                                            AdminExpand
+                                                ? faCaretDown
+                                                : faCaretRight
+                                        }
+                                    />
+                                    <FontAwesomeIcon
+                                        className="header-icon"
+                                        icon={faCog}
+                                    />
+                                    <h3 className="header-name">Admin</h3>
                                 </div>
-                                }
-                                { this.state.user.role === roleConstant.SUPER_USER.name &&
-                                    <li className={`${Active === 'Role-Management' ? 'active' : ''}`} onClick={() => this.handleRouteOnclick("/role-management")}>Manajemen Role</li>
-                                }
-                            </ul>
-                        </div>
-                    }
-                    { this.state.user.role === roleConstant.BOOKING_STAFF.name &&
+                                <ul>
+                                    {this.state.user.role ===
+                                        roleConstant.ADMIN.name && (
+                                        <div>
+                                            <li>Gedung</li>
+                                            <li>Ruangan</li>
+                                            <li>Selasar</li>
+                                            <li>Kendaraan</li>
+                                        </div>
+                                    )}
+                                    {this.state.user.role ===
+                                        roleConstant.SUPER_USER.name && (
+                                        <li
+                                            className={`${
+                                                Active === 'Role-Management'
+                                                    ? 'active'
+                                                    : ''
+                                            }`}
+                                            onClick={() =>
+                                                this.handleRouteOnclick(
+                                                    '/role-management',
+                                                )
+                                            }
+                                        >
+                                            Manajemen Role
+                                        </li>
+                                    )}
+                                </ul>
+                            </div>
+                        ))}
+                    {this.state.user.role ===
+                        roleConstant.BOOKING_STAFF.name && (
                         <div className="element">
                             <div className="header">
-                                <FontAwesomeIcon className="header-icon" icon={faBookOpen}/>
+                                <FontAwesomeIcon
+                                    className="header-icon"
+                                    icon={faBookOpen}
+                                />
                                 <h3 className="header-name">Manajemen Sewa</h3>
                             </div>
                         </div>
-                    }
-                    { this.state.user.role === roleConstant.SANITATION_STAFF.name || this.state.user.role === roleConstant.DEFECT_STAFF.name || this.state.user.role === roleConstant.SAFETY_STAFF.name || this.state.user.role === roleConstant.LOSS_STAFF.name &&
-                        <div className="element">
-                            <div className="header">
-                                <FontAwesomeIcon className="header-icon" icon={faFlag}/>
-                                <h3 className="header-name">Manajemen Keluhan</h3>
+                    )}
+                    {this.state.user.role ===
+                        roleConstant.SANITATION_STAFF.name ||
+                        this.state.user.role ===
+                            roleConstant.DEFECT_STAFF.name ||
+                        this.state.user.role ===
+                            roleConstant.SAFETY_STAFF.name ||
+                        (this.state.user.role ===
+                            roleConstant.LOSS_STAFF.name && (
+                            <div className="element">
+                                <div className="header">
+                                    <FontAwesomeIcon
+                                        className="header-icon"
+                                        icon={faFlag}
+                                    />
+                                    <h3 className="header-name">
+                                        Manajemen Keluhan
+                                    </h3>
+                                </div>
                             </div>
-                        </div>
-                    }
+                        ))}
                 </div>
-                <div className='bottom'>
+                <div className="bottom">
                     <p className="bottom-text">&#169; 2023</p>
-                    <p className='bottom-text'>Direktorat Sarana & Prasarana ITB</p>
-                    <p className='bottom-text'>{import.meta.env.VITE_VERSION}</p>
+                    <p className="bottom-text">
+                        Direktorat Sarana & Prasarana ITB
+                    </p>
+                    <p className="bottom-text">
+                        {import.meta.env.VITE_VERSION}
+                    </p>
                 </div>
             </div>
         );
@@ -161,15 +274,16 @@ class Navbar extends React.Component {
 const mapStateToProps = (state) => {
     return {
         calendarRef: state.dashboard.calendarRef,
-        user: state.auth.user
-    }
-}
+        user: state.auth.user,
+    };
+};
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setCalendarFunction: (calendarRef) => dispatch(setCalendar(calendarRef)),
-        getUserFunction: () => dispatch(getUser())
-    }
-}
+        setCalendarFunction: (calendarRef) =>
+            dispatch(setCalendar(calendarRef)),
+        getUserFunction: () => dispatch(getUser()),
+    };
+};
 
-export default withRouter(connect(mapStateToProps,mapDispatchToProps)(Navbar))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Navbar));

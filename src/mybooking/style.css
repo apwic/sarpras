@@ -38,6 +38,9 @@
     border-radius: var(--corner-radius);
     background-color: var(--color-background-light);
     border: 1px solid #ced4da;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .search-bar__input{
@@ -45,6 +48,8 @@
     outline: none;
     font-size: 14px;
     color: var(--color-text-primary);
+    background: var(--color-background-light);
+    width: 100%;
 }
 
 .search-bar__input::placeholder{
@@ -76,41 +81,21 @@
     border-radius: var(--corner-radius-large);
     background-color: var(--color-background-light);
     box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+.my-booking-item:hover{
+    transform: scale(1.005); 
+    cursor: pointer;
+}
+
+.my-booking-item:active{
+    background-color: var(--color-background);
 }
 
 .my-booking-item__header{
     display: flex;
     justify-content: space-between;
-}
-
-.booking-type{
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    gap: 8px;
-    border-radius: var(--corner-radius);
-    background-color: #5c5c5c;
-    color: white;
-}
-
-.booking-status{
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    border-radius: var(--corner-radius);
-    color: white;
-}
-
-.booking-status.pending{
-    background-color: #ED9121;
-}
-
-.booking-status.in-progress{
-    background-color: #EEE600;
-}
-
-.booking-status.approved{
-    background-color: #00B140;
 }
 
 .my-booking-item__body{

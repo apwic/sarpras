@@ -13,8 +13,6 @@ function* editProfile(action) {
     }
 }
 
-const profileSaga = [
-    takeLatest(EDIT_PROFILE, editProfile),
-];
+const profileSaga = [takeLatest(EDIT_PROFILE, editProfile)];
 
 export default profileSaga;

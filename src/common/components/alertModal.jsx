@@ -5,7 +5,7 @@ class AlertModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            show: props.show
+            show: props.show,
         };
     }
 
@@ -26,8 +26,13 @@ class AlertModal extends React.Component {
 
     render() {
         return (
-            <Modal show={this.state.show} onHide={this.props.closeModalFunction} backdrop={false} className="no-background">
-                <Modal.Header closeButton className='alert-modal-title'>
+            <Modal
+                show={this.state.show}
+                onHide={this.props.closeModalFunction}
+                backdrop={false}
+                className="no-background"
+            >
+                <Modal.Header closeButton className="alert-modal-title">
                     {this.props.message}
                 </Modal.Header>
             </Modal>

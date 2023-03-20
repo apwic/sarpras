@@ -1,0 +1,30 @@
+{
+    "env": {
+        "browser": true,
+        "node": true,
+        "es6": true 
+    },
+    "parserOptions": {
+        "parser": "@babel/eslint-parser",
+        "requireConfigFile": false,
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "extends": ["eslint:recommended", "plugin:react/recommended", "prettier", "plugin:css/recommended", "plugin:react/jsx-runtime"],
+    "plugins": ["react", "prettier", "css"],
+    "rules": {
+        "prettier/prettier": "error",
+        "linebreak-style": ["error", "unix"],
+        "quotes": ["error", "single", { "avoidEscape": true }],
+        "semi": ["error", "always"],
+        "no-console": "off",
+        "no-trailing-spaces": "error",
+        "no-unused-vars": "error",
+        "react/prop-types": "off"
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    }
+}

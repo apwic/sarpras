@@ -1,15 +1,32 @@
-import { call, takeLatest, put } from '@redux-saga/core/effects'
+import { call, takeLatest, put } from '@redux-saga/core/effects';
 
-import { GET_ALL_ASSIGNED_STAFF, GET_ALL_UNSIGNED_STAFF, REVOKE_ROLE_START, SET_STAFF_TO_ROLE_START } from "./actionTypes";
-import { setAllAssignedStaff, revokeRoleSuccess, revokeRoleFail, setAllUnsignedStaff, setStaffToRoleSuccess, setStaffToRoleFail } from "./action";
-import { getAllAssignedStaffApi, revokeRoleApi, getAllUnsignedStaffApi, setStaffToRoleApi } from "./api";
+import {
+    GET_ALL_ASSIGNED_STAFF,
+    GET_ALL_UNSIGNED_STAFF,
+    REVOKE_ROLE_START,
+    SET_STAFF_TO_ROLE_START,
+} from './actionTypes';
+import {
+    setAllAssignedStaff,
+    revokeRoleSuccess,
+    revokeRoleFail,
+    setAllUnsignedStaff,
+    setStaffToRoleSuccess,
+    setStaffToRoleFail,
+} from './action';
+import {
+    getAllAssignedStaffApi,
+    revokeRoleApi,
+    getAllUnsignedStaffApi,
+    setStaffToRoleApi,
+} from './api';
 
 function* getAllAssignedStaff() {
     try {
         const response = yield call(getAllAssignedStaffApi);
-        yield put(setAllAssignedStaff(response.data))
+        yield put(setAllAssignedStaff(response.data));
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
 }
 
@@ -26,9 +43,9 @@ function* revokeRole(action) {
 function* getAllUnsignedStaff() {
     try {
         const response = yield call(getAllUnsignedStaffApi);
-        yield put(setAllUnsignedStaff(response.data))
+        yield put(setAllUnsignedStaff(response.data));
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
 }
 

@@ -13,7 +13,7 @@ class ProfilePictureCropperModal extends Component {
 
         this.state = {
             imageSrc: null,
-            show: props.show
+            show: props.show,
         };
         this.cropperRef = React.createRef();
     }
@@ -27,55 +27,73 @@ class ProfilePictureCropperModal extends Component {
         }
     }
 
-    base64ToBlob(base64Data) {
+    base64ToBlob = (base64Data) => {
         const byteCharacters = atob(base64Data.split(',')[1]);
         const byteArrays = [];
         for (let i = 0; i < byteCharacters.length; i++) {
             byteArrays.push(byteCharacters.charCodeAt(i));
         }
-        const blob = new Blob([new Uint8Array(byteArrays)], { type: 'image/png' });
+        const blob = new Blob([new Uint8Array(byteArrays)], {
+            type: 'image/png',
+        });
         return blob;
-    }
+    };
 
     handleCropComplete = () => {
         this.props.closeModalFunction();
         let formData = new FormData();
-        formData.append('image', this.base64ToBlob(this.cropperRef.current.getCroppedCanvas().toDataURL()), 'image.png');
+        formData.append(
+            'image',
+            this.base64ToBlob(
+                this.cropperRef.current.getCroppedCanvas().toDataURL(),
+            ),
+            'image.png',
+        );
         this.props.donefunction(formData);
     };
 
     render() {
         return (
-        <Modal show={this.state.show} onHide={this.props.closeModalFunction} centered>
-            <Modal.Header closeButton>
-                <Modal.Title>Potong Foto Profil</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <div className="d-flex justify-content-center align-items-center">
-                <Cropper
-                    ref={this.cropperRef}
-                    src={this.state.imageSrc}
-                    style={{ height: 400, width: '100%' }}
-                    aspectRatio="1"
-                    guides={false}
-                    dragMode="move"
-                    cropBoxResizable={false}
-                    cropBoxMovable={false}
-                    onInitialized={(cropper) => {
-                    this.cropperRef.current = cropper;
-                    }}
-                />
-                </div>
-            </Modal.Body>
-            <Modal.Footer>
-                <button className='secondary' onClick={this.props.closeModalFunction}>
-                    Batalkan
-                </button>
-                <button className="primary" onClick={this.handleCropComplete}>
-                    Potong
-                </button>
-            </Modal.Footer>
-        </Modal>
+            <Modal
+                show={this.state.show}
+                onHide={this.props.closeModalFunction}
+                centered
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title>Potong Foto Profil</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div className="d-flex justify-content-center align-items-center">
+                        <Cropper
+                            ref={this.cropperRef}
+                            src={this.state.imageSrc}
+                            style={{ height: 400, width: '100%' }}
+                            aspectRatio="1"
+                            guides={false}
+                            dragMode="move"
+                            cropBoxResizable={false}
+                            cropBoxMovable={false}
+                            onInitialized={(cropper) => {
+                                this.cropperRef.current = cropper;
+                            }}
+                        />
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <button
+                        className="secondary"
+                        onClick={this.props.closeModalFunction}
+                    >
+                        Batalkan
+                    </button>
+                    <button
+                        className="primary"
+                        onClick={this.handleCropComplete}
+                    >
+                        Potong
+                    </button>
+                </Modal.Footer>
+            </Modal>
         );
     }
 }
@@ -84,15 +102,18 @@ const mapStateToProps = (state) => {
     return {
         img: state.profile.img,
         show: state.profile.modalOpen,
-        user: state.auth.user
-    }
-}
+        user: state.auth.user,
+    };
+};
 
 const mapDispatchToProps = (dispatch) => {
     return {
         closeModalFunction: () => dispatch(closeModal()),
-        setUserFunction: (user) => dispatch(setUser(user))
-    }
-}
+        setUserFunction: (user) => dispatch(setUser(user)),
+    };
+};
 
-export default connect(mapStateToProps,mapDispatchToProps)(ProfilePictureCropperModal);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(ProfilePictureCropperModal);

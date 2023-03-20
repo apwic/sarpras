@@ -1,4 +1,4 @@
-import { OPEN_MODAL, CLOSE_MODAL, EDIT_PROFILE } from "./actionTypes";
+import { OPEN_MODAL, CLOSE_MODAL, EDIT_PROFILE } from './actionTypes';
 
 export function openModal(imgUrl) {
     return {
