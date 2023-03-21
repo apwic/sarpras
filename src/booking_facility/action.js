@@ -1,4 +1,4 @@
-import { OPEN_MODAL_FILTER, CLOSE_MODAL_FILTER } from './actionTypes';
+import { OPEN_MODAL_FILTER, CLOSE_MODAL_FILTER } from './actionType';
 
 export function openModalFilter() {
     return {

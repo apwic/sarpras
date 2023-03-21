@@ -15,7 +15,7 @@ import BookingReview from '../review/bookingReview';
 import roleConstant from '../common/constants/roleConstant';
 import MyBooking from '../myBooking';
 import MyBookingDetail from '../myBooking/detail';
-import BookingVehicle from '../booking_facility/vehicle';
+import BookingVehicle from '../booking_facility/facility_list/vehicle';
 
 class Home extends React.Component {
     constructor(props) {
@@ -80,6 +80,19 @@ class Home extends React.Component {
                                         <Topbar />
                                         <Navbar />
                                         <SuperUser />
+                                    </div>
+                                }
+                            />
+                        )}
+                        {this.state.user.role ===
+                            roleConstant.SUPER_USER.name && (
+                            <Route
+                                path="/booking-page"
+                                element={
+                                    <div>
+                                        <Topbar />
+                                        <Navbar />
+                                        <BookingVehicle />
                                     </div>
                                 }
                             />

@@ -4,7 +4,7 @@ import { Modal, Button } from 'react-bootstrap';
 import {
     closeModalFilter,
     openModalFilter,
-} from '../../booking_facility/vehicle/action';
+} from '../../booking_facility/action';
 import { connect } from 'react-redux';
 
 class FilterModal extends React.Component {
@@ -12,6 +12,7 @@ class FilterModal extends React.Component {
         super(props);
         this.state = {
             showModal: false,
+            filterOption: [],
         };
     }
     componentDidUpdate(prevProps) {
@@ -20,10 +21,26 @@ class FilterModal extends React.Component {
         }
     }
 
+    handleFilterOption = (id) => {
+        const filterOption = this.state.filterOption;
+        if (filterOption.includes(id)) {
+            const index = filterOption.indexOf(id);
+            filterOption.splice(index, 1);
+            this.setState({ filterOption: filterOption });
+        } else {
+            filterOption.push(id);
+            this.setState({ filterOption: filterOption });
+        }
+    };
+
+    handleFilterSubmit = () => {
+        this.props.closeModalFunction();
+        this.props.handleFilterOption(this.state.filterOption);
+    };
+
     render() {
         return (
             <div>
-                {console.log(this.state.showModal)}
                 <Modal
                     show={this.state.showModal}
                     onHide={this.props.closeModalFunction}
@@ -34,7 +51,41 @@ class FilterModal extends React.Component {
                             <h2>Filter</h2>
                         </Modal.Title>
                     </Modal.Header>
-                    <Modal.Body className="list-filter"></Modal.Body>
+                    <Modal.Body className="list-filter">
+                        <div
+                            className={
+                                this.state.filterOption.includes(1)
+                                    ? 'filter-item selected'
+                                    : 'filter-item'
+                            }
+                            id="1"
+                            onClick={() => this.handleFilterOption(1)}
+                        >
+                            Harga
+                        </div>
+                        <div
+                            className={
+                                this.state.filterOption.includes(2)
+                                    ? 'filter-item selected'
+                                    : 'filter-item'
+                            }
+                            id="2"
+                            onClick={() => this.handleFilterOption(2)}
+                        >
+                            Kapasitas
+                        </div>
+                        <div
+                            className={
+                                this.state.filterOption.includes(3)
+                                    ? 'filter-item selected'
+                                    : 'filter-item'
+                            }
+                            id="3"
+                            onClick={() => this.handleFilterOption(3)}
+                        >
+                            Plat
+                        </div>
+                    </Modal.Body>
                     <Modal.Footer>
                         <Button
                             variant="secondary"
@@ -45,7 +96,7 @@ class FilterModal extends React.Component {
                         <Button
                             className="button__add"
                             variant="primary"
-                            onClick={this.props.closeModalFunction}
+                            onClick={() => this.handleFilterSubmit()}
                         >
                             Terapkan
                         </Button>

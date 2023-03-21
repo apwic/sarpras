@@ -2,10 +2,11 @@ import '../style.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTruck, faFilter, faSearch } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
-import { closeModalFilter, openModalFilter } from './action';
+import { closeModalFilter, openModalFilter } from '../../action';
 import { connect } from 'react-redux';
-import FilterModal from '../../common/components/filterModal';
-import BookingFacilityList from '../../common/components/bookingFacilityList';
+import BookingFacilityList from '../../../common/components/bookingFacilityList';
+import FilterModal from '../../../common/components/filterModal';
+import Pagination from '../../../common/components/pagination';
 
 class BookingVehicle extends React.Component {
     constructor(props) {
@@ -14,56 +15,77 @@ class BookingVehicle extends React.Component {
             facilities: [
                 {
                     image: '',
-                    name: 'Mobil',
+                    name: 'uidnciwnifcwnfoiwjmn',
                     capacity: 4,
                     license_plate: 'B 1234 ABC',
                     price: 100000,
                 },
                 {
                     image: '',
-                    name: 'Mobil',
+                    name: 'uidnciwnifcwnfoiwjmn',
                     capacity: 4,
                     license_plate: 'B 1234 ABC',
                     price: 100000,
                 },
                 {
                     image: '',
-                    name: 'Mobil',
+                    name: 'uidnciwnifcwnfoiwjmn',
                     capacity: 4,
                     license_plate: 'B 1234 ABC',
                     price: 100000,
                 },
                 {
                     image: '',
-                    name: 'Mobil',
-                    capacity: 4,
-                    license_plate: 'B 1234 ABC',
-                    price: 100000,
-                },
-                {
-                    image: '',
-                    name: 'Mobil',
-                    capacity: 4,
-                    license_plate: 'B 1234 ABC',
-                    price: 100000,
-                },
-                {
-                    image: '',
-                    name: 'Mobil',
-                    capacity: 4,
-                    license_plate: 'B 1234 ABC',
-                    price: 100000,
-                },
-                {
-                    image: '',
-                    name: 'Mobil',
+                    name: 'uidnciwnifcwnfoiwjmn',
                     capacity: 4,
                     license_plate: 'B 1234 ABC',
                     price: 100000,
                 },
             ],
+            currentPage: 1,
+            indexOfLastPost: 1 * 9,
+            indexOfFirstPost: 1 * 9 - 9,
+            currentPosts: [],
         };
     }
+    componentDidMount() {
+        this.setState({
+            currentPosts: this.state.facilities.slice(
+                this.state.indexOfFirstPost,
+                this.state.indexOfLastPost,
+            ),
+        });
+    }
+
+    handleFilterOption = (option) => {
+        option.forEach((optionFilter) => {
+            if (optionFilter === 1) {
+                console.log('PRICE');
+            } else if (optionFilter === 2) {
+                console.log('CAPACITY');
+            } else if (optionFilter === 3) {
+                console.log('PLATE NUMBER');
+            }
+        });
+    };
+
+    handlePageChange = (pageNumber) => {
+        this.setState(
+            {
+                currentPage: pageNumber,
+                indexOfLastPost: pageNumber * 9,
+                indexOfFirstPost: pageNumber * 9 - 9,
+            },
+            () => {
+                this.setState({
+                    currentPosts: this.state.facilities.slice(
+                        this.state.indexOfFirstPost,
+                        this.state.indexOfLastPost,
+                    ),
+                });
+            },
+        );
+    };
 
     render() {
         return (
@@ -99,11 +121,16 @@ class BookingVehicle extends React.Component {
                     </div>
                     <div className="container-booking-facility__body__item">
                         <BookingFacilityList
-                            facilities={this.state.facilities}
+                            facilities={this.state.currentPosts}
                         />
                     </div>
-                    <FilterModal />
+                    <FilterModal handleFilterOption={this.handleFilterOption} />
                 </div>
+                <Pagination
+                    totalPosts={this.state.facilities.length}
+                    postsPerPage={9}
+                    handlePageClicked={this.handlePageChange}
+                />
             </div>
         );
     }

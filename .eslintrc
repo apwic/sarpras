@@ -13,8 +13,13 @@
     "extends": ["eslint:recommended", "plugin:react/recommended", "prettier", "plugin:css/recommended", "plugin:react/jsx-runtime"],
     "plugins": ["react", "prettier", "css"],
     "rules": {
-        "prettier/prettier": "error",
-        "linebreak-style": ["error", "unix"],
+        "prettier/prettier": [
+            "error",
+            {
+              "endOfLine": "auto",
+            }
+          ],
+        "linebreak-style": "off",
         "quotes": ["error", "single", { "avoidEscape": true }],
         "semi": ["error", "always"],
         "no-console": "off",

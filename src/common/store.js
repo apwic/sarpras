@@ -1,6 +1,6 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
-import bookingFacilityReducer from '../booking_facility/vehicle/reducer';
+import bookingFacilityReducer from '../booking_facility/reducer';
 import dashboardReducer from '../dashboard/reducer';
 import profileReducer from '../profile/reducer';
 import supeUserReducer from '../superuser/reducer';

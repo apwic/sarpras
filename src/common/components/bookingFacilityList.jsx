@@ -9,13 +9,22 @@ class BookingFacilityList extends React.Component {
     }
 
     componentDidMount() {
-        this.setState({ facilities: this.props.facilities });
+        this.setState({
+            facilities: this.props.facilities,
+        });
+    }
+    componentDidUpdate(prevProps) {
+        if (prevProps.facilities !== this.props.facilities) {
+            this.setState({
+                facilities: this.props.facilities,
+            });
+        }
     }
 
     render() {
-        return this.state.facilities.map((facility) => {
+        return this.state.facilities.map((facility, index) => {
             return (
-                <div className="item-booking-facility">
+                <div className="item-booking-facility" key={index}>
                     <div className="item-booking-facility__image">
                         <img
                             src={
