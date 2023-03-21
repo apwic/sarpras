@@ -4,7 +4,7 @@ import { Modal, Button } from 'react-bootstrap';
 import {
     closeModalFilter,
     openModalFilter,
-} from '../../booking_facility/action';
+} from '../../bookingFacility/action';
 import { connect } from 'react-redux';
 
 class FilterModal extends React.Component {
@@ -97,6 +97,11 @@ class FilterModal extends React.Component {
                             className="button__add"
                             variant="primary"
                             onClick={() => this.handleFilterSubmit()}
+                            disabled={
+                                this.state.filterOption.length === 0
+                                    ? true
+                                    : false
+                            }
                         >
                             Terapkan
                         </Button>
