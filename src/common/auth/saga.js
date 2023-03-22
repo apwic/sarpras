@@ -1,4 +1,3 @@
-/* eslint-disable require-yield */
 import { call, takeLatest, put } from '@redux-saga/core/effects';
 
 import { LOGIN, GET_USER, LOGOUT } from './actionTypes';
@@ -16,7 +15,7 @@ function* login() {
     }
 }
 
-function* logout() {
+function logout() {
     storage.removeCreds();
     window.location.href = '/';
 }

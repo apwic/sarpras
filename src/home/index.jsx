@@ -10,12 +10,11 @@ import Profile from '../profile';
 import SuperUser from '../superuser';
 import { storage } from '../common/storage';
 import { getUser } from '../common/auth/action';
-import InsertVehicle from '../insertFacility/insertvehicle';
-import BookingReview from '../review/bookingReview';
 import roleConstant from '../common/constants/roleConstant';
-import MyBooking from '../myBooking';
-import MyBookingDetail from '../myBooking/detail';
-import BookingVehicle from '../bookingFacility/facilityList/vehicle';
+import BookingVehicle from '../booking/vehicle';
+import BookingBuilding from '../booking/building';
+import BookingRoom from '../booking/room';
+import BookingSelasar from '../booking/selasar';
 
 class Home extends React.Component {
     constructor(props) {
@@ -56,6 +55,9 @@ class Home extends React.Component {
                 </BrowserRouter>
             );
         }
+        if (this.state.user === undefined) {
+            return <div />;
+        }
         return (
             <div>
                 <BrowserRouter>
@@ -84,56 +86,58 @@ class Home extends React.Component {
                                 }
                             />
                         )}
-                        <Route
-                            path="/1"
-                            element={
-                                <div>
-                                    <Topbar />
-                                    <Navbar />
-                                    <InsertVehicle />
-                                </div>
-                            }
-                        />
-                        <Route
-                            path="/2"
-                            element={
-                                <div>
-                                    <Topbar />
-                                    <Navbar />
-                                    <BookingReview />
-                                </div>
-                            }
-                        />
-                        <Route
-                            path="/3"
-                            element={
-                                <div>
-                                    <Topbar />
-                                    <Navbar />
-                                    <MyBooking />
-                                </div>
-                            }
-                        />
-                        <Route
-                            path="/4"
-                            element={
-                                <div>
-                                    <Topbar />
-                                    <Navbar />
-                                    <MyBookingDetail />
-                                </div>
-                            }
-                        />
-                        <Route
-                            path="/5"
-                            element={
-                                <div>
-                                    <Topbar />
-                                    <Navbar />
-                                    <BookingVehicle />
-                                </div>
-                            }
-                        />
+                        {this.state.user.role ===
+                            roleConstant.BASIC_USER.name && (
+                            <Route
+                                path="/booking/vehicle"
+                                element={
+                                    <div>
+                                        <Topbar />
+                                        <Navbar />
+                                        <BookingVehicle />
+                                    </div>
+                                }
+                            />
+                        )}
+                        {this.state.user.role ===
+                            roleConstant.BASIC_USER.name && (
+                            <Route
+                                path="/booking/building"
+                                element={
+                                    <div>
+                                        <Topbar />
+                                        <Navbar />
+                                        <BookingBuilding />
+                                    </div>
+                                }
+                            />
+                        )}
+                        {this.state.user.role ===
+                            roleConstant.BASIC_USER.name && (
+                            <Route
+                                path="/booking/room"
+                                element={
+                                    <div>
+                                        <Topbar />
+                                        <Navbar />
+                                        <BookingRoom />
+                                    </div>
+                                }
+                            />
+                        )}
+                        {this.state.user.role ===
+                            roleConstant.BASIC_USER.name && (
+                            <Route
+                                path="/booking/selasar"
+                                element={
+                                    <div>
+                                        <Topbar />
+                                        <Navbar />
+                                        <BookingSelasar />
+                                    </div>
+                                }
+                            />
+                        )}
                         <Route
                             path="*"
                             element={

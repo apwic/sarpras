@@ -1,11 +1,18 @@
-import { OPEN_MODAL_FILTER, CLOSE_MODAL_FILTER } from './actionType';
+import {
+    CLOSE_MODAL_FILTER,
+    OPEN_MODAL_FILTER,
+    SET_FACILITIES,
+} from './actionTypes';
 
 const initialState = {
     filterModalOpen: false,
+    facilities: [],
 };
 
-function bookingFacilityReducer(state = initialState, action) {
+function facilityReducer(state = initialState, action) {
     switch (action.type) {
+        case SET_FACILITIES:
+            return { ...state, facilities: action.payload };
         case OPEN_MODAL_FILTER:
             return { ...state, filterModalOpen: true };
         case CLOSE_MODAL_FILTER:
@@ -15,4 +22,4 @@ function bookingFacilityReducer(state = initialState, action) {
     }
 }
 
-export default bookingFacilityReducer;
+export default facilityReducer;

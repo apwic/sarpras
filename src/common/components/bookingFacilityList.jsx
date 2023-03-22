@@ -1,4 +1,5 @@
 import React from 'react';
+import EmptyScreen from './emptyScreen';
 
 class BookingFacilityList extends React.Component {
     constructor(props) {
@@ -22,6 +23,9 @@ class BookingFacilityList extends React.Component {
     }
 
     render() {
+        if (this.state.facilities.length === 0) {
+            return <EmptyScreen />;
+        }
         return this.state.facilities.map((facility, index) => {
             return (
                 <div className="item-booking-facility" key={index}>
@@ -38,9 +42,22 @@ class BookingFacilityList extends React.Component {
                     <div className="item-booking-facility__body">
                         <div className="item-description">
                             <h2>{facility.name}</h2>
-                            <p>Kapasitas {facility.capacity}</p>
-                            <p>{facility.license_plate}</p>
-                            <p className="harga">Rp{facility.price} / hari</p>
+                            <p>Kampus {facility.campus.name}</p>
+                            {this.props.type === 'vehicles' && (
+                                <div>
+                                    <p>{facility.license_number}</p>
+                                    <p>
+                                        Kapasitas {facility.vehicle_capacity}{' '}
+                                        Orang
+                                    </p>
+                                </div>
+                            )}
+                            {this.props.type !== 'vehicles' && (
+                                <p>Kapasitas {facility.capacity} Orang</p>
+                            )}
+                            <p className="harga">
+                                Rp{facility.facility.price} / hari
+                            </p>
                         </div>
                         <div className="button__book">
                             <button>Sewa</button>

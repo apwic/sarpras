@@ -125,13 +125,13 @@ class SuperUserModal extends React.Component {
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <div className="search__bar input-group form-group-lg">
+                        <div className="title__bar input-group form-group-lg">
                             <div
-                                className="search-bar"
+                                className="search__box"
                                 style={{ width: '100%' }}
                             >
                                 <input
-                                    className="search-bar__input"
+                                    className="search__box__input"
                                     type="text"
                                     name="bookingSearch"
                                     placeholder="Pencarian"

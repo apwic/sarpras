@@ -1,6 +1,6 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
-import bookingFacilityReducer from '../bookingFacility/reducer';
+import facilityReducer from '../booking/reducer';
 import dashboardReducer from '../dashboard/reducer';
 import profileReducer from '../profile/reducer';
 import supeUserReducer from '../superuser/reducer';
@@ -12,7 +12,7 @@ const rootReducer = combineReducers({
     superuser: supeUserReducer,
     auth: authReducer,
     profile: profileReducer,
-    bookingFacility: bookingFacilityReducer,
+    facility: facilityReducer,
 });
 
 const sagaMiddleware = createSagaMiddleware();

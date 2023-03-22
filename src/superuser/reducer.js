@@ -52,7 +52,7 @@ function supeUserReducer(state = initialState, action) {
             staff_revoke = state[role_revoke.toLowerCase()].find(
                 (staff) => staff.id === parseInt(id_revoke),
             );
-            staff_revoke.role = 'BASIC_USER';
+            staff_revoke.role = 'BASIC_USER_USER';
             return {
                 ...state,
                 [role_revoke.toLowerCase()]: state[

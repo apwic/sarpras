@@ -1,5 +1,5 @@
 const roleConstant = {
-    BASIC: { name: 'BASIC', value: 'Dosen/Tendik' },
+    BASIC_USER: { name: 'BASIC_USER', value: 'Dosen/Tendik' },
     ADMIN: { name: 'ADMIN', value: 'Admin Manajemen Data' },
     SANITATION_STAFF: { name: 'SANITATION_STAFF', value: 'Staff Kebersihan' },
     DEFECT_STAFF: { name: 'DEFECT_STAFF', value: 'Staff Kerusakan' },
@@ -11,8 +11,8 @@ const roleConstant = {
 
 export const findRoleName = (roleName) => {
     switch (roleName) {
-        case roleConstant.BASIC.name:
-            return roleConstant.BASIC.value;
+        case roleConstant.BASIC_USER.name:
+            return roleConstant.BASIC_USER.value;
         case roleConstant.ADMIN.name:
             return roleConstant.ADMIN.value;
         case roleConstant.SANITATION_STAFF.name:

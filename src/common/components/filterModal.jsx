@@ -1,10 +1,7 @@
 import React from 'react';
 import './style.css';
 import { Modal, Button } from 'react-bootstrap';
-import {
-    closeModalFilter,
-    openModalFilter,
-} from '../../bookingFacility/action';
+import { closeModalFilter, openModalFilter } from '../../booking/action';
 import { connect } from 'react-redux';
 
 class FilterModal extends React.Component {
@@ -13,6 +10,7 @@ class FilterModal extends React.Component {
         this.state = {
             showModal: false,
             filterOption: [],
+            active: 1,
         };
     }
     componentDidUpdate(prevProps) {
@@ -20,23 +18,6 @@ class FilterModal extends React.Component {
             this.setState({ showModal: this.props.filterModalOpen });
         }
     }
-
-    handleFilterOption = (id) => {
-        const filterOption = this.state.filterOption;
-        if (filterOption.includes(id)) {
-            const index = filterOption.indexOf(id);
-            filterOption.splice(index, 1);
-            this.setState({ filterOption: filterOption });
-        } else {
-            filterOption.push(id);
-            this.setState({ filterOption: filterOption });
-        }
-    };
-
-    handleFilterSubmit = () => {
-        this.props.closeModalFunction();
-        this.props.handleFilterOption(this.state.filterOption);
-    };
 
     render() {
         return (
@@ -51,40 +32,53 @@ class FilterModal extends React.Component {
                             <h2>Filter</h2>
                         </Modal.Title>
                     </Modal.Header>
-                    <Modal.Body className="list-filter">
-                        <div
-                            className={
-                                this.state.filterOption.includes(1)
-                                    ? 'filter-item selected'
-                                    : 'filter-item'
-                            }
-                            id="1"
-                            onClick={() => this.handleFilterOption(1)}
-                        >
-                            Harga
+                    <Modal.Body>
+                        <div className="list-filter">
+                            <Button
+                                className={
+                                    this.state.filterOption.includes(1)
+                                        ? 'filter-item primary'
+                                        : this.state.active === 1
+                                        ? 'filter-item secondary selected'
+                                        : 'filter-item secondary'
+                                }
+                                id="1"
+                                onClick={() => this.handleFilterOption(1)}
+                            >
+                                Kampus
+                            </Button>
+                            <Button
+                                className={
+                                    this.state.filterOption.includes(2)
+                                        ? 'filter-item primary'
+                                        : this.state.active === 2
+                                        ? 'filter-item secondary selected'
+                                        : 'filter-item secondary'
+                                }
+                                id="2"
+                                onClick={() => this.handleFilterOption(2)}
+                            >
+                                Tipe
+                            </Button>
+                            <Button
+                                className={
+                                    this.state.filterOption.includes(3)
+                                        ? 'filter-item primary'
+                                        : this.state.active === 3
+                                        ? 'filter-item secondary selected'
+                                        : 'filter-item secondary'
+                                }
+                                id="3"
+                                onClick={() => this.handleFilterOption(3)}
+                            >
+                                SIM
+                            </Button>
                         </div>
-                        <div
-                            className={
-                                this.state.filterOption.includes(2)
-                                    ? 'filter-item selected'
-                                    : 'filter-item'
-                            }
-                            id="2"
-                            onClick={() => this.handleFilterOption(2)}
-                        >
-                            Kapasitas
-                        </div>
-                        <div
-                            className={
-                                this.state.filterOption.includes(3)
-                                    ? 'filter-item selected'
-                                    : 'filter-item'
-                            }
-                            id="3"
-                            onClick={() => this.handleFilterOption(3)}
-                        >
-                            Plat
-                        </div>
+                    </Modal.Body>
+                    <Modal.Body className="staff-list border-top">
+                        <div className="row__filter__modal">Ganesha</div>
+                        <div className="row__filter__modal">Jatinangor</div>
+                        <div className="row__filter__modal">Cirebon</div>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button
@@ -114,7 +108,7 @@ class FilterModal extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        filterModalOpen: state.bookingFacility.filterModalOpen,
+        filterModalOpen: state.facility.filterModalOpen,
     };
 };
 

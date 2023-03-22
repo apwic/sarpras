@@ -21,9 +21,9 @@ class MyBooking extends React.Component {
                 </div>
                 <div className="container-mybooking__body">
                     <div className="container-mybooking__body__tools">
-                        <div className="search-bar">
+                        <div className="search__box">
                             <input
-                                className="search-bar__input"
+                                className="search__box__input"
                                 type="text"
                                 name="bookingSearch"
                                 placeholder="Pencarian"

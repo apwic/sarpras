@@ -54,6 +54,35 @@ class Navbar extends React.Component {
                     BookingExpand: false,
                     AdminExpand: true,
                 });
+                break;
+            case '/booking/vehicle':
+                this.setState({
+                    Active: 'Booking-Vehicle',
+                    BookingExpand: true,
+                    AdminExpand: false,
+                });
+                break;
+            case '/booking/building':
+                this.setState({
+                    Active: 'Booking-Building',
+                    BookingExpand: true,
+                    AdminExpand: false,
+                });
+                break;
+            case '/booking/room':
+                this.setState({
+                    Active: 'Booking-Room',
+                    BookingExpand: true,
+                    AdminExpand: false,
+                });
+                break;
+            case '/booking/selasar':
+                this.setState({
+                    Active: 'Booking-Selasar',
+                    BookingExpand: true,
+                    AdminExpand: false,
+                });
+                break;
         }
     }
 
@@ -71,6 +100,19 @@ class Navbar extends React.Component {
                     break;
                 case '/role-management':
                     this.setState({ Active: 'Role-Management' });
+                    break;
+                case '/booking/vehicle':
+                    this.setState({ Active: 'Booking-Vehicle' });
+                    break;
+                case '/booking/building':
+                    this.setState({ Active: 'Booking-Building' });
+                    break;
+                case '/booking/room':
+                    this.setState({ Active: 'Booking-Room' });
+                    break;
+                case '/booking/selasar':
+                    this.setState({ Active: 'Booking-Selasar' });
+                    break;
             }
         }
     }
@@ -119,7 +161,7 @@ class Navbar extends React.Component {
                             </h3>
                         </div>
                     </div>
-                    {this.state.user.role === roleConstant.BASIC.name && (
+                    {this.state.user.role === roleConstant.BASIC_USER.name && (
                         <div
                             className={`expanding-element ${
                                 BookingExpand ? 'expanded' : ''
@@ -144,17 +186,67 @@ class Navbar extends React.Component {
                                     className="header-icon"
                                     icon={faBookOpen}
                                 />
-                                <h3 className="header-name">Sewa</h3>
+                                <h3 className="header-name">Peminjaman</h3>
                             </div>
                             <ul>
-                                <li>Gedung</li>
-                                <li>Ruangan</li>
-                                <li>Selasar</li>
-                                <li>Kendaraan</li>
+                                <li
+                                    onClick={() =>
+                                        this.handleRouteOnclick(
+                                            '/booking/building',
+                                        )
+                                    }
+                                    className={
+                                        Active === 'Booking-Building'
+                                            ? 'active'
+                                            : ''
+                                    }
+                                >
+                                    Gedung
+                                </li>
+                                <li
+                                    onClick={() =>
+                                        this.handleRouteOnclick('/booking/room')
+                                    }
+                                    className={
+                                        Active === 'Booking-Room'
+                                            ? 'active'
+                                            : ''
+                                    }
+                                >
+                                    Ruangan
+                                </li>
+                                <li
+                                    onClick={() =>
+                                        this.handleRouteOnclick(
+                                            '/booking/selasar',
+                                        )
+                                    }
+                                    className={
+                                        Active === 'Booking-Selasar'
+                                            ? 'active'
+                                            : ''
+                                    }
+                                >
+                                    Selasar
+                                </li>
+                                <li
+                                    onClick={() =>
+                                        this.handleRouteOnclick(
+                                            '/booking/vehicle',
+                                        )
+                                    }
+                                    className={
+                                        Active === 'Booking-Vehicle'
+                                            ? 'active'
+                                            : ''
+                                    }
+                                >
+                                    Kendaraan
+                                </li>
                             </ul>
                         </div>
                     )}
-                    {this.state.user.role === roleConstant.BASIC.name && (
+                    {this.state.user.role === roleConstant.BASIC_USER.name && (
                         <div className="element">
                             <div className="header">
                                 <FontAwesomeIcon
@@ -232,7 +324,9 @@ class Navbar extends React.Component {
                                     className="header-icon"
                                     icon={faBookOpen}
                                 />
-                                <h3 className="header-name">Manajemen Sewa</h3>
+                                <h3 className="header-name">
+                                    Manajemen Peminjaman
+                                </h3>
                             </div>
                         </div>
                     )}
