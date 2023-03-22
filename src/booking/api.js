@@ -12,7 +12,7 @@ export const getFacilitiesApi = (payload) => {
                 payload.limit +
                 '&q=' +
                 payload.query,
-            +'&' + payload.filters,
+            payload.filters !== '' ? '&' + payload.filters : '',
         )
         .headers({ 'Content-Type': 'application/json' })
         .get()

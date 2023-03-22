@@ -15,6 +15,10 @@ import BookingVehicle from '../booking/vehicle';
 import BookingBuilding from '../booking/building';
 import BookingRoom from '../booking/room';
 import BookingSelasar from '../booking/selasar';
+import ManageVehicle from '../admin/vehicle';
+import ManageBuilding from '../admin/building';
+import ManageRoom from '../admin/room';
+import ManageSelasar from '../admin/selasar';
 
 class Home extends React.Component {
     constructor(props) {
@@ -134,6 +138,54 @@ class Home extends React.Component {
                                         <Topbar />
                                         <Navbar />
                                         <BookingSelasar />
+                                    </div>
+                                }
+                            />
+                        )}
+                        {this.state.user.role === roleConstant.ADMIN.name && (
+                            <Route
+                                path="/admin/vehicle"
+                                element={
+                                    <div>
+                                        <Topbar />
+                                        <Navbar />
+                                        <ManageVehicle />
+                                    </div>
+                                }
+                            />
+                        )}
+                        {this.state.user.role === roleConstant.ADMIN.name && (
+                            <Route
+                                path="/admin/building"
+                                element={
+                                    <div>
+                                        <Topbar />
+                                        <Navbar />
+                                        <ManageBuilding />
+                                    </div>
+                                }
+                            />
+                        )}
+                        {this.state.user.role === roleConstant.ADMIN.name && (
+                            <Route
+                                path="/admin/room"
+                                element={
+                                    <div>
+                                        <Topbar />
+                                        <Navbar />
+                                        <ManageRoom />
+                                    </div>
+                                }
+                            />
+                        )}
+                        {this.state.user.role === roleConstant.ADMIN.name && (
+                            <Route
+                                path="/admin/selasar"
+                                element={
+                                    <div>
+                                        <Topbar />
+                                        <Navbar />
+                                        <ManageSelasar />
                                     </div>
                                 }
                             />

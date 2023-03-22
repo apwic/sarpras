@@ -7,13 +7,17 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import { Pagination } from 'react-bootstrap';
-import { closeModalFilter, getFacilities, openModalFilter } from '../action';
+import {
+    closeModalFilter,
+    getFacilities,
+    openModalFilter,
+} from '../../booking/action';
 import { connect } from 'react-redux';
 import FilterModal from '../../common/components/filterModal';
-import BookingFacilityList from '../../common/components/bookingFacilityList';
+import AdminFacilityList from '../../common/components/adminFacilityList';
 import LoadingScreen from '../../common/components/loadingScreen';
 
-class BookingRoom extends React.Component {
+class ManageRoom extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -24,13 +28,7 @@ class BookingRoom extends React.Component {
         };
     }
     componentDidMount() {
-        this.props.getFacilitiesFunction(
-            'rooms',
-            1,
-            9,
-            '',
-            'status_maintenance=false',
-        );
+        this.props.getFacilitiesFunction('rooms', 1, 9, '', '');
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -49,7 +47,7 @@ class BookingRoom extends React.Component {
                 this.state.currentPage,
                 9,
                 this.state.q,
-                'status_maintenance=false',
+                '',
             );
         }
     }
@@ -70,13 +68,7 @@ class BookingRoom extends React.Component {
         this.setState({
             q: event.target.value,
         });
-        this.props.getFacilitiesFunction(
-            'rooms',
-            1,
-            9,
-            event.target.value,
-            'status_maintenance=false',
-        );
+        this.props.getFacilitiesFunction('rooms', 1, 9, event.target.value, '');
     };
 
     renderPaginationNumbers = () => {
@@ -132,9 +124,12 @@ class BookingRoom extends React.Component {
                                 className="icon-filter-item"
                             />
                         </div>
+                        <button className="btn btn-primary btn-add">
+                            + Tambah Ruangan
+                        </button>
                     </div>
                     <div className="container-booking-facility__body__item">
-                        <BookingFacilityList
+                        <AdminFacilityList
                             facilities={this.state.facilities.rows}
                             type="rooms"
                         />
@@ -193,4 +188,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(BookingRoom);
+export default connect(mapStateToProps, mapDispatchToProps)(ManageRoom);

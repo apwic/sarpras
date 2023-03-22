@@ -70,7 +70,13 @@ class BookingSelasar extends React.Component {
         this.setState({
             q: event.target.value,
         });
-        this.props.getFacilitiesFunction('selasars', 1, 9, event.target.value);
+        this.props.getFacilitiesFunction(
+            'selasars',
+            1,
+            9,
+            event.target.value,
+            'status_maintenance=false',
+        );
     };
 
     renderPaginationNumbers = () => {
@@ -182,8 +188,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         openModalFunction: () => dispatch(openModalFilter()),
         closeModalFunction: () => dispatch(closeModalFilter()),
-        getFacilitiesFunction: (type, page, limit, query) =>
-            dispatch(getFacilities(type, page, limit, query)),
+        getFacilitiesFunction: (type, page, limit, query, filters) =>
+            dispatch(getFacilities(type, page, limit, query, filters)),
     };
 };
 

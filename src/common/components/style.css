@@ -427,3 +427,38 @@ button.btn-primary:disabled{
 .row__filter__modal.selected {
     background-color: var(--color-text-secondary);
 }
+
+.button__edit {
+    height: 25%;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+}
+.button__edit button {
+    height: 75%;
+    width: 100%;
+    border-radius: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--color-background-light);
+    color: var(--color-primary);
+    border: var(--color-primary) 1px solid;
+}
+
+.button__edit button:hover {
+    background-color: var(--color-background);
+}
+
+.item-description__title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.item-description__title svg {
+    color: #D70D0D;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}

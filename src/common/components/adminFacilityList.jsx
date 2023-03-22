@@ -1,7 +1,9 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import EmptyScreen from './emptyScreen';
 
-class BookingFacilityList extends React.Component {
+class AdminFacilityList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -41,7 +43,10 @@ class BookingFacilityList extends React.Component {
                     </div>
                     <div className="item-booking-facility__body">
                         <div className="item-description">
-                            <h2>{facility.name}</h2>
+                            <div className="item-description__title">
+                                <h2>{facility.name}</h2>
+                                <FontAwesomeIcon icon={faTrashAlt} />
+                            </div>
                             <p>Kampus {facility.campus.name}</p>
                             {this.props.type === 'vehicles' && (
                                 <div>
@@ -59,8 +64,8 @@ class BookingFacilityList extends React.Component {
                                 Rp{facility.facility.price} / hari
                             </p>
                         </div>
-                        <div className="button__book">
-                            <button>Sewa</button>
+                        <div className="button__edit">
+                            <button>Ubah</button>
                         </div>
                     </div>
                 </div>
@@ -69,4 +74,4 @@ class BookingFacilityList extends React.Component {
     }
 }
 
-export default BookingFacilityList;
+export default AdminFacilityList;

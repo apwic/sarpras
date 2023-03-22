@@ -83,6 +83,34 @@ class Navbar extends React.Component {
                     AdminExpand: false,
                 });
                 break;
+            case '/admin/vehicle':
+                this.setState({
+                    Active: 'Admin-Vehicle',
+                    BookingExpand: false,
+                    AdminExpand: true,
+                });
+                break;
+            case '/admin/building':
+                this.setState({
+                    Active: 'Admin-Building',
+                    BookingExpand: false,
+                    AdminExpand: true,
+                });
+                break;
+            case '/admin/room':
+                this.setState({
+                    Active: 'Admin-Room',
+                    BookingExpand: false,
+                    AdminExpand: true,
+                });
+                break;
+            case '/admin/selasar':
+                this.setState({
+                    Active: 'Admin-Selasar',
+                    BookingExpand: false,
+                    AdminExpand: true,
+                });
+                break;
         }
     }
 
@@ -112,6 +140,18 @@ class Navbar extends React.Component {
                     break;
                 case '/booking/selasar':
                     this.setState({ Active: 'Booking-Selasar' });
+                    break;
+                case '/admin/vehicle':
+                    this.setState({ Active: 'Admin-Vehicle' });
+                    break;
+                case '/admin/building':
+                    this.setState({ Active: 'Admin-Building' });
+                    break;
+                case '/admin/room':
+                    this.setState({ Active: 'Admin-Room' });
+                    break;
+                case '/admin/selasar':
+                    this.setState({ Active: 'Admin-Selasar' });
                     break;
             }
         }
@@ -257,65 +297,115 @@ class Navbar extends React.Component {
                             </div>
                         </div>
                     )}
-                    {this.state.user.role === roleConstant.ADMIN.name ||
-                        (this.state.user.role ===
-                            roleConstant.SUPER_USER.name && (
+                    {(this.state.user.role === roleConstant.ADMIN.name ||
+                        this.state.user.role ===
+                            roleConstant.SUPER_USER.name) && (
+                        <div
+                            className={`expanding-element ${
+                                AdminExpand ? 'expanded' : ''
+                            }`}
+                        >
                             <div
-                                className={`expanding-element ${
-                                    AdminExpand ? 'expanded' : ''
-                                }`}
+                                className="header"
+                                onClick={() =>
+                                    this.setState({
+                                        AdminExpand: !AdminExpand,
+                                    })
+                                }
                             >
-                                <div
-                                    className="header"
-                                    onClick={() =>
-                                        this.setState({
-                                            AdminExpand: !AdminExpand,
-                                        })
+                                <FontAwesomeIcon
+                                    icon={
+                                        AdminExpand ? faCaretDown : faCaretRight
                                     }
-                                >
-                                    <FontAwesomeIcon
-                                        icon={
-                                            AdminExpand
-                                                ? faCaretDown
-                                                : faCaretRight
-                                        }
-                                    />
-                                    <FontAwesomeIcon
-                                        className="header-icon"
-                                        icon={faCog}
-                                    />
-                                    <h3 className="header-name">Admin</h3>
-                                </div>
-                                <ul>
-                                    {this.state.user.role ===
-                                        roleConstant.ADMIN.name && (
-                                        <div>
-                                            <li>Gedung</li>
-                                            <li>Ruangan</li>
-                                            <li>Selasar</li>
-                                            <li>Kendaraan</li>
-                                        </div>
-                                    )}
-                                    {this.state.user.role ===
-                                        roleConstant.SUPER_USER.name && (
+                                />
+                                <FontAwesomeIcon
+                                    className="header-icon"
+                                    icon={faCog}
+                                />
+                                <h3 className="header-name">Admin</h3>
+                            </div>
+                            <ul>
+                                {this.state.user.role ===
+                                    roleConstant.ADMIN.name && (
+                                    <div>
                                         <li
-                                            className={`${
-                                                Active === 'Role-Management'
-                                                    ? 'active'
-                                                    : ''
-                                            }`}
                                             onClick={() =>
                                                 this.handleRouteOnclick(
-                                                    '/role-management',
+                                                    '/admin/building',
                                                 )
                                             }
+                                            className={
+                                                Active === 'Admin-Building'
+                                                    ? 'active'
+                                                    : ''
+                                            }
                                         >
-                                            Manajemen Role
+                                            Gedung
                                         </li>
-                                    )}
-                                </ul>
-                            </div>
-                        ))}
+                                        <li
+                                            onClick={() =>
+                                                this.handleRouteOnclick(
+                                                    '/admin/room',
+                                                )
+                                            }
+                                            className={
+                                                Active === 'Admin-Room'
+                                                    ? 'active'
+                                                    : ''
+                                            }
+                                        >
+                                            Ruangan
+                                        </li>
+                                        <li
+                                            onClick={() =>
+                                                this.handleRouteOnclick(
+                                                    '/admin/selasar',
+                                                )
+                                            }
+                                            className={
+                                                Active === 'Admin-Selasar'
+                                                    ? 'active'
+                                                    : ''
+                                            }
+                                        >
+                                            Selasar
+                                        </li>
+                                        <li
+                                            onClick={() =>
+                                                this.handleRouteOnclick(
+                                                    '/admin/vehicle',
+                                                )
+                                            }
+                                            className={
+                                                Active === 'Admin-Vehicle'
+                                                    ? 'active'
+                                                    : ''
+                                            }
+                                        >
+                                            Kendaraan
+                                        </li>
+                                    </div>
+                                )}
+                                {this.state.user.role ===
+                                    roleConstant.SUPER_USER.name && (
+                                    <li
+                                        className={`${
+                                            Active === 'Role-Management'
+                                                ? 'active'
+                                                : ''
+                                        }`}
+                                        onClick={() =>
+                                            this.handleRouteOnclick(
+                                                '/role-management',
+                                            )
+                                        }
+                                    >
+                                        Manajemen Role
+                                    </li>
+                                )}
+                            </ul>
+                        </div>
+                    )}
                     {this.state.user.role ===
                         roleConstant.BOOKING_STAFF.name && (
                         <div className="element">

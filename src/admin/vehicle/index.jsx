@@ -1,19 +1,19 @@
 import '../style.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-    faDoorOpen,
-    faFilter,
-    faSearch,
-} from '@fortawesome/free-solid-svg-icons';
+import { faTruck, faFilter, faSearch } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import { Pagination } from 'react-bootstrap';
-import { closeModalFilter, getFacilities, openModalFilter } from '../action';
+import {
+    closeModalFilter,
+    getFacilities,
+    openModalFilter,
+} from '../../booking/action';
 import { connect } from 'react-redux';
 import FilterModal from '../../common/components/filterModal';
-import BookingFacilityList from '../../common/components/bookingFacilityList';
+import AdminFacilityList from '../../common/components/adminFacilityList';
 import LoadingScreen from '../../common/components/loadingScreen';
 
-class BookingRoom extends React.Component {
+class ManageVehicle extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -25,11 +25,11 @@ class BookingRoom extends React.Component {
     }
     componentDidMount() {
         this.props.getFacilitiesFunction(
-            'rooms',
-            1,
+            'vehicles',
+            this.state.currentPage,
             9,
+            this.state.q,
             '',
-            'status_maintenance=false',
         );
     }
 
@@ -45,11 +45,11 @@ class BookingRoom extends React.Component {
                 facilities: null,
             });
             this.props.getFacilitiesFunction(
-                'rooms',
+                'vehicles',
                 this.state.currentPage,
                 9,
                 this.state.q,
-                'status_maintenance=false',
+                '',
             );
         }
     }
@@ -70,13 +70,7 @@ class BookingRoom extends React.Component {
         this.setState({
             q: event.target.value,
         });
-        this.props.getFacilitiesFunction(
-            'rooms',
-            1,
-            9,
-            event.target.value,
-            'status_maintenance=false',
-        );
+        this.props.getFacilitiesFunction('vehicles', 1, 9, event.target.value);
     };
 
     renderPaginationNumbers = () => {
@@ -105,10 +99,10 @@ class BookingRoom extends React.Component {
             <div className="container-booking-facility">
                 <div className="container-booking-facility__header">
                     <FontAwesomeIcon
-                        icon={faDoorOpen}
+                        icon={faTruck}
                         className="icon-booking-facility"
                     />
-                    <h1>Peminjaman Ruangan</h1>
+                    <h1>Peminjaman Kendaraan</h1>
                 </div>
                 <div className="container-booking-facility__body">
                     <div className="search__bar">
@@ -132,11 +126,14 @@ class BookingRoom extends React.Component {
                                 className="icon-filter-item"
                             />
                         </div>
+                        <button className="btn btn-primary btn-add">
+                            + Tambah Kendaraan
+                        </button>
                     </div>
                     <div className="container-booking-facility__body__item">
-                        <BookingFacilityList
+                        <AdminFacilityList
                             facilities={this.state.facilities.rows}
-                            type="rooms"
+                            type="vehicles"
                         />
                     </div>
                     <FilterModal handleFilterOption={this.handleFilterOption} />
@@ -188,9 +185,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         openModalFunction: () => dispatch(openModalFilter()),
         closeModalFunction: () => dispatch(closeModalFilter()),
-        getFacilitiesFunction: (type, page, limit, query, filters) =>
-            dispatch(getFacilities(type, page, limit, query, filters)),
+        getFacilitiesFunction: (type, page, limit, query) =>
+            dispatch(getFacilities(type, page, limit, query)),
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(BookingRoom);
+export default connect(mapStateToProps, mapDispatchToProps)(ManageVehicle);

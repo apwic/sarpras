@@ -1,19 +1,23 @@
 import '../style.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    faDoorOpen,
+    faBuilding,
     faFilter,
     faSearch,
 } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import { Pagination } from 'react-bootstrap';
-import { closeModalFilter, getFacilities, openModalFilter } from '../action';
+import {
+    closeModalFilter,
+    getFacilities,
+    openModalFilter,
+} from '../../booking/action';
 import { connect } from 'react-redux';
 import FilterModal from '../../common/components/filterModal';
-import BookingFacilityList from '../../common/components/bookingFacilityList';
+import AdminFacilityList from '../../common/components/adminFacilityList';
 import LoadingScreen from '../../common/components/loadingScreen';
 
-class BookingRoom extends React.Component {
+class ManageBuilding extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -25,11 +29,11 @@ class BookingRoom extends React.Component {
     }
     componentDidMount() {
         this.props.getFacilitiesFunction(
-            'rooms',
-            1,
+            'buildings',
+            this.state.currentPage,
             9,
+            this.state.q,
             '',
-            'status_maintenance=false',
         );
     }
 
@@ -45,11 +49,11 @@ class BookingRoom extends React.Component {
                 facilities: null,
             });
             this.props.getFacilitiesFunction(
-                'rooms',
+                'buildings',
                 this.state.currentPage,
                 9,
                 this.state.q,
-                'status_maintenance=false',
+                '',
             );
         }
     }
@@ -71,11 +75,11 @@ class BookingRoom extends React.Component {
             q: event.target.value,
         });
         this.props.getFacilitiesFunction(
-            'rooms',
+            'buildings',
             1,
             9,
             event.target.value,
-            'status_maintenance=false',
+            '',
         );
     };
 
@@ -105,10 +109,10 @@ class BookingRoom extends React.Component {
             <div className="container-booking-facility">
                 <div className="container-booking-facility__header">
                     <FontAwesomeIcon
-                        icon={faDoorOpen}
+                        icon={faBuilding}
                         className="icon-booking-facility"
                     />
-                    <h1>Peminjaman Ruangan</h1>
+                    <h1>Peminjaman Gedung</h1>
                 </div>
                 <div className="container-booking-facility__body">
                     <div className="search__bar">
@@ -132,11 +136,14 @@ class BookingRoom extends React.Component {
                                 className="icon-filter-item"
                             />
                         </div>
+                        <button className="btn btn-primary btn-add">
+                            + Tambah Gedung
+                        </button>
                     </div>
                     <div className="container-booking-facility__body__item">
-                        <BookingFacilityList
+                        <AdminFacilityList
                             facilities={this.state.facilities.rows}
-                            type="rooms"
+                            type="buildings"
                         />
                     </div>
                     <FilterModal handleFilterOption={this.handleFilterOption} />
@@ -193,4 +200,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(BookingRoom);
+export default connect(mapStateToProps, mapDispatchToProps)(ManageBuilding);
