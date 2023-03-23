@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import FilterModal from '../../common/components/filterModal';
 import BookingFacilityList from '../../common/components/bookingFacilityList';
 import LoadingScreen from '../../common/components/loadingScreen';
+import { withRouter } from '../../common/withRouter';
 
 class BookingVehicle extends React.Component {
     constructor(props) {
@@ -93,6 +94,10 @@ class BookingVehicle extends React.Component {
         });
     };
 
+    handleFacilityClicked = (id) => {
+        this.props.navigate(`/booking/vehicle/${id}`);
+    };
+
     render() {
         if (this.state.facilities === null) {
             return <LoadingScreen />;
@@ -133,6 +138,7 @@ class BookingVehicle extends React.Component {
                         <BookingFacilityList
                             facilities={this.state.facilities.rows}
                             type="vehicles"
+                            handleFacilityClicked={this.handleFacilityClicked}
                         />
                     </div>
                     <FilterModal handleFilterOption={this.handleFilterOption} />
@@ -189,4 +195,6 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(BookingVehicle);
+export default withRouter(
+    connect(mapStateToProps, mapDispatchToProps)(BookingVehicle),
+);

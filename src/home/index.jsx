@@ -19,6 +19,7 @@ import ManageVehicle from '../admin/vehicle';
 import ManageBuilding from '../admin/building';
 import ManageRoom from '../admin/room';
 import ManageSelasar from '../admin/selasar';
+import FacilityDetail from '../booking/facilityDetail';
 
 class Home extends React.Component {
     constructor(props) {
@@ -138,6 +139,19 @@ class Home extends React.Component {
                                         <Topbar />
                                         <Navbar />
                                         <BookingSelasar />
+                                    </div>
+                                }
+                            />
+                        )}
+                        {this.state.user.role ===
+                            roleConstant.BASIC_USER.name && (
+                            <Route
+                                path="/booking/:type/:id"
+                                element={
+                                    <div>
+                                        <Topbar />
+                                        <Navbar />
+                                        <FacilityDetail />
                                     </div>
                                 }
                             />

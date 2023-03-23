@@ -26,9 +26,9 @@ class BookingFacilityList extends React.Component {
         if (this.state.facilities.length === 0) {
             return <EmptyScreen />;
         }
-        return this.state.facilities.map((facility, index) => {
+        return this.state.facilities.map((facility) => {
             return (
-                <div className="item-booking-facility" key={index}>
+                <div className="item-booking-facility" key={facility.id}>
                     <div className="item-booking-facility__image">
                         <img
                             src={
@@ -60,7 +60,15 @@ class BookingFacilityList extends React.Component {
                             </p>
                         </div>
                         <div className="button__book">
-                            <button>Sewa</button>
+                            <button
+                                onClick={() =>
+                                    this.props.handleFacilityClicked(
+                                        facility.id,
+                                    )
+                                }
+                            >
+                                Sewa
+                            </button>
                         </div>
                     </div>
                 </div>

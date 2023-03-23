@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import FilterModal from '../../common/components/filterModal';
 import BookingFacilityList from '../../common/components/bookingFacilityList';
 import LoadingScreen from '../../common/components/loadingScreen';
+import { withRouter } from '../../common/withRouter';
 
 class BookingSelasar extends React.Component {
     constructor(props) {
@@ -96,6 +97,9 @@ class BookingSelasar extends React.Component {
             );
         });
     };
+    handleFacilityClicked = (id) => {
+        this.props.navigate(`/booking/selasar/${id}`);
+    };
 
     render() {
         if (this.state.facilities === null) {
@@ -137,6 +141,7 @@ class BookingSelasar extends React.Component {
                         <BookingFacilityList
                             facilities={this.state.facilities.rows}
                             type="selasars"
+                            handleFacilityClicked={this.handleFacilityClicked}
                         />
                     </div>
                     <FilterModal handleFilterOption={this.handleFilterOption} />
@@ -193,4 +198,6 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(BookingSelasar);
+export default withRouter(
+    connect(mapStateToProps, mapDispatchToProps)(BookingSelasar),
+);

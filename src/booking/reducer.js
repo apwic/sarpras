@@ -1,12 +1,14 @@
 import {
-    CLOSE_MODAL_FILTER,
     OPEN_MODAL_FILTER,
+    CLOSE_MODAL_FILTER,
     SET_FACILITIES,
+    SET_FACILITY_CLICKED,
 } from './actionTypes';
 
 const initialState = {
     filterModalOpen: false,
     facilities: [],
+    facilityClicked: {},
 };
 
 function facilityReducer(state = initialState, action) {
@@ -17,6 +19,8 @@ function facilityReducer(state = initialState, action) {
             return { ...state, filterModalOpen: true };
         case CLOSE_MODAL_FILTER:
             return { ...state, filterModalOpen: false };
+        case SET_FACILITY_CLICKED:
+            return { ...state, facilityClicked: action.payload };
         default:
             return state;
     }

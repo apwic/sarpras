@@ -1,27 +1,111 @@
 import './style.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTruck, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
+import {
+    faTruck,
+    faAngleLeft,
+    faTrash,
+} from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
+import { connect } from 'react-redux';
+import { getFacilityClicked } from '../action';
+import LoadingScreen from '../../common/components/loadingScreen';
+import { withRouter } from '../../common/withRouter';
+import { postBookingStart } from '../action';
+
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination, EffectCoverflow, Navigation } from 'swiper';
+import { Pagination, Navigation } from 'swiper';
+import AlertModal from '../../common/components/alertModal';
 
 class FacilityDetail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            images: [
-                'https://cdn-2.tstatic.net/jabar/foto/bank/images/rumah-agus-ambruk-timpa-brio.jpg',
-                'https://cdn1-production-images-kly.akamaized.net/X9KJFtAIxurY50UL8FA4UlkWuoc=/1200x675/smart/filters:quality(75):strip_icc():format(jpeg)/kly-media-production/medias/4152603/original/018934600_1662711471-AP22251717187704.jpg',
-                'https://static.polityka.pl/_resource/res/path/9a/eb/9aebbe7c-556b-47f0-ba24-a67cec594a22_f1400x900',
-            ],
+            facility: {},
+            loading: true,
+            file: [],
+            description: '',
+            start_timestamp: '2022-03-16',
+            end_timestamp: '2022-03-18',
+            url: '',
+            cost: '450.000',
+            showAlertModal: false,
+            alertMessage: '',
         };
+        this.buttonRef = React.createRef();
     }
 
+    componentDidUpdate(prevProps) {
+        if (prevProps.facility !== this.props.facility) {
+            this.setState({
+                facility: this.props.facility,
+            });
+            this.setState({ loading: false });
+        }
+    }
+
+    componentDidMount() {
+        this.props.getFacilityClickedFunction(
+            this.props.params.id.toString(),
+            this.props.params.type,
+        );
+    }
+
+    handleFileUpload = (e) => {
+        const files = Array.from(e.target.files);
+        this.setState((prevState) => ({
+            file: [...prevState.file, ...files],
+        }));
+    };
+
+    handleNavigateBack = () => {
+        this.props.navigate('/booking/' + this.props.params.type);
+    };
+
+    handleFileSubmit = () => {
+        if (
+            this.state.file.length === 0 ||
+            this.state.description === '' ||
+            this.state.start_timestamp === '' ||
+            this.state.end_timestamp === '' ||
+            this.state.cost === '' ||
+            this.state.url === ''
+        ) {
+            this.setState({
+                showAlertModal: true,
+                alertMessage: 'Isi semua form terlebih dahulu',
+            });
+        } else {
+            let formData = new FormData();
+            formData.append('facility_id', '40');
+            formData.append('description', this.state.description);
+            formData.append('start_timestamp', this.state.start_timestamp);
+            formData.append('end_timestamp', this.state.end_timestamp);
+            formData.append('cost', this.state.cost);
+            for (let i = 0; i < this.state.file.length; i++)
+                formData.append('file', this.state.file[i]);
+            formData.append('url', this.state.url);
+            this.props.postBookingStartFunction(formData, 'vehicle');
+            this.props.navigate('/booking/' + this.props.params.type);
+        }
+    };
+    closeAlertModal = () => {
+        this.setState({ showAlertModal: false, alertMessage: '' });
+    };
+
+    handleFileDelete = (index) => {
+        const file = this.state.file;
+        file.splice(index, 1);
+        this.setState({ file: file });
+    };
+
     render() {
+        if (this.state.loading) {
+            return <LoadingScreen />;
+        }
         return (
             <div className="container-booking-facility">
                 <div className="container-booking-facility__header">
@@ -32,7 +116,10 @@ class FacilityDetail extends React.Component {
                     <h1>Booking Vehicle / Brio Penyok</h1>
                 </div>
                 <div className="container-booking-facility__body">
-                    <button className="back-btn">
+                    <button
+                        className="back-btn"
+                        onClick={this.handleNavigateBack}
+                    >
                         <FontAwesomeIcon
                             icon={faAngleLeft}
                             className="icon-back"
@@ -48,17 +135,11 @@ class FacilityDetail extends React.Component {
                         <div className="facility__images">
                             <div className="facility__foto">
                                 <Swiper
-                                    effect={'coverflow'}
                                     grabCursor={true}
-                                    centeredSlides={true}
-                                    loop={true}
+                                    spaceBetween={50}
                                     slidesPerView={'auto'}
-                                    coverflowEffect={{
-                                        rotate: 0,
-                                        stretch: 0,
-                                        depth: 100,
-                                        modifier: 2.5,
-                                    }}
+                                    loop={true}
+                                    modules={[Pagination, Navigation]}
                                     pagination={{
                                         el: '.swiper-pagination',
                                         clickable: true,
@@ -68,37 +149,30 @@ class FacilityDetail extends React.Component {
                                         prevEl: '.swiper-button-prev',
                                         clickable: true,
                                     }}
-                                    modules={[
-                                        EffectCoverflow,
-                                        Pagination,
-                                        Navigation,
-                                    ]}
-                                    className="swiper_container"
                                 >
-                                    <SwiperSlide>
-                                        <img
-                                            src={this.state.images[0]}
-                                            alt="slide_image"
-                                        />
-                                    </SwiperSlide>
-                                    <SwiperSlide>
-                                        <img
-                                            src={this.state.images[1]}
-                                            alt="slide_image"
-                                        />
-                                    </SwiperSlide>
-                                    <SwiperSlide>
-                                        <img
-                                            src={this.state.images[2]}
-                                            alt="slide_image"
-                                        />
-                                    </SwiperSlide>
-                                    <SwiperSlide>
-                                        <img
-                                            src={this.state.images[0]}
-                                            alt="slide_image"
-                                        />
-                                    </SwiperSlide>
+                                    {this.state.facility.image.length > 0 ? (
+                                        this.state.facility.image.map(
+                                            (image, index) => {
+                                                return (
+                                                    <SwiperSlide
+                                                        key={index}
+                                                        className="swiper-slide"
+                                                    >
+                                                        <img
+                                                            src={image}
+                                                            alt="facility"
+                                                        />
+                                                    </SwiperSlide>
+                                                );
+                                            },
+                                        )
+                                    ) : (
+                                        <SwiperSlide className="swiper-slide">
+                                            <h1>
+                                                Belum ada foto untuk ditampilkan
+                                            </h1>
+                                        </SwiperSlide>
+                                    )}
 
                                     <div className="slider-controler">
                                         <div className="swiper-button-prev slider-arrow">
@@ -118,22 +192,27 @@ class FacilityDetail extends React.Component {
                                 <div className="information__section">
                                     <div className="description-item">
                                         <p className="tag">Tipe</p>
-                                        <p>: Mobil</p>
+                                        <p>: {this.state.facility.type}</p>
                                     </div>
                                     <br />
                                     <div className="description-item">
                                         <p className="tag">Nama</p>
-                                        <p>: Brio Penyok</p>
+                                        <p>: {this.state.facility.name}</p>
                                     </div>
                                     <br />
                                     <div className="description-item">
                                         <p className="tag">Deskripsi</p>
-                                        <p>: Brio ketabrak di Pasteur</p>
+                                        <p>
+                                            : {this.state.facility.description}
+                                        </p>
                                     </div>
                                     <br />
                                     <div className="description-item">
                                         <p className="tag">Nomor Polisi</p>
-                                        <p>: B 7384 SAV</p>
+                                        <p>
+                                            :{' '}
+                                            {this.state.facility.license_number}
+                                        </p>
                                     </div>
                                 </div>
                                 <div className="information__section">
@@ -141,21 +220,29 @@ class FacilityDetail extends React.Component {
                                         <p className="tag">
                                             Harga Sewa Per Hari
                                         </p>
-                                        <p>: aksjcsac</p>
+                                        <p>: {this.state.facility.price}</p>
                                     </div>
                                     <br />
                                     <div className="description-item">
                                         <p className="tag">
                                             Kapasitas Kendaraan
                                         </p>
-                                        <p>: 4</p>
+                                        <p>
+                                            :{' '}
+                                            {
+                                                this.state.facility
+                                                    .vehicle_capacity
+                                            }
+                                        </p>
                                     </div>
                                     <br />
                                     <div className="description-item">
                                         <p className="tag">
                                             Jenis SIM yang Dibutuhkan
                                         </p>
-                                        <p>: A</p>
+                                        <p>
+                                            : {this.state.facility.sim_category}
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -179,7 +266,7 @@ class FacilityDetail extends React.Component {
                                         className="form-control"
                                         type="text"
                                         name="name"
-                                        placeholder="Arip Dandy"
+                                        placeholder={this.props.user.name}
                                         disabled
                                     />
                                     <br />
@@ -197,7 +284,7 @@ class FacilityDetail extends React.Component {
                                         className="form-control"
                                         type="text"
                                         name="email"
-                                        placeholder="AripDandy@gmail.com"
+                                        placeholder={this.props.user.email}
                                         disabled
                                     />
                                     <br />
@@ -215,7 +302,7 @@ class FacilityDetail extends React.Component {
                                         className="form-control"
                                         type="text"
                                         name="unitName"
-                                        placeholder="Brio Penyok"
+                                        placeholder={this.state.facility.name}
                                         disabled
                                     />
                                     <br />
@@ -235,6 +322,11 @@ class FacilityDetail extends React.Component {
                                         type="number"
                                         name="phoneNumber"
                                         placeholder="08123456789"
+                                        onChange={(e) => {
+                                            this.setState({
+                                                phoneNumber: e.target.value,
+                                            });
+                                        }}
                                     />
                                     <br />
                                     <label
@@ -253,6 +345,11 @@ class FacilityDetail extends React.Component {
                                         id="exampleFormControlTextarea1"
                                         rows="3"
                                         placeholder="Masukkan deskripsi"
+                                        onChange={(e) => {
+                                            this.setState({
+                                                description: e.target.value,
+                                            });
+                                        }}
                                     ></textarea>
                                     <br />
                                     <label
@@ -266,14 +363,70 @@ class FacilityDetail extends React.Component {
                                         Lampiran Surat Izin Kegiatan
                                         <p style={{ color: 'red' }}>*</p>
                                     </label>
-                                    <button className="btn btn-secondary picture-btn">
+                                    <button
+                                        className="btn btn-secondary"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            this.buttonRef.current.click();
+                                        }}
+                                    >
                                         Tambahkan File
                                     </button>
+                                    <input
+                                        className="input-file"
+                                        type="file"
+                                        accept=".pdf"
+                                        id="profile-photo-file"
+                                        onChange={this.handleFileUpload}
+                                        ref={this.buttonRef}
+                                        key={Date.now()}
+                                        multiple
+                                    />
+                                    <div className="file-uploaded">
+                                        {this.state.file &&
+                                            this.state.file.map(
+                                                (file, index) => (
+                                                    <div
+                                                        className="file-uploaded-item"
+                                                        key={file.name}
+                                                        style={{
+                                                            display: 'flex',
+                                                            alignItems:
+                                                                'center',
+                                                        }}
+                                                    >
+                                                        <p>{file.name}</p>
+                                                        <div
+                                                            style={{
+                                                                margin: '10px',
+                                                                marginLeft:
+                                                                    'auto',
+                                                            }}
+                                                        >
+                                                            <FontAwesomeIcon
+                                                                icon={faTrash}
+                                                                onClick={() =>
+                                                                    this.handleFileDelete(
+                                                                        index,
+                                                                    )
+                                                                }
+                                                                className="icon-trash red"
+                                                                style={{
+                                                                    width: '15px',
+                                                                    height: '15px',
+                                                                    color: 'red',
+                                                                }}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                ),
+                                            )}
+                                    </div>
                                     <br />
                                     <br />
                                     <label
                                         className="form-label"
-                                        htmlFor="linkSurat"
+                                        htmlFor="url"
                                         style={{
                                             display: 'flex',
                                             alignItems: 'center',
@@ -283,9 +436,14 @@ class FacilityDetail extends React.Component {
                                         <p style={{ color: 'red' }}>*</p>
                                     </label>
                                     <input
+                                        onChange={(e) => {
+                                            this.setState({
+                                                url: e.target.value,
+                                            });
+                                        }}
                                         className="form-control"
                                         type="text"
-                                        name="linkSurat"
+                                        name="url"
                                         placeholder="https://e-office/..."
                                     />
                                     <br />
@@ -293,28 +451,53 @@ class FacilityDetail extends React.Component {
                             </div>
                             <div className="booking__section__right">
                                 <div className="booking-info">
-                                    <h2>Detail Harga</h2>
+                                    <h2 className="judul-harga">
+                                        Detail Harga
+                                    </h2>
                                     <div className="count-total">
-                                        <div className="detail-price">
-                                            <h2>Rp150.0000 x 3 hari</h2>
-                                        </div>
+                                        <h2>Rp150.0000 x 3 hari</h2>
                                         <div className="detail-total">
                                             <h1>Rp450.000</h1>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="button__book">
-                                    <button className="btn btn-primary">
-                                        Booking
+                                    <button
+                                        className="btn btn-primary"
+                                        onClick={this.handleFileSubmit}
+                                    >
+                                        Book
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <AlertModal
+                        show={this.state.showAlertModal}
+                        message={this.state.alertMessage}
+                        closeModalFunction={this.closeAlertModal}
+                    />
                 </div>
             </div>
         );
     }
 }
 
-export default FacilityDetail;
+const mapStateToProps = (state) => {
+    return {
+        facility: state.facility.facilityClicked,
+        user: state.auth.user,
+    };
+};
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getFacilityClickedFunction: (id, category) =>
+            dispatch(getFacilityClicked(id, category)),
+        postBookingStartFunction: (data, category) =>
+            dispatch(postBookingStart(data, category)),
+    };
+};
+
+export default withRouter(
+    connect(mapStateToProps, mapDispatchToProps)(FacilityDetail),
+);

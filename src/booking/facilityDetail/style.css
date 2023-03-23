@@ -57,6 +57,7 @@
 }
 
 .facility__foto {
+    border-radius: var(--corner-radius-large);
     width: 100%;
     height: 70vh;
     display: flex;
@@ -122,6 +123,12 @@ button.back-btn {
     display: flex;
     padding: 35px;
     box-shadow: var(--shadow);
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.booking-info .judul-harga{
+    width: 40%;
 }
 
 .count-total {
@@ -129,11 +136,11 @@ button.back-btn {
     display: flex;
     flex-direction: column;
 }
-.count-total h2,
-h1 {
+.count-total h2, h1 {
     float: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
-
 .booking__section__right {
     width: 50%;
     display: flex;
@@ -141,7 +148,20 @@ h1 {
     row-gap: 2vh;
 }
 
+.button__book{
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    height: 7vh;
+}
+
+
+ion-icon{
+    width: 30vh;
+}
+
 .button__book button {
+    border-radius: var(--corner-radius-large);
     width: 100%;
 }
 
@@ -180,4 +200,33 @@ h1 {
 }
 .description-item p {
     width: 50%;
+}
+
+.input-file{
+    visibility: hidden;
+    display: none;
+}
+
+.file-uploaded{
+    margin-top: 3vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 2vh;
+}
+
+.file-uploaded-item{
+    background-color: var(--color-background-light);
+    box-shadow: var(--shadow);
+    border-radius: var(--corner-radius);
+    height: 5vh;
+    padding-left: 2vh;
+    padding-right: 1vh;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.icon-trash{
+    cursor: pointer;
 }
