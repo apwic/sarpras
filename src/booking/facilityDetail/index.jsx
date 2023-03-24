@@ -157,7 +157,10 @@ class FacilityDetail extends React.Component {
                         icon={faTruck}
                         className="icon-booking-facility"
                     />
-                    <h1>Booking Vehicle / Brio Penyok</h1>
+                    <h1>
+                        Booking {this.props.params.type} /{' '}
+                        {this.state.facility.name}
+                    </h1>
                 </div>
                 <button className="back-btn" onClick={this.handleNavigateBack}>
                     <FontAwesomeIcon
@@ -182,8 +185,9 @@ class FacilityDetail extends React.Component {
                                 <Swiper
                                     grabCursor={true}
                                     spaceBetween={50}
-                                    slidesPerView={'auto'}
+                                    slidesPerView={1}
                                     loop={true}
+                                    onSwiper={(swiper) => console.log(swiper)}
                                     modules={[Pagination, Navigation]}
                                     pagination={{
                                         el: '.swiper-pagination',
@@ -203,10 +207,12 @@ class FacilityDetail extends React.Component {
                                                         key={index}
                                                         className="swiper-slide"
                                                     >
-                                                        <img
-                                                            src={image}
-                                                            alt="facility"
-                                                        />
+                                                        <div className="image-swiper">
+                                                            <img
+                                                                src={image}
+                                                                alt="facility"
+                                                            />
+                                                        </div>
                                                     </SwiperSlide>
                                                 );
                                             },
