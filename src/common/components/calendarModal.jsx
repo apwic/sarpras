@@ -21,6 +21,11 @@ class CalendarModal extends React.Component {
         }
     }
 
+    onClick = () => {
+        this.props.closeModalFunction();
+        this.props.handleSubmitDate();
+    };
+
     render() {
         return (
             <div>
@@ -85,10 +90,7 @@ class CalendarModal extends React.Component {
                         >
                             Batalkan
                         </Button>
-                        <Button
-                            variant="primary"
-                            onClick={this.props.closeModalFunction}
-                        >
+                        <Button variant="primary" onClick={this.onClick}>
                             Lanjutkan
                         </Button>
                     </Modal.Footer>

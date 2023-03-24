@@ -7,6 +7,7 @@ import {
     POST_BOOKING_SUCCESS,
     GET_FACILITY_CLICKED,
     SET_FACILITY_CLICKED,
+    SET_CALENDAR_BOOK,
 } from './actionTypes';
 
 export function openModalFilter() {
@@ -71,5 +72,12 @@ export function setFacilityClicked(response) {
     return {
         type: SET_FACILITY_CLICKED,
         payload: response,
+    };
+}
+
+export function setCalendarBook(calendarRef) {
+    return {
+        type: SET_CALENDAR_BOOK,
+        calendarRef,
     };
 }

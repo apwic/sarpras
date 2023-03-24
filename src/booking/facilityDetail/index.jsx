@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { getFacilityClicked } from '../action';
 import LoadingScreen from '../../common/components/loadingScreen';
 import { withRouter } from '../../common/withRouter';
-import { postBookingStart } from '../action';
+import { postBookingStart, setCalendarBook } from '../action';
 
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
@@ -19,6 +19,9 @@ import 'swiper/css/navigation';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Navigation } from 'swiper';
 import AlertModal from '../../common/components/alertModal';
+import ComponentCalendar from '../../common/components/CalendarComponent';
+import { openModal } from '../../dashboard/action';
+import CalendarModal from '../../common/components/calendarModal';
 
 class FacilityDetail extends React.Component {
     constructor(props) {
@@ -34,8 +37,10 @@ class FacilityDetail extends React.Component {
             cost: '450.000',
             showAlertModal: false,
             alertMessage: '',
+            step: 1,
         };
         this.buttonRef = React.createRef();
+        this.calendarRef = React.createRef();
     }
 
     componentDidUpdate(prevProps) {
@@ -52,6 +57,7 @@ class FacilityDetail extends React.Component {
             this.props.params.id.toString(),
             this.props.params.type,
         );
+        this.props.setCalendarBookFunction(this.calendarRef);
     }
 
     handleFileUpload = (e) => {
@@ -62,7 +68,24 @@ class FacilityDetail extends React.Component {
     };
 
     handleNavigateBack = () => {
-        this.props.navigate('/booking/' + this.props.params.type);
+        if (this.state.step === 1) {
+            this.props.navigate('/booking/' + this.props.params.type);
+        }
+        if (this.state.step === 2) {
+            this.setState({ step: 1 });
+            document
+                .querySelector('.calendar-component')
+                .classList.remove('hidden');
+            document
+                .querySelector('.calendar-component')
+                .classList.add('visible');
+            document
+                .querySelector('.container-booking-facility-detail__body')
+                .classList.remove('visible');
+            document
+                .querySelector('.container-booking-facility-detail__body')
+                .classList.add('hidden');
+        }
     };
 
     handleFileSubmit = () => {
@@ -102,6 +125,27 @@ class FacilityDetail extends React.Component {
         this.setState({ file: file });
     };
 
+    handleDateClick = (arg) => {
+        console.log(arg);
+        this.props.openModalFunction(arg.date);
+    };
+
+    handleSubmitDate = () => {
+        document
+            .querySelector('.calendar-component')
+            .classList.remove('visible');
+        document.querySelector('.calendar-component').classList.add('hidden');
+        document
+            .querySelector('.container-booking-facility-detail__body')
+            .classList.remove('hidden');
+        document
+            .querySelector('.container-booking-facility-detail__body')
+            .classList.add('visible');
+        this.setState({
+            step: 2,
+        });
+    };
+
     render() {
         if (this.state.loading) {
             return <LoadingScreen />;
@@ -115,22 +159,23 @@ class FacilityDetail extends React.Component {
                     />
                     <h1>Booking Vehicle / Brio Penyok</h1>
                 </div>
-                <div className="container-booking-facility__body">
-                    <button
-                        className="back-btn"
-                        onClick={this.handleNavigateBack}
-                    >
-                        <FontAwesomeIcon
-                            icon={faAngleLeft}
-                            className="icon-back"
-                            style={{
-                                width: '25px',
-                                height: '25px',
-                                marginRight: '10px',
-                            }}
-                        />
-                        Back
-                    </button>
+                <button className="back-btn" onClick={this.handleNavigateBack}>
+                    <FontAwesomeIcon
+                        icon={faAngleLeft}
+                        className="icon-back"
+                        style={{
+                            width: '25px',
+                            height: '25px',
+                            marginRight: '10px',
+                        }}
+                    />
+                    Back
+                </button>
+                <ComponentCalendar
+                    bookRef={this.calendarRef}
+                    handleDateClick={this.handleDateClick}
+                />
+                <div className="container-booking-facility-detail__body">
                     <div className="facility-information">
                         <div className="facility__images">
                             <div className="facility__foto">
@@ -478,6 +523,7 @@ class FacilityDetail extends React.Component {
                         closeModalFunction={this.closeAlertModal}
                     />
                 </div>
+                <CalendarModal handleSubmitDate={this.handleSubmitDate} />
             </div>
         );
     }
@@ -487,6 +533,7 @@ const mapStateToProps = (state) => {
     return {
         facility: state.facility.facilityClicked,
         user: state.auth.user,
+        calendarModalOpen: state.dashboard.calendarModalOpen,
     };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -495,6 +542,8 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(getFacilityClicked(id, category)),
         postBookingStartFunction: (data, category) =>
             dispatch(postBookingStart(data, category)),
+        setCalendarBookFunction: (ref) => dispatch(setCalendarBook(ref)),
+        openModalFunction: (selectedDate) => dispatch(openModal(selectedDate)),
     };
 };
 

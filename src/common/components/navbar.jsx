@@ -11,6 +11,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { connect } from 'react-redux';
 import { setCalendar } from '../../dashboard/action';
+import { setCalendarBook } from '../../booking/action';
 import { getUser } from '../auth/action';
 import { withRouter } from '../withRouter';
 import roleConstant from '../constants/roleConstant';
@@ -167,6 +168,11 @@ class Navbar extends React.Component {
     handleTransitionEnd = () => {
         if (document.location.pathname === '/') {
             this.props.calendarRef.current.getApi().updateSize();
+        } else if (
+            document.location.pathname ===
+            `/booking/${this.props.params.type}/${this.props.params.id}`
+        ) {
+            this.props.bookRef.current.getApi().updateSize();
         }
         document.querySelector('body').classList.remove('animate');
     };
@@ -459,6 +465,7 @@ const mapStateToProps = (state) => {
     return {
         calendarRef: state.dashboard.calendarRef,
         user: state.auth.user,
+        bookRef: state.facility.calendarBookRef,
     };
 };
 
@@ -467,6 +474,8 @@ const mapDispatchToProps = (dispatch) => {
         setCalendarFunction: (calendarRef) =>
             dispatch(setCalendar(calendarRef)),
         getUserFunction: () => dispatch(getUser()),
+        setCalendarBookFunction: (bookRef) =>
+            dispatch(setCalendarBook(bookRef)),
     };
 };
 
