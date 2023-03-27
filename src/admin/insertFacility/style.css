@@ -145,3 +145,7 @@ button.picture-btn {
 button.btn-insertfacility {
     height: 3rem;
 }
+
+input.not-filled {
+    border: 1px solid red;
+}

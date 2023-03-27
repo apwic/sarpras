@@ -79,6 +79,16 @@ export function deleteFacility(type, id, page, query, filters) {
     };
 }
 
+export function getFacilityClicked(id, category) {
+    return {
+        type: GET_FACILITY_CLICKED,
+        payload: {
+            id,
+            category,
+        },
+    };
+}
+
 export function getFilters() {
     return {
         type: GET_FILTERS,
@@ -105,16 +115,6 @@ export function postBookingStart(data, category) {
 export function postBookingSuccess() {
     return {
         type: POST_BOOKING_SUCCESS,
-    };
-}
-
-export function getFacilityClicked(id, category) {
-    return {
-        type: GET_FACILITY_CLICKED,
-        payload: {
-            id,
-            category,
-        },
     };
 }
 

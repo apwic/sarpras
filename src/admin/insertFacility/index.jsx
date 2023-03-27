@@ -10,6 +10,7 @@ import {
     faAngleLeft,
 } from '@fortawesome/free-solid-svg-icons';
 import { connect } from 'react-redux';
+import GoogleMapReact from 'google-map-react';
 
 import './style.css';
 import { withRouter } from '../../common/withRouter';
@@ -20,6 +21,19 @@ import {
     updateFacility,
 } from '../../booking/action';
 import LoadingScreen from '../../common/components/loadingScreen';
+
+const PinpointEmoji = () => (
+    <div
+        style={{
+            fontSize: '40px',
+            transform: 'translate(-50%, -100%)',
+            width: 'fit-content',
+            height: 'fit-content',
+        }}
+    >
+        &#128205;
+    </div>
+);
 
 class InsertFacility extends React.Component {
     constructor(props) {
@@ -43,8 +57,8 @@ class InsertFacility extends React.Component {
                     buildingDescription: '',
                     buildingCapacity: '',
                     buildingPrice: '',
-                    buildingLatitude: '0.00',
-                    buildingLongitude: '0.00',
+                    buildingLatitude: '',
+                    buildingLongitude: '',
                 },
                 room: {
                     roomBuildingId: '',
@@ -180,8 +194,6 @@ class InsertFacility extends React.Component {
         try {
             const response = await fetch(url);
             const blob = await response.blob();
-            console.log(blob);
-            console.log(url);
             this.setState((prevState) => ({
                 value: {
                     ...prevState.value,
@@ -457,6 +469,7 @@ class InsertFacility extends React.Component {
                                         <p style={{ color: 'red' }}>*</p>
                                     </label>
                                     <input
+                                        required
                                         className="form-control"
                                         type="text"
                                         name="vehicleName"
@@ -491,6 +504,7 @@ class InsertFacility extends React.Component {
                                         <p style={{ color: 'red' }}>*</p>
                                     </label>
                                     <select
+                                        required
                                         className={`form-select ${
                                             this.state.value.vehicle
                                                 .vehicleCampusId === ''
@@ -544,6 +558,7 @@ class InsertFacility extends React.Component {
                                         <p style={{ color: 'red' }}>*</p>
                                     </label>
                                     <textarea
+                                        required
                                         className="form-control"
                                         id="exampleFormControlTextarea1"
                                         rows="8"
@@ -579,6 +594,7 @@ class InsertFacility extends React.Component {
                                         <p style={{ color: 'red' }}>*</p>
                                     </label>
                                     <input
+                                        required
                                         className="form-control"
                                         type="text"
                                         name="vehicleLicenseNumber"
@@ -614,6 +630,7 @@ class InsertFacility extends React.Component {
                                         <p style={{ color: 'red' }}>*</p>
                                     </label>
                                     <input
+                                        required
                                         className="form-control"
                                         type="text"
                                         name="vehiclePrice"
@@ -649,6 +666,7 @@ class InsertFacility extends React.Component {
                                         <p style={{ color: 'red' }}>*</p>
                                     </label>
                                     <input
+                                        required
                                         className="form-control"
                                         type="number"
                                         name="vehiclePrice"
@@ -684,6 +702,7 @@ class InsertFacility extends React.Component {
                                         <p style={{ color: 'red' }}>*</p>
                                     </label>
                                     <select
+                                        required
                                         className={`form-select ${
                                             this.state.value.vehicle
                                                 .vehicleLicenseType === ''
@@ -742,6 +761,7 @@ class InsertFacility extends React.Component {
                                         <p style={{ color: 'red' }}>*</p>
                                     </label>
                                     <input
+                                        required
                                         className="form-control"
                                         type="text"
                                         name="buildingName"
@@ -777,6 +797,7 @@ class InsertFacility extends React.Component {
                                         <p style={{ color: 'red' }}>*</p>
                                     </label>
                                     <select
+                                        required
                                         className={`form-select ${
                                             this.state.value.building
                                                 .buildingCampusId === ''
@@ -830,6 +851,7 @@ class InsertFacility extends React.Component {
                                         <p style={{ color: 'red' }}>*</p>
                                     </label>
                                     <textarea
+                                        required
                                         className="form-control"
                                         id="buildingDescription"
                                         rows="8"
@@ -865,6 +887,7 @@ class InsertFacility extends React.Component {
                                         <p style={{ color: 'red' }}>*</p>
                                     </label>
                                     <input
+                                        required
                                         className="form-control"
                                         type="number"
                                         name="buildingCapacity"
@@ -900,6 +923,7 @@ class InsertFacility extends React.Component {
                                         <p style={{ color: 'red' }}>*</p>
                                     </label>
                                     <input
+                                        required
                                         className="form-control"
                                         type="number"
                                         name="buildingPrice"
@@ -940,6 +964,7 @@ class InsertFacility extends React.Component {
                                         <p style={{ color: 'red' }}>*</p>
                                     </label>
                                     <select
+                                        required
                                         className={`form-select ${
                                             this.state.value.room
                                                 .roomBuildingId === ''
@@ -992,6 +1017,7 @@ class InsertFacility extends React.Component {
                                         <p style={{ color: 'red' }}>*</p>
                                     </label>
                                     <input
+                                        required
                                         className="form-control"
                                         type="number"
                                         name="roomCode"
@@ -1024,6 +1050,7 @@ class InsertFacility extends React.Component {
                                         <p style={{ color: 'red' }}>*</p>
                                     </label>
                                     <input
+                                        required
                                         className="form-control"
                                         type="text"
                                         name="roomName"
@@ -1056,6 +1083,7 @@ class InsertFacility extends React.Component {
                                         <p style={{ color: 'red' }}>*</p>
                                     </label>
                                     <textarea
+                                        required
                                         className="form-control"
                                         id="roomDescription"
                                         rows="8"
@@ -1091,6 +1119,7 @@ class InsertFacility extends React.Component {
                                         <p style={{ color: 'red' }}>*</p>
                                     </label>
                                     <input
+                                        required
                                         className="form-control"
                                         type="number"
                                         name="roomCapacity"
@@ -1125,6 +1154,7 @@ class InsertFacility extends React.Component {
                                         <p style={{ color: 'red' }}>*</p>
                                     </label>
                                     <input
+                                        required
                                         className="form-control"
                                         type="number"
                                         name="roomPrice"
@@ -1162,6 +1192,7 @@ class InsertFacility extends React.Component {
                                         <p style={{ color: 'red' }}>*</p>
                                     </label>
                                     <select
+                                        required
                                         className={`form-select ${
                                             this.state.value.selasar
                                                 .selasarBuildingId === ''
@@ -1215,6 +1246,7 @@ class InsertFacility extends React.Component {
                                         <p style={{ color: 'red' }}>*</p>
                                     </label>
                                     <input
+                                        required
                                         className="form-control"
                                         type="text"
                                         name="selasarName"
@@ -1249,6 +1281,7 @@ class InsertFacility extends React.Component {
                                         <p style={{ color: 'red' }}>*</p>
                                     </label>
                                     <textarea
+                                        required
                                         className="form-control"
                                         id="selasarDescription"
                                         rows="8"
@@ -1284,6 +1317,7 @@ class InsertFacility extends React.Component {
                                         <p style={{ color: 'red' }}>*</p>
                                     </label>
                                     <input
+                                        required
                                         className="form-control"
                                         type="number"
                                         name="selasarCapacity"
@@ -1319,6 +1353,7 @@ class InsertFacility extends React.Component {
                                         <p style={{ color: 'red' }}>*</p>
                                     </label>
                                     <input
+                                        required
                                         className="form-control"
                                         type="number"
                                         name="selasarPrice"
@@ -1483,6 +1518,72 @@ class InsertFacility extends React.Component {
                                             Tidak Aktif
                                         </option>
                                     </select>
+                                </div>
+                            )}
+                            {this.props.params.type === 'building' && (
+                                <div
+                                    className="inner__item"
+                                    style={{
+                                        height: '25rem',
+                                        width: '100%',
+                                    }}
+                                >
+                                    <label
+                                        className="form-label"
+                                        style={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                        }}
+                                    >
+                                        Koordinat Gedung
+                                        <p style={{ color: 'red' }}>*</p>
+                                    </label>
+                                    <GoogleMapReact
+                                        bootstrapURLKeys={{
+                                            key: 'AIzaSyC6tTnH6WyfO2M_S5SeYIFyYV-4pRFjEtw',
+                                        }}
+                                        defaultCenter={{
+                                            lat:
+                                                this.state.value.building
+                                                    .buildingLatitude !== ''
+                                                    ? this.state.value.building
+                                                          .buildingLatitude
+                                                    : -6.8914746,
+                                            lng:
+                                                this.state.value.building
+                                                    .buildingLongitude !== ''
+                                                    ? this.state.value.building
+                                                          .buildingLongitude
+                                                    : 107.6057882,
+                                        }}
+                                        defaultZoom={15}
+                                        onClick={(e) => (
+                                            console.log(e),
+                                            this.setState({
+                                                value: {
+                                                    ...this.state.value,
+                                                    building: {
+                                                        ...this.state.value
+                                                            .building,
+                                                        buildingLatitude: e.lat,
+                                                        buildingLongitude:
+                                                            e.lng,
+                                                    },
+                                                },
+                                            })
+                                        )}
+                                    >
+                                        <PinpointEmoji
+                                            lat={
+                                                this.state.value.building
+                                                    .buildingLatitude
+                                            }
+                                            lng={
+                                                this.state.value.building
+                                                    .buildingLongitude
+                                            }
+                                        />
+                                    </GoogleMapReact>
                                 </div>
                             )}
                             {this.props.params.id && (
