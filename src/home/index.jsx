@@ -20,6 +20,8 @@ import ManageBuilding from '../admin/building';
 import ManageRoom from '../admin/room';
 import ManageSelasar from '../admin/selasar';
 import FacilityDetail from '../booking/facilityDetail';
+import MyBooking from '../mybooking';
+import MyBookingDetail from '../mybooking/detail';
 
 class Home extends React.Component {
     constructor(props) {
@@ -152,6 +154,32 @@ class Home extends React.Component {
                                         <Topbar />
                                         <Navbar />
                                         <FacilityDetail />
+                                    </div>
+                                }
+                            />
+                        )}
+                        {this.state.user.role ===
+                            roleConstant.BASIC_USER.name && (
+                            <Route
+                                path="/booking/my"
+                                element={
+                                    <div>
+                                        <Topbar />
+                                        <Navbar />
+                                        <MyBooking />
+                                    </div>
+                                }
+                            />
+                        )}
+                        {this.state.user.role ===
+                            roleConstant.BASIC_USER.name && (
+                            <Route
+                                path="/booking/:id"
+                                element={
+                                    <div>
+                                        <Topbar />
+                                        <Navbar />
+                                        <MyBookingDetail />
                                     </div>
                                 }
                             />

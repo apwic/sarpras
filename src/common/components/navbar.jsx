@@ -84,6 +84,13 @@ class Navbar extends React.Component {
                     AdminExpand: false,
                 });
                 break;
+            case '/booking/my':
+                this.setState({
+                    Active: 'My-Booking',
+                    BookingExpand: true,
+                    AdminExpand: false,
+                });
+                break;
             case '/admin/vehicle':
                 this.setState({
                     Active: 'Admin-Vehicle',
@@ -141,6 +148,9 @@ class Navbar extends React.Component {
                     break;
                 case '/booking/selasar':
                     this.setState({ Active: 'Booking-Selasar' });
+                    break;
+                case '/booking/my':
+                    this.setState({ Active: 'My-Booking' });
                     break;
                 case '/admin/vehicle':
                     this.setState({ Active: 'Admin-Vehicle' });
@@ -288,6 +298,18 @@ class Navbar extends React.Component {
                                     }
                                 >
                                     Kendaraan
+                                </li>
+                                <li
+                                    onClick={() =>
+                                        this.handleRouteOnclick('/booking/my')
+                                    }
+                                    className={
+                                        Active === 'My-Booking'
+                                            ? 'active'
+                                            : ''
+                                    }
+                                >
+                                    Peminjaman Saya
                                 </li>
                             </ul>
                         </div>

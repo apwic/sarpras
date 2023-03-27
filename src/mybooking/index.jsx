@@ -1,17 +1,77 @@
 import React from 'react';
 import './style.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-    faUser,
-    faSearch,
-    faCalendarAlt,
-} from '@fortawesome/free-solid-svg-icons';
-import FacilityTypeLabel from '../common/components/labels/facilityTypeLabel';
-import facilityTypeConstant from '../common/constants/facilityTypeConstant';
-import BookingStatusLabel from '../common/components/labels/bookingStatusLabel';
-import bookingStatusConstant from '../common/constants/bookingStatusConstant';
+import { faUser, faSearch } from '@fortawesome/free-solid-svg-icons';
+import MyBookingList from '../common/components/myBookingList';
+import { connect } from 'react-redux';
+import { getMyBookings } from './action';
+import { withRouter } from '../common/withRouter';
 
 class MyBooking extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            myBookings: [],
+            query: '',
+            filters: '',
+        };
+    }
+
+    componentDidMount() {
+        this.props.getMyBookingsFunction(this.state.q, '');
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.myBookings !== this.props.myBookings) {
+            this.setState({
+                myBookings: this.props.myBookings,
+            });
+        }
+        if (
+            prevState.query !== this.state.query ||
+            prevState.filters !== this.state.filters
+        ) {
+            this.props.getMyBookingsFunction(
+                this.state.query,
+                this.state.filters,
+            );
+        }
+    }
+
+    handleFilterOption = (option) => {
+        option.forEach((optionFilter) => {
+            if (optionFilter === 1) {
+                this.setState.filters = 'status=PENDING';
+            } else if (optionFilter === 2) {
+                this.setState.filters = 'status=CANCELED';
+            } else if (optionFilter === 3) {
+                this.setState.filters = 'status=REJECTED';
+            } else if (optionFilter === 4) {
+                this.setState.filters = 'status=ON_VERIFICATION';
+            } else if (optionFilter === 5) {
+                this.setState.filters = 'status=WAITING_FOR_PAYMENT';
+            } else if (optionFilter === 6) {
+                this.setState.filters = 'status=PAYMENT_SUCCESS';
+            } else if (optionFilter === 7) {
+                this.setState.filters = 'status=ENDED';
+            } else if (optionFilter === 8) {
+                this.setState.filters = 'status=WAITING_FOR_RATING';
+            } else if (optionFilter === 9) {
+                this.setState.filters = 'status=DONE';
+            }
+        });
+    };
+
+    handleSearch = (e) => {
+        this.setState({
+            query: e.target.value,
+        });
+    };
+
+    handleMyBookingClicked = (id) => {
+        this.props.navigate(`/booking/${id}`);
+    };
+
     render() {
         return (
             <div className="container-mybooking">
@@ -27,6 +87,7 @@ class MyBooking extends React.Component {
                                 type="text"
                                 name="bookingSearch"
                                 placeholder="Pencarian"
+                                onChange={this.handleSearch}
                             />
                             <FontAwesomeIcon
                                 icon={faSearch}
@@ -42,75 +103,25 @@ class MyBooking extends React.Component {
                                 <option value="" disabled hidden>
                                     Status
                                 </option>
-                                <option value="A">A</option>
-                                <option value="B">B</option>
-                                <option value="C">C</option>
+                                <option value="1">
+                                    Pengajuan Baru Diterima
+                                </option>
+                                <option value="2">Peminjaman Dibatalkan</option>
+                                <option value="3">Pengajuan Ditolak</option>
+                                <option value="4">Proses Verifikasi</option>
+                                <option value="5">Menunggu Pembayaran</option>
+                                <option value="6">Pembayaran Berhasil</option>
+                                <option value="7">Peminjaman Berakhir</option>
+                                <option value="8">Menunggu Penilaian</option>
+                                <option value="9">Selesai</option>
                             </select>
                         </div>
                     </div>
                     <div className="container-mybooking__body__items">
-                        <div className="my-booking-item">
-                            <div className="my-booking-item__header">
-                                <FacilityTypeLabel
-                                    type={facilityTypeConstant.VEHICLE}
-                                />
-                                <BookingStatusLabel
-                                    status={bookingStatusConstant.REJECTED}
-                                />
-                            </div>
-                            <div className="my-booking-item__body">
-                                <h3 className="item-name">Brio</h3>
-                                <p>Shooting</p>
-                            </div>
-                            <div className="my-booking-item__footer">
-                                <div className="booking-date">
-                                    <FontAwesomeIcon
-                                        icon={faCalendarAlt}
-                                        className="icon-booking-date"
-                                    />
-                                    <label className="label-booking-date">
-                                        dibuat 2 hari yang lalu oleh Saya
-                                    </label>
-                                </div>
-                                <div className="booking-time">
-                                    <label className="label-booking-time">
-                                        04-01-2023 - 04-01-2023
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="my-booking-item">
-                            <div className="my-booking-item__header">
-                                <FacilityTypeLabel
-                                    type={facilityTypeConstant.BUILDING}
-                                />
-                                <BookingStatusLabel
-                                    status={
-                                        bookingStatusConstant.WAITING_FOR_PAYMENT
-                                    }
-                                />
-                            </div>
-                            <div className="my-booking-item__body">
-                                <h3 className="item-name">Labtek VII</h3>
-                                <p>Laboratorium Teknologi</p>
-                            </div>
-                            <div className="my-booking-item__footer">
-                                <div className="booking-date">
-                                    <FontAwesomeIcon
-                                        icon={faCalendarAlt}
-                                        className="icon-booking-date"
-                                    />
-                                    <label className="label-booking-date">
-                                        dibuat 2 hari yang lalu oleh Saya
-                                    </label>
-                                </div>
-                                <div className="booking-time">
-                                    <label className="label-booking-time">
-                                        04-01-2023 - 04-01-2023
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
+                        <MyBookingList
+                            myBookings={this.state.myBookings}
+                            handleMyBookingClicked={this.handleMyBookingClicked}
+                        />
                     </div>
                 </div>
             </div>
@@ -118,4 +129,19 @@ class MyBooking extends React.Component {
     }
 }
 
-export default MyBooking;
+const mapStateToProps = (state) => {
+    return {
+        myBookings: state.myBooking.myBookings,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getMyBookingsFunction: (query, filters) =>
+            dispatch(getMyBookings(query, filters)),
+    };
+};
+
+export default withRouter(
+    connect(mapStateToProps, mapDispatchToProps)(MyBooking),
+);

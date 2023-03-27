@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import './style.css';
 import { getUser } from '../common/auth/action';
 import { editProfile, openModal } from './action';
+import { getMyBookings } from '../mybooking/action';
 import ProfilePictureCropperModal from '../common/components/imageModal';
 import AlertModal from '../common/components/alertModal';
 import LoadingScreen from '../common/components/loadingScreen';
@@ -36,12 +37,14 @@ class Profile extends React.Component {
                       no_telp: '',
                   },
             no_telp: this.props.user ? this.props.user.no_telp : '',
+            totalBookings: this.props.totalBookings,
         };
     }
 
     componentDidMount() {
         if (this.props.user === null) {
             this.props.getUserFunction();
+            this.props.getTotalBookingsFunction();
         }
     }
 
@@ -53,6 +56,7 @@ class Profile extends React.Component {
                     image: this.props.user.image,
                 },
                 no_telp: this.props.user.no_telp,
+                totalBookings: this.props.totalBookings,
             });
         }
     }
@@ -155,7 +159,9 @@ class Profile extends React.Component {
                         <div className="total-container">
                             <div className="total-box">
                                 <div className="total-text">PEMINJAMAN</div>
-                                <div className="total-number">0</div>
+                                <div className="total-number">
+                                    {this.state.totalBookings}
+                                </div>
                             </div>
                             <div className="total-box">
                                 <div className="total-text">KELUHAN</div>
@@ -223,6 +229,7 @@ class Profile extends React.Component {
 const mapStateToProps = (state) => {
     return {
         user: state.auth.user,
+        totalBookings: state.myBooking.totalBookings,
     };
 };
 
@@ -231,6 +238,7 @@ const mapDispatchToProps = (dispatch) => {
         getUserFunction: () => dispatch(getUser()),
         openModalFunction: (imgUrl) => dispatch(openModal(imgUrl)),
         editProfileFunction: (user) => dispatch(editProfile(user)),
+        getTotalBookingsFunction: () => dispatch(getMyBookings()),
     };
 };
 
