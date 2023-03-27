@@ -62,6 +62,7 @@ class InsertFacility extends React.Component {
                     selasarPrice: '',
                 },
                 files: [],
+                statusMaintenance: false,
             },
             loading: false,
         };
@@ -102,6 +103,12 @@ class InsertFacility extends React.Component {
             for (let i = 0; i < this.props.facility.image.length; i++) {
                 this.urlToBlob(this.props.facility.image[i]);
             }
+            this.setState({
+                value: {
+                    ...this.state.value,
+                    statusMaintenance: this.props.facility.status_maintenance,
+                },
+            });
             if (this.props.params.type === 'vehicle') {
                 this.setState({
                     value: {
@@ -294,6 +301,10 @@ class InsertFacility extends React.Component {
             data.append('price', this.state.value.selasar.selasarPrice);
         }
         if (this.props.params.id) {
+            data.append(
+                'status_maintenance',
+                this.state.value.statusMaintenance,
+            );
             this.props.UpdateFacilityFunction(type, data, this.props.params.id);
         } else {
             this.props.InsertFacilityFunction(type, data);
@@ -1439,6 +1450,41 @@ class InsertFacility extends React.Component {
                                     )}
                                 </div>
                             </div>
+                            {this.props.params.id && (
+                                <div className="inner__item">
+                                    <label
+                                        className="form-label"
+                                        style={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                        }}
+                                    >
+                                        Status Maintenance
+                                        <p style={{ color: 'red' }}>*</p>
+                                    </label>
+                                    <select
+                                        className="form-select"
+                                        name="status"
+                                        value={
+                                            this.state.value.statusMaintenance
+                                        }
+                                        onChange={(e) =>
+                                            this.setState({
+                                                value: {
+                                                    ...this.state.value,
+                                                    statusMaintenance:
+                                                        e.target.value,
+                                                },
+                                            })
+                                        }
+                                    >
+                                        <option value={false}>Aktif</option>
+                                        <option value={true}>
+                                            Tidak Aktif
+                                        </option>
+                                    </select>
+                                </div>
+                            )}
                             {this.props.params.id && (
                                 <button
                                     className="btn btn-primary btn-insertfacility"
