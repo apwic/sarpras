@@ -123,6 +123,15 @@ button.picture-btn {
     align-items: center;
     transition: var(--transition);
     box-shadow: var(--shadow);
+    cursor: pointer;
+}
+
+.row__photo:hover {
+    transform: scale(1.02);
+}
+
+.row__photo svg:hover {
+    transform: scale(1.2);
 }
 
 .picture__thumbnail {

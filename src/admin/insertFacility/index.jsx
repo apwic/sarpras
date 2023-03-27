@@ -13,7 +13,12 @@ import { connect } from 'react-redux';
 
 import './style.css';
 import { withRouter } from '../../common/withRouter';
-import { getFacility, getFilters } from '../../booking/action';
+import {
+    getFacility,
+    getFilters,
+    insertNewFacility,
+    updateFacility,
+} from '../../booking/action';
 import LoadingScreen from '../../common/components/loadingScreen';
 
 class InsertFacility extends React.Component {
@@ -38,8 +43,8 @@ class InsertFacility extends React.Component {
                     buildingDescription: '',
                     buildingCapacity: '',
                     buildingPrice: '',
-                    buildingLatitude: '',
-                    buildingLongitude: '',
+                    buildingLatitude: '0.00',
+                    buildingLongitude: '0.00',
                 },
                 room: {
                     roomBuildingId: '',
@@ -56,9 +61,11 @@ class InsertFacility extends React.Component {
                     selasarCapacity: '',
                     selasarPrice: '',
                 },
+                files: [],
             },
             loading: false,
         };
+        this.imageuploaderRef = React.createRef();
     }
 
     componentDidMount() {
@@ -92,6 +99,9 @@ class InsertFacility extends React.Component {
             this.props.params.id &&
             prevProps.facility !== this.props.facility
         ) {
+            for (let i = 0; i < this.props.facility.image.length; i++) {
+                this.urlToBlob(this.props.facility.image[i]);
+            }
             if (this.props.params.type === 'vehicle') {
                 this.setState({
                     value: {
@@ -159,6 +169,29 @@ class InsertFacility extends React.Component {
         }
     }
 
+    urlToBlob = async (url) => {
+        try {
+            const response = await fetch(url);
+            const blob = await response.blob();
+            console.log(blob);
+            console.log(url);
+            this.setState((prevState) => ({
+                value: {
+                    ...prevState.value,
+                    files: [
+                        ...prevState.value.files,
+                        {
+                            blob,
+                            url,
+                        },
+                    ],
+                },
+            }));
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     handleBack = () => {
         if (this.props.params.type === 'vehicle') {
             this.props.navigate('/admin/vehicle');
@@ -168,6 +201,102 @@ class InsertFacility extends React.Component {
             this.props.navigate('/admin/room');
         } else if (this.props.params.type === 'selasar') {
             this.props.navigate('/admin/selasar');
+        }
+    };
+
+    handleFileUpload = (e) => {
+        const files = {
+            blob: e.target.files[0],
+            url: URL.createObjectURL(e.target.files[0]),
+        };
+        this.setState((prevState) => ({
+            value: {
+                ...prevState.value,
+                files: [...prevState.value.files, files],
+            },
+        }));
+    };
+
+    handleDeleteFile = (index) => {
+        this.setState((prevState) => ({
+            value: {
+                ...prevState.value,
+                files: prevState.value.files.filter((_, i) => i !== index),
+            },
+        }));
+    };
+
+    handleSubmit = () => {
+        const { type } = this.props.params;
+        let data = new FormData();
+        for (let i = 0; i < this.state.value.files.length; i++) {
+            data.append('image', this.state.value.files[i].blob);
+        }
+        if (type === 'vehicle') {
+            data.append('type', this.state.value.vehicle.vehicleType);
+            data.append('name', this.state.value.vehicle.vehicleName);
+            data.append('campus_id', this.state.value.vehicle.vehicleCampusId);
+            data.append(
+                'description',
+                this.state.value.vehicle.vehicleDescription,
+            );
+            data.append(
+                'license_number',
+                this.state.value.vehicle.vehicleNumber,
+            );
+            data.append('price', this.state.value.vehicle.vehiclePrice);
+            data.append(
+                'vehicle_capacity',
+                this.state.value.vehicle.vehicleCapacity,
+            );
+            data.append(
+                'sim_category',
+                this.state.value.vehicle.vehicleLicenseType,
+            );
+        } else if (type === 'building') {
+            data.append('name', this.state.value.building.buildingName);
+            data.append(
+                'campus_id',
+                this.state.value.building.buildingCampusId,
+            );
+            data.append(
+                'description',
+                this.state.value.building.buildingDescription,
+            );
+            data.append('capacity', this.state.value.building.buildingCapacity);
+            data.append('price', this.state.value.building.buildingPrice);
+            data.append('latitude', this.state.value.building.buildingLatitude);
+            data.append(
+                'longitude',
+                this.state.value.building.buildingLongitude,
+            );
+        } else if (type === 'room') {
+            data.append(
+                'facility_building_id',
+                this.state.value.room.roomBuildingId,
+            );
+            data.append('room_code', this.state.value.room.roomCode);
+            data.append('name', this.state.value.room.roomName);
+            data.append('description', this.state.value.room.roomDescription);
+            data.append('capacity', this.state.value.room.roomCapacity);
+            data.append('price', this.state.value.room.roomPrice);
+        } else if (type === 'selasar') {
+            data.append(
+                'facility_building_id',
+                this.state.value.selasar.selasarBuildingId,
+            );
+            data.append('name', this.state.value.selasar.selasarName);
+            data.append(
+                'description',
+                this.state.value.selasar.selasarDescription,
+            );
+            data.append('capacity', this.state.value.selasar.selasarCapacity);
+            data.append('price', this.state.value.selasar.selasarPrice);
+        }
+        if (this.props.params.id) {
+            this.props.UpdateFacilityFunction(type, data, this.props.params.id);
+        } else {
+            this.props.InsertFacilityFunction(type, data);
         }
     };
 
@@ -1216,9 +1345,25 @@ class InsertFacility extends React.Component {
                                     Anda bisa menambahkan sampai 10 foto.
                                 </label>
                                 <div className="form-picture-info">
-                                    <button className="btn btn-secondary picture-btn">
+                                    <button
+                                        className="btn btn-secondary picture-btn"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            this.imageuploaderRef.current.click();
+                                        }}
+                                    >
                                         Tambahkan Gambar
                                     </button>
+                                    <input
+                                        className="input-file"
+                                        type="file"
+                                        accept="image/*"
+                                        id="profile-photo-file"
+                                        onChange={this.handleFileUpload}
+                                        ref={this.imageuploaderRef}
+                                        key={Date.now()}
+                                        multiple
+                                    />
                                     <div
                                         style={{
                                             gap: '5px',
@@ -1231,140 +1376,40 @@ class InsertFacility extends React.Component {
                                             className="icon-picture"
                                         />
                                         <label className="form-picture-label">
-                                            4/10
+                                            {this.state.value.files.length}
+                                            /10
                                         </label>
                                     </div>
                                 </div>
                                 <br />
                                 <div className="list__photo">
-                                    <div className="row__photo">
-                                        <img
-                                            className="picture__thumbnail"
-                                            src="https://www.w3schools.com/howto/img_avatar.png"
-                                            alt="profile_picture"
-                                        />
-                                        <p>image.jpg</p>
-                                        <div
-                                            style={{
-                                                margin: '10px',
-                                                marginLeft: 'auto',
-                                            }}
-                                        >
-                                            <FontAwesomeIcon
-                                                icon={faTrashAlt}
-                                                className="icon-trash red"
-                                                style={{
-                                                    width: '15px',
-                                                    height: '15px',
-                                                    color: 'red',
-                                                }}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="row__photo">
-                                        <img
-                                            className="picture__thumbnail"
-                                            src="https://www.w3schools.com/howto/img_avatar.png"
-                                            alt="profile_picture"
-                                        />
-                                        <p>image.jpg</p>
-                                        <div
-                                            style={{
-                                                margin: '10px',
-                                                marginLeft: 'auto',
-                                            }}
-                                        >
-                                            <FontAwesomeIcon
-                                                icon={faTrashAlt}
-                                                className="icon-trash red"
-                                                style={{
-                                                    width: '15px',
-                                                    height: '15px',
-                                                    color: 'red',
-                                                }}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="row__photo">
-                                        <img
-                                            className="picture__thumbnail"
-                                            src="https://www.w3schools.com/howto/img_avatar.png"
-                                            alt="profile_picture"
-                                        />
-                                        <p>image.jpg</p>
-                                        <div
-                                            style={{
-                                                margin: '10px',
-                                                marginLeft: 'auto',
-                                            }}
-                                        >
-                                            <FontAwesomeIcon
-                                                icon={faTrashAlt}
-                                                className="icon-trash red"
-                                                style={{
-                                                    width: '15px',
-                                                    height: '15px',
-                                                    color: 'red',
-                                                }}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="row__photo">
-                                        <img
-                                            className="picture__thumbnail"
-                                            src="https://www.w3schools.com/howto/img_avatar.png"
-                                            alt="profile_picture"
-                                        />
-                                        <p>image.jpg</p>
-                                        <div
-                                            style={{
-                                                margin: '10px',
-                                                marginLeft: 'auto',
-                                            }}
-                                        >
-                                            <FontAwesomeIcon
-                                                icon={faTrashAlt}
-                                                className="icon-trash red"
-                                                style={{
-                                                    width: '15px',
-                                                    height: '15px',
-                                                    color: 'red',
-                                                }}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                                <button
-                                    className="btn btn-secondary"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        this.buttonRef.current.click();
-                                    }}
-                                >
-                                    Tambahkan File
-                                </button>
-                                <input
-                                    className="input-file"
-                                    type="file"
-                                    accept=".pdf"
-                                    id="profile-photo-file"
-                                    onChange={this.handleFileUpload}
-                                    ref={this.buttonRef}
-                                    key={Date.now()}
-                                    multiple
-                                />
-                                <div className="file-uploaded">
-                                    {this.state.file &&
-                                        this.state.file.map((file, index) => (
+                                    {this.state.value.files.map(
+                                        (file, index) => (
                                             <div
-                                                className="file-uploaded-item"
-                                                key={file.name}
-                                                style={{
-                                                    display: 'flex',
-                                                    alignItems: 'center',
+                                                className="row__photo"
+                                                key={
+                                                    file.blob.name
+                                                        ? file.blob.name
+                                                        : file.url
+                                                }
+                                                onClick={() => {
+                                                    window.open(
+                                                        file.url,
+                                                        '_blank',
+                                                    );
                                                 }}
                                             >
-                                                <p>{file.name}</p>
+                                                <img
+                                                    className="picture__thumbnail"
+                                                    src={file.url}
+                                                    alt="image"
+                                                />
+                                                <p>
+                                                    {file.blob.name
+                                                        ? file.blob.name
+                                                        : 'Image ' +
+                                                          (index + 1)}
+                                                </p>
                                                 <div
                                                     style={{
                                                         margin: '10px',
@@ -1373,31 +1418,40 @@ class InsertFacility extends React.Component {
                                                 >
                                                     <FontAwesomeIcon
                                                         icon={faTrashAlt}
-                                                        onClick={() =>
-                                                            this.handleFileDelete(
-                                                                index,
-                                                            )
-                                                        }
                                                         className="icon-trash red"
                                                         style={{
                                                             width: '15px',
                                                             height: '15px',
                                                             color: 'red',
+                                                            transition:
+                                                                'var(--transition)',
+                                                        }}
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            this.handleDeleteFile(
+                                                                index,
+                                                            );
                                                         }}
                                                     />
                                                 </div>
                                             </div>
-                                        ))}
+                                        ),
+                                    )}
                                 </div>
-                                <br />
                             </div>
                             {this.props.params.id && (
-                                <button className="btn btn-primary btn-insertfacility">
+                                <button
+                                    className="btn btn-primary btn-insertfacility"
+                                    onClick={this.handleSubmit}
+                                >
                                     Simpan
                                 </button>
                             )}
                             {!this.props.params.id && (
-                                <button className="btn btn-primary btn-insertfacility">
+                                <button
+                                    className="btn btn-primary btn-insertfacility"
+                                    onClick={this.handleSubmit}
+                                >
                                     Tambahkan
                                 </button>
                             )}
@@ -1420,6 +1474,10 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getFiltersFunction: () => dispatch(getFilters()),
         getFacilityFunction: (type, id) => dispatch(getFacility(type, id)),
+        InsertFacilityFunction: (type, data) =>
+            dispatch(insertNewFacility(type, data)),
+        UpdateFacilityFunction: (type, data, id) =>
+            dispatch(updateFacility(type, data, id)),
     };
 };
 

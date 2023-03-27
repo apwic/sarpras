@@ -220,3 +220,32 @@ export const postBookingApi = async (data, category) => {
         }
     }
 };
+
+export const insertNewFacilityApi = async (data, category) => {
+    const response = await fetch(
+        import.meta.env.VITE_REST_API_URL + '/facility/' + category,
+        {
+            method: 'POST',
+            headers: {
+                Authorization: 'Bearer ' + storage.getToken(),
+            },
+            body: data,
+        },
+    );
+    return await response.json();
+};
+
+export const updateFacilityApi = async (data, category, id) => {
+    console.log('updating', data);
+    const response = await fetch(
+        import.meta.env.VITE_REST_API_URL + '/facility/' + category + '/' + id,
+        {
+            method: 'PUT',
+            headers: {
+                Authorization: 'Bearer ' + storage.getToken(),
+            },
+            body: data,
+        },
+    );
+    return await response.json();
+};

@@ -13,6 +13,8 @@ import {
     GET_FACILITY_CLICKED,
     SET_FACILITY_CLICKED,
     SET_CALENDAR_BOOK,
+    INSERT_NEW_FACILITY,
+    UPDATE_FACILITY,
 } from './actionTypes';
 
 export function openModalFilter() {
@@ -127,5 +129,26 @@ export function setCalendarBook(calendarRef) {
     return {
         type: SET_CALENDAR_BOOK,
         calendarRef,
+    };
+}
+
+export function insertNewFacility(type, data) {
+    return {
+        type: INSERT_NEW_FACILITY,
+        payload: {
+            type,
+            data,
+        },
+    };
+}
+
+export function updateFacility(type, data, id) {
+    return {
+        type: UPDATE_FACILITY,
+        payload: {
+            type,
+            data,
+            id,
+        },
     };
 }
