@@ -19,6 +19,8 @@ import ManageVehicle from '../admin/vehicle';
 import ManageBuilding from '../admin/building';
 import ManageRoom from '../admin/room';
 import ManageSelasar from '../admin/selasar';
+import InsertFacility from '../admin/insertFacility';
+import LoadingScreen from '../common/components/loadingScreen';
 import FacilityDetail from '../booking/facilityDetail';
 import MyBooking from '../mybooking';
 import MyBookingDetail from '../mybooking/detail';
@@ -27,19 +29,17 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            user: {},
+            user: null,
         };
     }
 
     componentDidMount() {
         if (storage.getToken() !== null) {
             this.props.getUserFunction();
-        }
-        this.intervalId = setInterval(() => {
-            if (storage.getToken() !== null) {
+            this.intervalId = setInterval(() => {
                 this.props.getUserFunction();
-            }
-        }, 300000);
+            }, 300000);
+        }
     }
 
     componentDidUpdate(prevProps) {
@@ -62,8 +62,8 @@ class Home extends React.Component {
                 </BrowserRouter>
             );
         }
-        if (this.state.user === undefined) {
-            return <div />;
+        if (this.state.user === null) {
+            return <LoadingScreen />;
         }
         return (
             <div>
@@ -228,6 +228,30 @@ class Home extends React.Component {
                                         <Topbar />
                                         <Navbar />
                                         <ManageSelasar />
+                                    </div>
+                                }
+                            />
+                        )}
+                        {this.state.user.role === roleConstant.ADMIN.name && (
+                            <Route
+                                path="/admin/insert/:type"
+                                element={
+                                    <div>
+                                        <Topbar />
+                                        <Navbar />
+                                        <InsertFacility />
+                                    </div>
+                                }
+                            />
+                        )}
+                        {this.state.user.role === roleConstant.ADMIN.name && (
+                            <Route
+                                path="/admin/edit/:type/:id"
+                                element={
+                                    <div>
+                                        <Topbar />
+                                        <Navbar />
+                                        <InsertFacility />
                                     </div>
                                 }
                             />

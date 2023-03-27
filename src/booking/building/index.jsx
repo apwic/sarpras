@@ -4,10 +4,16 @@ import {
     faBuilding,
     faFilter,
     faSearch,
+    faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import { Pagination } from 'react-bootstrap';
-import { closeModalFilter, getFacilities, openModalFilter } from '../action';
+import {
+    closeModalFilter,
+    getFacilities,
+    getFilters,
+    openModalFilter,
+} from '../action';
 import { connect } from 'react-redux';
 import FilterModal from '../../common/components/filterModal';
 import BookingFacilityList from '../../common/components/bookingFacilityList';
@@ -22,16 +28,19 @@ class BookingBuilding extends React.Component {
             currentPage: 1,
             maxPage: 1,
             q: '',
+            filters: null,
+            appliedFilters: [],
         };
     }
     componentDidMount() {
         this.props.getFacilitiesFunction(
             'buildings',
-            1,
+            this.state.currentPage,
             9,
             this.state.q,
-            'status_maintenance=false',
+            this.convertToFilterString(this.state.appliedFilters),
         );
+        this.props.getFiltersFunction();
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -50,21 +59,54 @@ class BookingBuilding extends React.Component {
                 this.state.currentPage,
                 9,
                 this.state.q,
-                'status_maintenance=false',
+                this.convertToFilterString(this.state.appliedFilters),
             );
+        }
+        if (prevProps.filters !== this.props.filters) {
+            this.setState({
+                filters: [
+                    {
+                        id: 0,
+                        name: 'campus_list',
+                        display: 'Kampus',
+                        options: this.props.filters.campus_list,
+                    },
+                ],
+            });
         }
     }
 
-    handleFilterOption = (option) => {
-        option.forEach((optionFilter) => {
-            if (optionFilter === 1) {
-                console.log('PRICE');
-            } else if (optionFilter === 2) {
-                console.log('CAPACITY');
-            } else if (optionFilter === 3) {
-                console.log('PLATE NUMBER');
-            }
+    handleFilterOption = (filters) => {
+        let filterString = this.convertToFilterString(filters);
+        this.setState({
+            facilities: null,
+            appliedFilters: filters,
+            currentPage: 1,
         });
+        this.props.getFacilitiesFunction(
+            'buildings',
+            1,
+            9,
+            this.state.q,
+            filterString,
+        );
+    };
+
+    convertToFilterString = (filters) => {
+        if (filters.length === 0) {
+            return 'status_maintenance=false';
+        }
+        let filterString = 'status_maintenance=false';
+        for (let i = 0; i < filters.length; i++) {
+            if (filters[i]) {
+                if (filterString !== '') {
+                    filterString += '&';
+                }
+                filterString += this.state.filters[i].name + '=' + filters[i];
+            }
+        }
+        filterString = filterString.replace('campus_list', 'campus_id');
+        return filterString;
     };
 
     handleSearch = (event) => {
@@ -76,7 +118,7 @@ class BookingBuilding extends React.Component {
             1,
             9,
             event.target.value,
-            'status_maintenance=false',
+            this.convertToFilterString(this.state.appliedFilters),
         );
     };
 
@@ -123,6 +165,7 @@ class BookingBuilding extends React.Component {
                                 type="text"
                                 name="bookingSearch"
                                 placeholder="Pencarian"
+                                value={this.state.q}
                                 onChange={this.handleSearch}
                             />
                             <FontAwesomeIcon
@@ -131,6 +174,49 @@ class BookingBuilding extends React.Component {
                             />
                         </div>
                         <div className="filter__items">
+                            {this.state.appliedFilters &&
+                                this.state.appliedFilters.map(
+                                    (appliedFilters, index) => {
+                                        return (
+                                            appliedFilters && (
+                                                <button
+                                                    className="filter-item-label"
+                                                    key={appliedFilters}
+                                                    onClick={() => {
+                                                        let newFilters =
+                                                            this.state
+                                                                .appliedFilters;
+                                                        delete newFilters[
+                                                            index
+                                                        ];
+                                                        this.handleFilterOption(
+                                                            newFilters,
+                                                        );
+                                                    }}
+                                                >
+                                                    {
+                                                        this.state.filters[
+                                                            index
+                                                        ].display
+                                                    }{' '}
+                                                    :{' '}
+                                                    {
+                                                        this.state.filters[
+                                                            index
+                                                        ].options.find(
+                                                            (obj) =>
+                                                                obj.id ===
+                                                                appliedFilters,
+                                                        ).name
+                                                    }{' '}
+                                                    <FontAwesomeIcon
+                                                        icon={faTimes}
+                                                    />
+                                                </button>
+                                            )
+                                        );
+                                    },
+                                )}
                             <FontAwesomeIcon
                                 icon={faFilter}
                                 onClick={() => this.props.openModalFunction()}
@@ -145,7 +231,11 @@ class BookingBuilding extends React.Component {
                             handleFacilityClicked={this.handleFacilityClicked}
                         />
                     </div>
-                    <FilterModal handleFilterOption={this.handleFilterOption} />
+                    <FilterModal
+                        filterlist={this.state.filters}
+                        filters={this.state.appliedFilters}
+                        filtersubmitfunction={this.handleFilterOption}
+                    />
                 </div>
                 <Pagination>
                     <Pagination.First
@@ -187,6 +277,7 @@ const mapStateToProps = (state) => {
     return {
         filterModalOpen: state.facility.filterModalOpen,
         facilities: state.facility.facilities,
+        filters: state.facility.filters,
     };
 };
 
@@ -196,6 +287,7 @@ const mapDispatchToProps = (dispatch) => {
         closeModalFunction: () => dispatch(closeModalFilter()),
         getFacilitiesFunction: (type, page, limit, query, filters) =>
             dispatch(getFacilities(type, page, limit, query, filters)),
+        getFiltersFunction: () => dispatch(getFilters()),
     };
 };
 

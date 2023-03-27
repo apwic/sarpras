@@ -187,7 +187,6 @@ class FacilityDetail extends React.Component {
                                     spaceBetween={50}
                                     slidesPerView={1}
                                     loop={true}
-                                    onSwiper={(swiper) => console.log(swiper)}
                                     modules={[Pagination, Navigation]}
                                     pagination={{
                                         el: '.swiper-pagination',

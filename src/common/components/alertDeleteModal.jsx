@@ -23,7 +23,7 @@ class AlertDeleteModal extends React.Component {
                 centered
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Hapus Role</Modal.Title>
+                    <Modal.Title>Konfirmasi Penghapusan</Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body>

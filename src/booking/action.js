@@ -3,11 +3,18 @@ import {
     CLOSE_MODAL_FILTER,
     GET_FACILITIES,
     SET_FACILITIES,
+    GET_FACILITY,
+    SET_FACILITY,
+    DELETE_FACILITIES,
+    GET_FILTERS,
+    SET_FILTERS,
     POST_BOOKING_START,
     POST_BOOKING_SUCCESS,
     GET_FACILITY_CLICKED,
     SET_FACILITY_CLICKED,
     SET_CALENDAR_BOOK,
+    INSERT_NEW_FACILITY,
+    UPDATE_FACILITY,
 } from './actionTypes';
 
 export function openModalFilter() {
@@ -42,6 +49,59 @@ export function setFacilities(data) {
     };
 }
 
+export function getFacility(type, id) {
+    return {
+        type: GET_FACILITY,
+        payload: {
+            type,
+            id,
+        },
+    };
+}
+
+export function setFacility(data) {
+    return {
+        type: SET_FACILITY,
+        payload: data,
+    };
+}
+
+export function deleteFacility(type, id, page, query, filters) {
+    return {
+        type: DELETE_FACILITIES,
+        payload: {
+            type,
+            id,
+            page,
+            query,
+            filters,
+        },
+    };
+}
+
+export function getFacilityClicked(id, category) {
+    return {
+        type: GET_FACILITY_CLICKED,
+        payload: {
+            id,
+            category,
+        },
+    };
+}
+
+export function getFilters() {
+    return {
+        type: GET_FILTERS,
+    };
+}
+
+export function setFilters(data) {
+    return {
+        type: SET_FILTERS,
+        payload: data,
+    };
+}
+
 export function postBookingStart(data, category) {
     return {
         type: POST_BOOKING_START,
@@ -58,16 +118,6 @@ export function postBookingSuccess() {
     };
 }
 
-export function getFacilityClicked(id, category) {
-    return {
-        type: GET_FACILITY_CLICKED,
-        payload: {
-            id,
-            category,
-        },
-    };
-}
-
 export function setFacilityClicked(response) {
     return {
         type: SET_FACILITY_CLICKED,
@@ -79,5 +129,26 @@ export function setCalendarBook(calendarRef) {
     return {
         type: SET_CALENDAR_BOOK,
         calendarRef,
+    };
+}
+
+export function insertNewFacility(type, data) {
+    return {
+        type: INSERT_NEW_FACILITY,
+        payload: {
+            type,
+            data,
+        },
+    };
+}
+
+export function updateFacility(type, data, id) {
+    return {
+        type: UPDATE_FACILITY,
+        payload: {
+            type,
+            data,
+            id,
+        },
     };
 }

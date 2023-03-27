@@ -1,17 +1,25 @@
 import '../style.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTruck, faFilter, faSearch } from '@fortawesome/free-solid-svg-icons';
+import {
+    faTruck,
+    faFilter,
+    faSearch,
+    faTimes,
+} from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import { Pagination } from 'react-bootstrap';
 import {
     closeModalFilter,
+    deleteFacility,
     getFacilities,
+    getFilters,
     openModalFilter,
 } from '../../booking/action';
 import { connect } from 'react-redux';
 import FilterModal from '../../common/components/filterModal';
 import AdminFacilityList from '../../common/components/adminFacilityList';
 import LoadingScreen from '../../common/components/loadingScreen';
+import { withRouter } from '../../common/withRouter';
 
 class ManageVehicle extends React.Component {
     constructor(props) {
@@ -21,6 +29,8 @@ class ManageVehicle extends React.Component {
             currentPage: 1,
             maxPage: 1,
             q: '',
+            filters: null,
+            appliedFilters: [],
         };
     }
     componentDidMount() {
@@ -29,8 +39,9 @@ class ManageVehicle extends React.Component {
             this.state.currentPage,
             9,
             this.state.q,
-            '',
+            this.convertToFilterString(this.state.appliedFilters),
         );
+        this.props.getFiltersFunction();
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -49,28 +60,80 @@ class ManageVehicle extends React.Component {
                 this.state.currentPage,
                 9,
                 this.state.q,
-                '',
+                this.convertToFilterString(this.state.appliedFilters),
             );
+        }
+        if (prevProps.filters !== this.props.filters) {
+            this.setState({
+                filters: [
+                    {
+                        id: 0,
+                        name: 'campus_list',
+                        display: 'Kampus',
+                        options: this.props.filters.campus_list,
+                    },
+                    {
+                        id: 1,
+                        name: 'vehicle_type',
+                        display: 'Jenis',
+                        options: this.props.filters.vehicle_type,
+                    },
+                    {
+                        id: 2,
+                        name: 'sim_category',
+                        display: 'SIM',
+                        options: this.props.filters.sim_category,
+                    },
+                ],
+            });
         }
     }
 
-    handleFilterOption = (option) => {
-        option.forEach((optionFilter) => {
-            if (optionFilter === 1) {
-                console.log('PRICE');
-            } else if (optionFilter === 2) {
-                console.log('CAPACITY');
-            } else if (optionFilter === 3) {
-                console.log('PLATE NUMBER');
-            }
+    handleFilterOption = (filters) => {
+        let filterString = this.convertToFilterString(filters);
+        this.setState({
+            facilities: null,
+            appliedFilters: filters,
+            currentPage: 1,
         });
+        this.props.getFacilitiesFunction(
+            'vehicles',
+            1,
+            9,
+            this.state.q,
+            filterString,
+        );
+    };
+
+    convertToFilterString = (filters) => {
+        if (filters.length === 0) {
+            return '';
+        }
+        let filterString = '';
+        for (let i = 0; i < filters.length; i++) {
+            if (filters[i]) {
+                if (filterString !== '') {
+                    filterString += '&';
+                }
+                filterString += this.state.filters[i].name + '=' + filters[i];
+            }
+        }
+        filterString = filterString.replace('campus_list', 'campus_id');
+        filterString = filterString.replace('vehicle_type', 'type');
+        return filterString;
     };
 
     handleSearch = (event) => {
         this.setState({
             q: event.target.value,
         });
-        this.props.getFacilitiesFunction('vehicles', 1, 9, event.target.value);
+        this.props.getFacilitiesFunction(
+            'vehicles',
+            1,
+            9,
+            event.target.value,
+            this.convertToFilterString(this.state.appliedFilters),
+        );
     };
 
     renderPaginationNumbers = () => {
@@ -91,6 +154,19 @@ class ManageVehicle extends React.Component {
         });
     };
 
+    handleDeleteFacility = (id) => {
+        this.setState({
+            facilities: null,
+        });
+        this.props.deleteFacilityFunction(
+            'vehicle',
+            id,
+            this.state.currentPage,
+            this.state.q,
+            this.convertToFilterString(this.state.appliedFilters),
+        );
+    };
+
     render() {
         if (this.state.facilities === null) {
             return <LoadingScreen />;
@@ -102,7 +178,7 @@ class ManageVehicle extends React.Component {
                         icon={faTruck}
                         className="icon-booking-facility"
                     />
-                    <h1>Peminjaman Kendaraan</h1>
+                    <h1>Manajemen Kendaraan</h1>
                 </div>
                 <div className="container-booking-facility__body">
                     <div className="search__bar">
@@ -112,6 +188,7 @@ class ManageVehicle extends React.Component {
                                 type="text"
                                 name="bookingSearch"
                                 placeholder="Pencarian"
+                                value={this.state.q}
                                 onChange={this.handleSearch}
                             />
                             <FontAwesomeIcon
@@ -120,13 +197,61 @@ class ManageVehicle extends React.Component {
                             />
                         </div>
                         <div className="filter__items">
+                            {this.state.appliedFilters &&
+                                this.state.appliedFilters.map(
+                                    (appliedFilters, index) => {
+                                        return (
+                                            appliedFilters && (
+                                                <button
+                                                    className="filter-item-label"
+                                                    key={appliedFilters}
+                                                    onClick={() => {
+                                                        let newFilters =
+                                                            this.state
+                                                                .appliedFilters;
+                                                        delete newFilters[
+                                                            index
+                                                        ];
+                                                        this.handleFilterOption(
+                                                            newFilters,
+                                                        );
+                                                    }}
+                                                >
+                                                    {
+                                                        this.state.filters[
+                                                            index
+                                                        ].display
+                                                    }{' '}
+                                                    :{' '}
+                                                    {
+                                                        this.state.filters[
+                                                            index
+                                                        ].options.find(
+                                                            (obj) =>
+                                                                obj.id ===
+                                                                appliedFilters,
+                                                        ).name
+                                                    }{' '}
+                                                    <FontAwesomeIcon
+                                                        icon={faTimes}
+                                                    />
+                                                </button>
+                                            )
+                                        );
+                                    },
+                                )}
                             <FontAwesomeIcon
                                 icon={faFilter}
                                 onClick={() => this.props.openModalFunction()}
                                 className="icon-filter-item"
                             />
                         </div>
-                        <button className="btn btn-primary btn-add">
+                        <button
+                            className="btn btn-primary btn-add"
+                            onClick={() =>
+                                this.props.navigate('/admin/insert/vehicle')
+                            }
+                        >
                             + Tambah Kendaraan
                         </button>
                     </div>
@@ -134,9 +259,14 @@ class ManageVehicle extends React.Component {
                         <AdminFacilityList
                             facilities={this.state.facilities.rows}
                             type="vehicles"
+                            handledelete={this.handleDeleteFacility}
                         />
                     </div>
-                    <FilterModal handleFilterOption={this.handleFilterOption} />
+                    <FilterModal
+                        filterlist={this.state.filters}
+                        filters={this.state.appliedFilters}
+                        filtersubmitfunction={this.handleFilterOption}
+                    />
                 </div>
                 <Pagination>
                     <Pagination.First
@@ -178,6 +308,7 @@ const mapStateToProps = (state) => {
     return {
         filterModalOpen: state.facility.filterModalOpen,
         facilities: state.facility.facilities,
+        filters: state.facility.filters,
     };
 };
 
@@ -185,9 +316,14 @@ const mapDispatchToProps = (dispatch) => {
     return {
         openModalFunction: () => dispatch(openModalFilter()),
         closeModalFunction: () => dispatch(closeModalFilter()),
-        getFacilitiesFunction: (type, page, limit, query) =>
-            dispatch(getFacilities(type, page, limit, query)),
+        getFacilitiesFunction: (type, page, limit, query, filters) =>
+            dispatch(getFacilities(type, page, limit, query, filters)),
+        deleteFacilityFunction: (type, id, page, query, filters) =>
+            dispatch(deleteFacility(type, id, page, query, filters)),
+        getFiltersFunction: () => dispatch(getFilters()),
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ManageVehicle);
+export default withRouter(
+    connect(mapStateToProps, mapDispatchToProps)(ManageVehicle),
+);

@@ -61,10 +61,13 @@
 
 .filter__items {
     margin-left: auto;
+    display: flex;
+    gap: 10px;
+    align-items: center;
 }
 
 .btn-add {
-    margin-left: 20px;
+    margin-left: 15px;
 }
 
 .icon-filter-item {
@@ -101,6 +104,7 @@
     height: 100%;
     width: 100%;
     border-radius: var(--corner-radius-large);
+    object-fit: cover;
 }
 
 .item-booking-facility__body {
@@ -189,9 +193,34 @@ button.filter-item{
     border-radius: 25px;
     height: 35px;
     align-items: center;
+    gap: 15px;
 }
 
 button.filter-item.selected{
     background-color: var(--color-background);
     transform: scale(1.02);
+}
+
+button.filter-item-label{
+    background-color: var(--color-background-light);
+    border: 1px solid var(--color-primary);
+    color: var(--color-primary);
+    display: flex;
+    border-radius: 25px;
+    height: 25px;
+    align-items: center;
+    gap: 5px;
+    padding: 0 10px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+button.filter-item-label svg {
+    transition: var(--transition);
+    height: 15px;
+    width: 15px;
+}
+
+button.filter-item-label:hover svg {
+    color: #D70D0D;
 }

@@ -128,7 +128,7 @@
     width: 100%;
 }
 
-button.back-btn {
+.container-booking-facilit button.back-btn {
     display: flex;
     background-color: transparent;
     border: none;

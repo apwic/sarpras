@@ -42,7 +42,21 @@ class BookingFacilityList extends React.Component {
                     <div className="item-booking-facility__body">
                         <div className="item-description">
                             <h2>{facility.name}</h2>
-                            <p>Kampus {facility.campus.name}</p>
+                            {(this.props.type === 'rooms' ||
+                                this.props.type === 'selasar') && (
+                                <p>Gedung {facility.facility_building.name}</p>
+                            )}
+                            {(this.props.type === 'rooms' ||
+                                this.props.type === 'selasar') && (
+                                <p>
+                                    Kampus{' '}
+                                    {facility.facility_building.campus.name}
+                                </p>
+                            )}
+                            {(this.props.type === 'vehicle' ||
+                                this.props.type === 'building') && (
+                                <p>Kampus {facility.campus.name}</p>
+                            )}
                             {this.props.type === 'vehicles' && (
                                 <div>
                                     <p>{facility.license_number}</p>
