@@ -73,6 +73,7 @@ h1 {
   font-size: var(--font-size-title);
   line-height: 32.7px;
   font-weight: 700;
+  margin-bottom: unset;
 }
 
 h2 {

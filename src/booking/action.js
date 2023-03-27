@@ -3,6 +3,11 @@ import {
     CLOSE_MODAL_FILTER,
     GET_FACILITIES,
     SET_FACILITIES,
+    GET_FACILITY,
+    SET_FACILITY,
+    DELETE_FACILITIES,
+    GET_FILTERS,
+    SET_FILTERS,
     POST_BOOKING_START,
     POST_BOOKING_SUCCESS,
     GET_FACILITY_CLICKED,
@@ -38,6 +43,49 @@ export function getFacilities(type, page, limit, query, filters) {
 export function setFacilities(data) {
     return {
         type: SET_FACILITIES,
+        payload: data,
+    };
+}
+
+export function getFacility(type, id) {
+    return {
+        type: GET_FACILITY,
+        payload: {
+            type,
+            id,
+        },
+    };
+}
+
+export function setFacility(data) {
+    return {
+        type: SET_FACILITY,
+        payload: data,
+    };
+}
+
+export function deleteFacility(type, id, page, query, filters) {
+    return {
+        type: DELETE_FACILITIES,
+        payload: {
+            type,
+            id,
+            page,
+            query,
+            filters,
+        },
+    };
+}
+
+export function getFilters() {
+    return {
+        type: GET_FILTERS,
+    };
+}
+
+export function setFilters(data) {
+    return {
+        type: SET_FILTERS,
         payload: data,
     };
 }

@@ -11,11 +11,67 @@ export const getFacilitiesApi = (payload) => {
                 payload.page +
                 '&limit=' +
                 payload.limit +
+                (payload.filters !== '' ? '&' + payload.filters : '') +
                 '&q=' +
                 payload.query,
-            payload.filters !== '' ? '&' + payload.filters : '',
         )
         .headers({ 'Content-Type': 'application/json' })
+        .get()
+        .error(400, (error) => {
+            return JSON.parse(error.message);
+        })
+        .json((response) => {
+            return response;
+        });
+};
+
+export const getFacilityApi = (payload) => {
+    return wretch()
+        .url(
+            import.meta.env.VITE_REST_API_URL +
+                '/facility/' +
+                payload.type +
+                '/' +
+                payload.id,
+        )
+        .headers({
+            Authorization: 'Bearer ' + storage.getToken(),
+            'Content-Type': 'application/json',
+        })
+        .get()
+        .error(400, (error) => {
+            return JSON.parse(error.message);
+        })
+        .json((response) => {
+            return response;
+        });
+};
+
+export const deleteFacilityApi = (payload) => {
+    return wretch()
+        .url(
+            import.meta.env.VITE_REST_API_URL +
+                '/facility/' +
+                payload.type +
+                '/' +
+                payload.id,
+        )
+        .headers({
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + storage.getToken(),
+        })
+        .delete()
+        .error(400, (error) => {
+            return JSON.parse(error.message);
+        })
+        .json((response) => {
+            return response;
+        });
+};
+
+export const getFiltersApi = () => {
+    return wretch()
+        .url(import.meta.env.VITE_REST_API_URL + '/facility/filter')
         .get()
         .error(400, (error) => {
             return JSON.parse(error.message);
