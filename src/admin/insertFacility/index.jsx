@@ -42,41 +42,41 @@ class InsertFacility extends React.Component {
             type: null,
             value: {
                 vehicle: {
-                    vehicleType: '',
-                    vehicleName: '',
-                    vehicleCampusId: '',
-                    vehicleDescription: '',
-                    vehicleNumber: '',
-                    vehiclePrice: '',
-                    vehicleCapacity: '',
-                    vehicleLicenseType: '',
+                    type: '',
+                    name: '',
+                    campus_id: '',
+                    description: '',
+                    license_number: '',
+                    price: '',
+                    vehicle_capacity: '',
+                    sim_category: '',
                 },
                 building: {
-                    buildingName: '',
-                    buildingCampusId: '',
-                    buildingDescription: '',
-                    buildingCapacity: '',
-                    buildingPrice: '',
-                    buildingLatitude: '',
-                    buildingLongitude: '',
+                    name: '',
+                    campus_id: '',
+                    description: '',
+                    capacity: '',
+                    price: '',
+                    latitude: '',
+                    longitude: '',
                 },
                 room: {
-                    roomBuildingId: '',
-                    roomCode: '',
-                    roomName: '',
-                    roomDescription: '',
-                    roomCapacity: '',
-                    roomPrice: '',
+                    facility_building_id: '',
+                    room_code: '',
+                    name: '',
+                    description: '',
+                    capacity: '',
+                    price: '',
                 },
                 selasar: {
-                    selasarBuildingId: '',
-                    selasarName: '',
-                    selasarDescription: '',
-                    selasarCapacity: '',
-                    selasarPrice: '',
+                    facility_building_id: '',
+                    name: '',
+                    description: '',
+                    capacity: '',
+                    price: '',
                 },
                 files: [],
-                statusMaintenance: false,
+                status_maintenance: false,
             },
             loading: false,
         };
@@ -120,7 +120,7 @@ class InsertFacility extends React.Component {
             this.setState({
                 value: {
                     ...this.state.value,
-                    statusMaintenance: this.props.facility.status_maintenance,
+                    status_maintenance: this.props.facility.status_maintenance,
                 },
             });
             if (this.props.params.type === 'vehicle') {
@@ -128,16 +128,15 @@ class InsertFacility extends React.Component {
                     value: {
                         ...this.state.value,
                         vehicle: {
-                            vehicleType: this.props.facility.type,
-                            vehicleName: this.props.facility.name,
-                            vehicleCampusId: this.props.facility.campus.id,
-                            vehicleDescription: this.props.facility.description,
-                            vehicleNumber: this.props.facility.license_number,
-                            vehiclePrice: this.props.facility.price,
-                            vehicleCapacity:
+                            type: this.props.facility.type,
+                            name: this.props.facility.name,
+                            campus_id: this.props.facility.campus.id,
+                            description: this.props.facility.description,
+                            license_number: this.props.facility.license_number,
+                            price: this.props.facility.price,
+                            vehicle_capacity:
                                 this.props.facility.vehicle_capacity,
-                            vehicleLicenseType:
-                                this.props.facility.sim_category,
+                            sim_category: this.props.facility.sim_category,
                         },
                     },
                 });
@@ -146,15 +145,14 @@ class InsertFacility extends React.Component {
                     value: {
                         ...this.state.value,
                         building: {
-                            buildingName: this.props.facility.name,
-                            buildingCampusId:
-                                this.props.facility.campus.id.toString(),
+                            name: this.props.facility.name,
+                            campus_id: this.props.facility.campus.id.toString(),
                             buildingDescription:
                                 this.props.facility.description,
-                            buildingCapacity: this.props.facility.capacity,
-                            buildingPrice: this.props.facility.price,
-                            buildingLatitude: this.props.facility.latitude,
-                            buildingLongitude: this.props.facility.longitude,
+                            capacity: this.props.facility.capacity,
+                            price: this.props.facility.price,
+                            latitude: this.props.facility.latitude,
+                            longitude: this.props.facility.longitude,
                         },
                     },
                 });
@@ -163,12 +161,13 @@ class InsertFacility extends React.Component {
                     value: {
                         ...this.state.value,
                         room: {
-                            roomBuildingId: this.props.facility.building.id,
-                            roomCode: this.props.facility.room_code,
-                            roomName: this.props.facility.name,
-                            roomDescription: this.props.facility.description,
-                            roomCapacity: this.props.facility.capacity,
-                            roomPrice: this.props.facility.price,
+                            facility_building_id:
+                                this.props.facility.building.id,
+                            room_code: this.props.facility.room_code,
+                            name: this.props.facility.name,
+                            description: this.props.facility.description,
+                            capacity: this.props.facility.capacity,
+                            price: this.props.facility.price,
                         },
                     },
                 });
@@ -177,11 +176,12 @@ class InsertFacility extends React.Component {
                     value: {
                         ...this.state.value,
                         selasar: {
-                            selasarBuildingId: this.props.facility.building.id,
-                            selasarName: this.props.facility.name,
-                            selasarDescription: this.props.facility.description,
-                            selasarCapacity: this.props.facility.capacity,
-                            selasarPrice: this.props.facility.price,
+                            facility_building_id:
+                                this.props.facility.building.id,
+                            name: this.props.facility.name,
+                            description: this.props.facility.description,
+                            capacity: this.props.facility.capacity,
+                            price: this.props.facility.price,
                         },
                     },
                 });
@@ -247,76 +247,24 @@ class InsertFacility extends React.Component {
 
     handleSubmit = () => {
         const { type } = this.props.params;
-        let data = new FormData();
+        let data = { image: [] };
         for (let i = 0; i < this.state.value.files.length; i++) {
-            data.append('image', this.state.value.files[i].blob);
+            data.image.push(this.state.value.files[i].blob);
         }
         if (type === 'vehicle') {
-            data.append('type', this.state.value.vehicle.vehicleType);
-            data.append('name', this.state.value.vehicle.vehicleName);
-            data.append('campus_id', this.state.value.vehicle.vehicleCampusId);
-            data.append(
-                'description',
-                this.state.value.vehicle.vehicleDescription,
-            );
-            data.append(
-                'license_number',
-                this.state.value.vehicle.vehicleNumber,
-            );
-            data.append('price', this.state.value.vehicle.vehiclePrice);
-            data.append(
-                'vehicle_capacity',
-                this.state.value.vehicle.vehicleCapacity,
-            );
-            data.append(
-                'sim_category',
-                this.state.value.vehicle.vehicleLicenseType,
-            );
+            data = { ...data, ...this.state.value.vehicle };
         } else if (type === 'building') {
-            data.append('name', this.state.value.building.buildingName);
-            data.append(
-                'campus_id',
-                this.state.value.building.buildingCampusId,
-            );
-            data.append(
-                'description',
-                this.state.value.building.buildingDescription,
-            );
-            data.append('capacity', this.state.value.building.buildingCapacity);
-            data.append('price', this.state.value.building.buildingPrice);
-            data.append('latitude', this.state.value.building.buildingLatitude);
-            data.append(
-                'longitude',
-                this.state.value.building.buildingLongitude,
-            );
+            data = { ...data, ...this.state.value.building };
         } else if (type === 'room') {
-            data.append(
-                'facility_building_id',
-                this.state.value.room.roomBuildingId,
-            );
-            data.append('room_code', this.state.value.room.roomCode);
-            data.append('name', this.state.value.room.roomName);
-            data.append('description', this.state.value.room.roomDescription);
-            data.append('capacity', this.state.value.room.roomCapacity);
-            data.append('price', this.state.value.room.roomPrice);
+            data = { ...data, ...this.state.value.room };
         } else if (type === 'selasar') {
-            data.append(
-                'facility_building_id',
-                this.state.value.selasar.selasarBuildingId,
-            );
-            data.append('name', this.state.value.selasar.selasarName);
-            data.append(
-                'description',
-                this.state.value.selasar.selasarDescription,
-            );
-            data.append('capacity', this.state.value.selasar.selasarCapacity);
-            data.append('price', this.state.value.selasar.selasarPrice);
+            data = { ...data, ...this.state.value.selasar };
         }
         if (this.props.params.id) {
-            data.append(
-                'status_maintenance',
-                this.state.value.statusMaintenance,
-            );
+            data = {
+                ...data,
+                status_maintenance: this.state.value.status_maintenance,
+            };
             this.props.UpdateFacilityFunction(type, data, this.props.params.id);
         } else {
             this.props.InsertFacilityFunction(type, data);
@@ -407,7 +355,7 @@ class InsertFacility extends React.Component {
                                 <form>
                                     <label
                                         className="form-label"
-                                        htmlFor="vehicleType"
+                                        htmlFor="type"
                                         style={{
                                             display: 'flex',
                                             alignItems: 'center',
@@ -418,15 +366,12 @@ class InsertFacility extends React.Component {
                                     </label>
                                     <select
                                         className={`form-select ${
-                                            this.state.value.vehicle
-                                                .vehicleType === ''
+                                            this.state.value.vehicle.type === ''
                                                 ? 'form-select-hidden'
                                                 : ''
                                         }`}
-                                        name="vehicleType"
-                                        value={
-                                            this.state.value.vehicle.vehicleType
-                                        }
+                                        name="type"
+                                        value={this.state.value.vehicle.type}
                                         onChange={(e) =>
                                             this.setState({
                                                 value: {
@@ -434,8 +379,7 @@ class InsertFacility extends React.Component {
                                                     vehicle: {
                                                         ...this.state.value
                                                             .vehicle,
-                                                        vehicleType:
-                                                            e.target.value,
+                                                        type: e.target.value,
                                                     },
                                                 },
                                             })
@@ -459,7 +403,7 @@ class InsertFacility extends React.Component {
                                     <br />
                                     <label
                                         className="form-label"
-                                        htmlFor="vehicleName"
+                                        htmlFor="name"
                                         style={{
                                             display: 'flex',
                                             alignItems: 'center',
@@ -472,11 +416,9 @@ class InsertFacility extends React.Component {
                                         required
                                         className="form-control"
                                         type="text"
-                                        name="vehicleName"
+                                        name="name"
                                         placeholder="Masukkan nama kendaraan"
-                                        value={
-                                            this.state.value.vehicle.vehicleName
-                                        }
+                                        value={this.state.value.vehicle.name}
                                         onChange={(e) =>
                                             this.setState({
                                                 value: {
@@ -484,8 +426,7 @@ class InsertFacility extends React.Component {
                                                     vehicle: {
                                                         ...this.state.value
                                                             .vehicle,
-                                                        vehicleName:
-                                                            e.target.value,
+                                                        name: e.target.value,
                                                     },
                                                 },
                                             })
@@ -494,7 +435,7 @@ class InsertFacility extends React.Component {
                                     <br />
                                     <label
                                         className="form-label"
-                                        htmlFor="vehicleCampusId"
+                                        htmlFor="campus_id"
                                         style={{
                                             display: 'flex',
                                             alignItems: 'center',
@@ -507,14 +448,13 @@ class InsertFacility extends React.Component {
                                         required
                                         className={`form-select ${
                                             this.state.value.vehicle
-                                                .vehicleCampusId === ''
+                                                .campus_id === ''
                                                 ? 'form-select-hidden'
                                                 : ''
                                         }`}
-                                        name="vehicleCampusId"
+                                        name="campus_id"
                                         value={
-                                            this.state.value.vehicle
-                                                .vehicleCampusId
+                                            this.state.value.vehicle.campus_id
                                         }
                                         onChange={(e) =>
                                             this.setState({
@@ -523,7 +463,7 @@ class InsertFacility extends React.Component {
                                                     vehicle: {
                                                         ...this.state.value
                                                             .vehicle,
-                                                        vehicleCampusId:
+                                                        campus_id:
                                                             e.target.value,
                                                     },
                                                 },
@@ -564,8 +504,7 @@ class InsertFacility extends React.Component {
                                         rows="8"
                                         placeholder="Masukkan deskripsi"
                                         value={
-                                            this.state.value.vehicle
-                                                .vehicleDescription
+                                            this.state.value.vehicle.description
                                         }
                                         onChange={(e) =>
                                             this.setState({
@@ -574,7 +513,7 @@ class InsertFacility extends React.Component {
                                                     vehicle: {
                                                         ...this.state.value
                                                             .vehicle,
-                                                        vehicleDescription:
+                                                        description:
                                                             e.target.value,
                                                     },
                                                 },
@@ -601,7 +540,7 @@ class InsertFacility extends React.Component {
                                         placeholder="Masukkan Nomor Polisi Kendaraan"
                                         value={
                                             this.state.value.vehicle
-                                                .vehicleNumber
+                                                .license_number
                                         }
                                         onChange={(e) =>
                                             this.setState({
@@ -610,7 +549,7 @@ class InsertFacility extends React.Component {
                                                     vehicle: {
                                                         ...this.state.value
                                                             .vehicle,
-                                                        vehicleNumber:
+                                                        license_number:
                                                             e.target.value,
                                                     },
                                                 },
@@ -620,7 +559,7 @@ class InsertFacility extends React.Component {
                                     <br />
                                     <label
                                         className="form-label"
-                                        htmlFor="vehiclePrice"
+                                        htmlFor="price"
                                         style={{
                                             display: 'flex',
                                             alignItems: 'center',
@@ -633,12 +572,9 @@ class InsertFacility extends React.Component {
                                         required
                                         className="form-control"
                                         type="text"
-                                        name="vehiclePrice"
+                                        name="price"
                                         placeholder="Masukkan Harga Sewa per Hari"
-                                        value={
-                                            this.state.value.vehicle
-                                                .vehiclePrice
-                                        }
+                                        value={this.state.value.vehicle.price}
                                         onChange={(e) =>
                                             this.setState({
                                                 value: {
@@ -646,8 +582,7 @@ class InsertFacility extends React.Component {
                                                     vehicle: {
                                                         ...this.state.value
                                                             .vehicle,
-                                                        vehiclePrice:
-                                                            e.target.value,
+                                                        price: e.target.value,
                                                     },
                                                 },
                                             })
@@ -656,7 +591,7 @@ class InsertFacility extends React.Component {
                                     <br />
                                     <label
                                         className="form-label"
-                                        htmlFor="vehiclePrice"
+                                        htmlFor="price"
                                         style={{
                                             display: 'flex',
                                             alignItems: 'center',
@@ -669,11 +604,11 @@ class InsertFacility extends React.Component {
                                         required
                                         className="form-control"
                                         type="number"
-                                        name="vehiclePrice"
+                                        name="price"
                                         placeholder="Masukkan Kapasitas Kendaraan"
                                         value={
                                             this.state.value.vehicle
-                                                .vehicleCapacity
+                                                .vehicle_capacity
                                         }
                                         onChange={(e) =>
                                             this.setState({
@@ -682,7 +617,7 @@ class InsertFacility extends React.Component {
                                                     vehicle: {
                                                         ...this.state.value
                                                             .vehicle,
-                                                        vehicleCapacity:
+                                                        vehicle_capacity:
                                                             e.target.value,
                                                     },
                                                 },
@@ -692,7 +627,7 @@ class InsertFacility extends React.Component {
                                     <br />
                                     <label
                                         className="form-label"
-                                        htmlFor="vehicleLicenseType"
+                                        htmlFor="sim_category"
                                         style={{
                                             display: 'flex',
                                             alignItems: 'center',
@@ -705,14 +640,14 @@ class InsertFacility extends React.Component {
                                         required
                                         className={`form-select ${
                                             this.state.value.vehicle
-                                                .vehicleLicenseType === ''
+                                                .sim_category === ''
                                                 ? 'form-select-hidden'
                                                 : ''
                                         }`}
-                                        name="vehicleLicenseType"
+                                        name="sim_category"
                                         value={
                                             this.state.value.vehicle
-                                                .vehicleLicenseType
+                                                .sim_category
                                         }
                                         onChange={(e) =>
                                             this.setState({
@@ -721,7 +656,7 @@ class InsertFacility extends React.Component {
                                                     vehicle: {
                                                         ...this.state.value
                                                             .vehicle,
-                                                        vehicleLicenseType:
+                                                        sim_category:
                                                             e.target.value,
                                                     },
                                                 },
@@ -751,7 +686,7 @@ class InsertFacility extends React.Component {
                                 <form>
                                     <label
                                         className="form-label"
-                                        htmlFor="buildingName"
+                                        htmlFor="name"
                                         style={{
                                             display: 'flex',
                                             alignItems: 'center',
@@ -764,12 +699,9 @@ class InsertFacility extends React.Component {
                                         required
                                         className="form-control"
                                         type="text"
-                                        name="buildingName"
+                                        name="name"
                                         placeholder="Masukkan nama gedung"
-                                        value={
-                                            this.state.value.building
-                                                .buildingName
-                                        }
+                                        value={this.state.value.building.name}
                                         onChange={(e) =>
                                             this.setState({
                                                 value: {
@@ -777,8 +709,7 @@ class InsertFacility extends React.Component {
                                                     building: {
                                                         ...this.state.value
                                                             .building,
-                                                        buildingName:
-                                                            e.target.value,
+                                                        name: e.target.value,
                                                     },
                                                 },
                                             })
@@ -787,7 +718,7 @@ class InsertFacility extends React.Component {
                                     <br />
                                     <label
                                         className="form-label"
-                                        htmlFor="buildingCampusId"
+                                        htmlFor="campus_id"
                                         style={{
                                             display: 'flex',
                                             alignItems: 'center',
@@ -800,14 +731,13 @@ class InsertFacility extends React.Component {
                                         required
                                         className={`form-select ${
                                             this.state.value.building
-                                                .buildingCampusId === ''
+                                                .campus_id === ''
                                                 ? 'form-select-hidden'
                                                 : ''
                                         }`}
-                                        name="buildingCampusId"
+                                        name="campus_id"
                                         value={
-                                            this.state.value.building
-                                                .buildingCampusId
+                                            this.state.value.building.campus_id
                                         }
                                         onChange={(e) =>
                                             this.setState({
@@ -816,7 +746,7 @@ class InsertFacility extends React.Component {
                                                     building: {
                                                         ...this.state.value
                                                             .building,
-                                                        buildingCampusId:
+                                                        campus_id:
                                                             e.target.value,
                                                     },
                                                 },
@@ -877,7 +807,7 @@ class InsertFacility extends React.Component {
                                     <br />
                                     <label
                                         className="form-label"
-                                        htmlFor="buildingCapacity"
+                                        htmlFor="capacity"
                                         style={{
                                             display: 'flex',
                                             alignItems: 'center',
@@ -890,11 +820,10 @@ class InsertFacility extends React.Component {
                                         required
                                         className="form-control"
                                         type="number"
-                                        name="buildingCapacity"
+                                        name="capacity"
                                         placeholder="Masukkan Kapasitas Gedung"
                                         value={
-                                            this.state.value.building
-                                                .buildingCapacity
+                                            this.state.value.building.capacity
                                         }
                                         onChange={(e) =>
                                             this.setState({
@@ -903,7 +832,7 @@ class InsertFacility extends React.Component {
                                                     building: {
                                                         ...this.state.value
                                                             .building,
-                                                        buildingCapacity:
+                                                        capacity:
                                                             e.target.value,
                                                     },
                                                 },
@@ -913,7 +842,7 @@ class InsertFacility extends React.Component {
                                     <br />
                                     <label
                                         className="form-label"
-                                        htmlFor="buildingPrice"
+                                        htmlFor="price"
                                         style={{
                                             display: 'flex',
                                             alignItems: 'center',
@@ -926,12 +855,9 @@ class InsertFacility extends React.Component {
                                         required
                                         className="form-control"
                                         type="number"
-                                        name="buildingPrice"
+                                        name="price"
                                         placeholder="Masukkan Harga Sewa per Hari"
-                                        value={
-                                            this.state.value.building
-                                                .buildingPrice
-                                        }
+                                        value={this.state.value.building.price}
                                         onChange={(e) =>
                                             this.setState({
                                                 value: {
@@ -939,8 +865,7 @@ class InsertFacility extends React.Component {
                                                     building: {
                                                         ...this.state.value
                                                             .building,
-                                                        buildingPrice:
-                                                            e.target.value,
+                                                        price: e.target.value,
                                                     },
                                                 },
                                             })
@@ -954,7 +879,7 @@ class InsertFacility extends React.Component {
                                 <form>
                                     <label
                                         className="form-label"
-                                        htmlFor="roomBuildingId"
+                                        htmlFor="facility_building_id"
                                         style={{
                                             display: 'flex',
                                             alignItems: 'center',
@@ -967,13 +892,14 @@ class InsertFacility extends React.Component {
                                         required
                                         className={`form-select ${
                                             this.state.value.room
-                                                .roomBuildingId === ''
+                                                .facility_building_id === ''
                                                 ? 'form-select-hidden'
                                                 : ''
                                         }`}
-                                        name="roomBuildingId"
+                                        name="facility_building_id"
                                         value={
-                                            this.state.value.room.roomBuildingId
+                                            this.state.value.room
+                                                .facility_building_id
                                         }
                                         onChange={(e) =>
                                             this.setState({
@@ -982,7 +908,7 @@ class InsertFacility extends React.Component {
                                                     room: {
                                                         ...this.state.value
                                                             .room,
-                                                        roomBuildingId:
+                                                        facility_building_id:
                                                             e.target.value,
                                                     },
                                                 },
@@ -1007,7 +933,7 @@ class InsertFacility extends React.Component {
                                     <br />
                                     <label
                                         className="form-label"
-                                        htmlFor="roomCode"
+                                        htmlFor="room_code"
                                         style={{
                                             display: 'flex',
                                             alignItems: 'center',
@@ -1020,9 +946,9 @@ class InsertFacility extends React.Component {
                                         required
                                         className="form-control"
                                         type="number"
-                                        name="roomCode"
+                                        name="room_code"
                                         placeholder="Masukkan kode ruangan"
-                                        value={this.state.value.room.roomCode}
+                                        value={this.state.value.room.room_code}
                                         onChange={(e) =>
                                             this.setState({
                                                 value: {
@@ -1030,7 +956,7 @@ class InsertFacility extends React.Component {
                                                     room: {
                                                         ...this.state.value
                                                             .room,
-                                                        roomCode:
+                                                        room_code:
                                                             e.target.value,
                                                     },
                                                 },
@@ -1040,7 +966,7 @@ class InsertFacility extends React.Component {
                                     <br />
                                     <label
                                         className="form-label"
-                                        htmlFor="roomName"
+                                        htmlFor="name"
                                         style={{
                                             display: 'flex',
                                             alignItems: 'center',
@@ -1053,9 +979,9 @@ class InsertFacility extends React.Component {
                                         required
                                         className="form-control"
                                         type="text"
-                                        name="roomName"
+                                        name="name"
                                         placeholder="Masukkan nama ruangan"
-                                        value={this.state.value.room.roomName}
+                                        value={this.state.value.room.name}
                                         onChange={(e) =>
                                             this.setState({
                                                 value: {
@@ -1063,8 +989,7 @@ class InsertFacility extends React.Component {
                                                     room: {
                                                         ...this.state.value
                                                             .room,
-                                                        roomName:
-                                                            e.target.value,
+                                                        name: e.target.value,
                                                     },
                                                 },
                                             })
@@ -1073,7 +998,7 @@ class InsertFacility extends React.Component {
                                     <br />
                                     <label
                                         className="form-label"
-                                        htmlFor="roomDescription"
+                                        htmlFor="description"
                                         style={{
                                             display: 'flex',
                                             alignItems: 'center',
@@ -1085,12 +1010,11 @@ class InsertFacility extends React.Component {
                                     <textarea
                                         required
                                         className="form-control"
-                                        id="roomDescription"
+                                        id="description"
                                         rows="8"
                                         placeholder="Masukkan deskripsi"
                                         value={
-                                            this.state.value.room
-                                                .roomDescription
+                                            this.state.value.room.description
                                         }
                                         onChange={(e) =>
                                             this.setState({
@@ -1099,7 +1023,7 @@ class InsertFacility extends React.Component {
                                                     room: {
                                                         ...this.state.value
                                                             .room,
-                                                        roomDescription:
+                                                        description:
                                                             e.target.value,
                                                     },
                                                 },
@@ -1109,7 +1033,7 @@ class InsertFacility extends React.Component {
                                     <br />
                                     <label
                                         className="form-label"
-                                        htmlFor="roomCapacity"
+                                        htmlFor="capacity"
                                         style={{
                                             display: 'flex',
                                             alignItems: 'center',
@@ -1122,11 +1046,9 @@ class InsertFacility extends React.Component {
                                         required
                                         className="form-control"
                                         type="number"
-                                        name="roomCapacity"
+                                        name="capacity"
                                         placeholder="Masukkan Kapasitas Ruangan"
-                                        value={
-                                            this.state.value.room.roomCapacity
-                                        }
+                                        value={this.state.value.room.capacity}
                                         onChange={(e) =>
                                             this.setState({
                                                 value: {
@@ -1134,7 +1056,7 @@ class InsertFacility extends React.Component {
                                                     room: {
                                                         ...this.state.value
                                                             .room,
-                                                        roomCapacity:
+                                                        capacity:
                                                             e.target.value,
                                                     },
                                                 },
@@ -1144,7 +1066,7 @@ class InsertFacility extends React.Component {
                                     <br />
                                     <label
                                         className="form-label"
-                                        htmlFor="roomPrice"
+                                        htmlFor="price"
                                         style={{
                                             display: 'flex',
                                             alignItems: 'center',
@@ -1157,9 +1079,9 @@ class InsertFacility extends React.Component {
                                         required
                                         className="form-control"
                                         type="number"
-                                        name="roomPrice"
+                                        name="price"
                                         placeholder="Masukkan Harga Sewa per Hari"
-                                        value={this.state.value.room.roomPrice}
+                                        value={this.state.value.room.price}
                                         onChange={(e) =>
                                             this.setState({
                                                 value: {
@@ -1167,8 +1089,7 @@ class InsertFacility extends React.Component {
                                                     room: {
                                                         ...this.state.value
                                                             .room,
-                                                        roomPrice:
-                                                            e.target.value,
+                                                        price: e.target.value,
                                                     },
                                                 },
                                             })
@@ -1182,7 +1103,7 @@ class InsertFacility extends React.Component {
                                 <form>
                                     <label
                                         className="form-label"
-                                        htmlFor="selasarBuildingId"
+                                        htmlFor="facility_building_id"
                                         style={{
                                             display: 'flex',
                                             alignItems: 'center',
@@ -1195,14 +1116,14 @@ class InsertFacility extends React.Component {
                                         required
                                         className={`form-select ${
                                             this.state.value.selasar
-                                                .selasarBuildingId === ''
+                                                .facility_building_id === ''
                                                 ? 'form-select-hidden'
                                                 : ''
                                         }`}
-                                        name="selasarBuildingId"
+                                        name="facility_building_id"
                                         value={
                                             this.state.value.selasar
-                                                .selasarBuildingId
+                                                .facility_building_id
                                         }
                                         onChange={(e) =>
                                             this.setState({
@@ -1211,7 +1132,7 @@ class InsertFacility extends React.Component {
                                                     selasar: {
                                                         ...this.state.value
                                                             .selasar,
-                                                        selasarBuildingId:
+                                                        facility_building_id:
                                                             e.target.value,
                                                     },
                                                 },
@@ -1236,7 +1157,7 @@ class InsertFacility extends React.Component {
                                     <br />
                                     <label
                                         className="form-label"
-                                        htmlFor="selasarName"
+                                        htmlFor="name"
                                         style={{
                                             display: 'flex',
                                             alignItems: 'center',
@@ -1249,11 +1170,9 @@ class InsertFacility extends React.Component {
                                         required
                                         className="form-control"
                                         type="text"
-                                        name="selasarName"
+                                        name="name"
                                         placeholder="Masukkan nama selasar"
-                                        value={
-                                            this.state.value.selasar.selasarName
-                                        }
+                                        value={this.state.value.selasar.name}
                                         onChange={(e) =>
                                             this.setState({
                                                 value: {
@@ -1261,8 +1180,7 @@ class InsertFacility extends React.Component {
                                                     selasar: {
                                                         ...this.state.value
                                                             .selasar,
-                                                        selasarName:
-                                                            e.target.value,
+                                                        name: e.target.value,
                                                     },
                                                 },
                                             })
@@ -1271,7 +1189,7 @@ class InsertFacility extends React.Component {
                                     <br />
                                     <label
                                         className="form-label"
-                                        htmlFor="selasarDescription"
+                                        htmlFor="description"
                                         style={{
                                             display: 'flex',
                                             alignItems: 'center',
@@ -1283,12 +1201,11 @@ class InsertFacility extends React.Component {
                                     <textarea
                                         required
                                         className="form-control"
-                                        id="selasarDescription"
+                                        id="description"
                                         rows="8"
                                         placeholder="Masukkan deskripsi"
                                         value={
-                                            this.state.value.selasar
-                                                .selasarDescription
+                                            this.state.value.selasar.description
                                         }
                                         onChange={(e) =>
                                             this.setState({
@@ -1297,7 +1214,7 @@ class InsertFacility extends React.Component {
                                                     selasar: {
                                                         ...this.state.value
                                                             .selasar,
-                                                        selasarDescription:
+                                                        description:
                                                             e.target.value,
                                                     },
                                                 },
@@ -1307,7 +1224,7 @@ class InsertFacility extends React.Component {
                                     <br />
                                     <label
                                         className="form-label"
-                                        htmlFor="selasarCapacity"
+                                        htmlFor="capacity"
                                         style={{
                                             display: 'flex',
                                             alignItems: 'center',
@@ -1320,11 +1237,10 @@ class InsertFacility extends React.Component {
                                         required
                                         className="form-control"
                                         type="number"
-                                        name="selasarCapacity"
+                                        name="capacity"
                                         placeholder="Masukkan Kapasitas Ruangan"
                                         value={
-                                            this.state.value.selasar
-                                                .selasarCapacity
+                                            this.state.value.selasar.capacity
                                         }
                                         onChange={(e) =>
                                             this.setState({
@@ -1333,7 +1249,7 @@ class InsertFacility extends React.Component {
                                                     selasar: {
                                                         ...this.state.value
                                                             .selasar,
-                                                        selasarCapacity:
+                                                        capacity:
                                                             e.target.value,
                                                     },
                                                 },
@@ -1343,7 +1259,7 @@ class InsertFacility extends React.Component {
                                     <br />
                                     <label
                                         className="form-label"
-                                        htmlFor="selasarPrice"
+                                        htmlFor="price"
                                         style={{
                                             display: 'flex',
                                             alignItems: 'center',
@@ -1356,12 +1272,9 @@ class InsertFacility extends React.Component {
                                         required
                                         className="form-control"
                                         type="number"
-                                        name="selasarPrice"
+                                        name="price"
                                         placeholder="Masukkan Harga Sewa per Hari"
-                                        value={
-                                            this.state.value.selasar
-                                                .selasarPrice
-                                        }
+                                        value={this.state.value.selasar.price}
                                         onChange={(e) =>
                                             this.setState({
                                                 value: {
@@ -1369,8 +1282,7 @@ class InsertFacility extends React.Component {
                                                     selasar: {
                                                         ...this.state.value
                                                             .selasar,
-                                                        selasarPrice:
-                                                            e.target.value,
+                                                        price: e.target.value,
                                                     },
                                                 },
                                             })
@@ -1501,13 +1413,13 @@ class InsertFacility extends React.Component {
                                         className="form-select"
                                         name="status"
                                         value={
-                                            this.state.value.statusMaintenance
+                                            this.state.value.status_maintenance
                                         }
                                         onChange={(e) =>
                                             this.setState({
                                                 value: {
                                                     ...this.state.value,
-                                                    statusMaintenance:
+                                                    status_maintenance:
                                                         e.target.value,
                                                 },
                                             })
@@ -1545,15 +1457,15 @@ class InsertFacility extends React.Component {
                                         defaultCenter={{
                                             lat:
                                                 this.state.value.building
-                                                    .buildingLatitude !== ''
+                                                    .latitude !== ''
                                                     ? this.state.value.building
-                                                          .buildingLatitude
+                                                          .latitude
                                                     : -6.8914746,
                                             lng:
                                                 this.state.value.building
-                                                    .buildingLongitude !== ''
+                                                    .longitude !== ''
                                                     ? this.state.value.building
-                                                          .buildingLongitude
+                                                          .longitude
                                                     : 107.6057882,
                                         }}
                                         defaultZoom={15}
@@ -1565,9 +1477,8 @@ class InsertFacility extends React.Component {
                                                     building: {
                                                         ...this.state.value
                                                             .building,
-                                                        buildingLatitude: e.lat,
-                                                        buildingLongitude:
-                                                            e.lng,
+                                                        latitude: e.lat,
+                                                        longitude: e.lng,
                                                     },
                                                 },
                                             })
@@ -1576,11 +1487,11 @@ class InsertFacility extends React.Component {
                                         <PinpointEmoji
                                             lat={
                                                 this.state.value.building
-                                                    .buildingLatitude
+                                                    .latitude
                                             }
                                             lng={
                                                 this.state.value.building
-                                                    .buildingLongitude
+                                                    .longitude
                                             }
                                         />
                                     </GoogleMapReact>

@@ -66,9 +66,10 @@ class Profile extends React.Component {
             this.state.no_telp !== undefined &&
             this.state.no_telp !== this.state.user.no_telp
         ) {
-            let formData = new FormData();
-            formData.append('no_telp', this.state.no_telp);
-            this.props.editProfileFunction(formData);
+            let data = {
+                no_telp: this.state.no_telp,
+            };
+            this.props.editProfileFunction(data);
             this.setState({
                 showAlertModal: true,
                 alertMessage: 'Nomor telepon berhasil diubah!',
@@ -80,8 +81,8 @@ class Profile extends React.Component {
         document.getElementById('edit-button').classList.toggle('hide');
     };
 
-    handleEditImage = (formData) => {
-        this.props.editProfileFunction(formData);
+    handleEditImage = (data) => {
+        this.props.editProfileFunction(data);
         this.setState({
             showAlertModal: true,
             alertMessage: 'Foto profil berhasil diubah!',

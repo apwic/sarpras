@@ -41,15 +41,12 @@ class ProfilePictureCropperModal extends Component {
 
     handleCropComplete = () => {
         this.props.closeModalFunction();
-        let formData = new FormData();
-        formData.append(
-            'image',
-            this.base64ToBlob(
+        let data = {
+            image: this.base64ToBlob(
                 this.cropperRef.current.getCroppedCanvas().toDataURL(),
             ),
-            'image.png',
-        );
-        this.props.donefunction(formData);
+        };
+        this.props.donefunction(data);
     };
 
     render() {
