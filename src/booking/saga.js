@@ -17,6 +17,7 @@ import {
     setFacility,
     setFacilityClicked,
     postBookingSuccess,
+    insertUpdateResponse,
 } from './action';
 import {
     getFacilitiesApi,
@@ -96,7 +97,8 @@ function* postBooking(action) {
 function* insertNewFacility(action) {
     const { data, type } = action.payload;
     try {
-        yield call(insertNewFacilityApi, data, type);
+        const response = yield call(insertNewFacilityApi, data, type);
+        yield put(insertUpdateResponse(response));
     } catch (error) {
         console.log(error);
     }
@@ -105,7 +107,8 @@ function* insertNewFacility(action) {
 function* updateFacility(action) {
     const { data, type, id } = action.payload;
     try {
-        yield call(updateFacilityApi, data, type, id);
+        const response = yield call(updateFacilityApi, data, type, id);
+        yield put(insertUpdateResponse(response));
     } catch (error) {
         console.log(error);
     }

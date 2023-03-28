@@ -22,6 +22,7 @@ import {
 } from '../../booking/action';
 import LoadingScreen from '../../common/components/loadingScreen';
 import AlertModal from '../../common/components/alertModal';
+import LoadingOverlay from '../../common/components/loadingOverlay';
 
 const PinpointEmoji = () => (
     <div
@@ -99,6 +100,26 @@ class InsertFacility extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
+        if (prevProps.responseMessage !== this.props.responseMessage) {
+            document.querySelector('.loading-overlay').classList.remove('show');
+            if (
+                this.props.responseMessage &&
+                this.props.responseMessage.message
+            ) {
+                this.setState({
+                    showAlertModal: true,
+                    alertMessage: this.props.responseMessage.message,
+                });
+            } else if (
+                this.props.responseMessage &&
+                this.props.responseMessage.error_message
+            ) {
+                this.setState({
+                    showAlertModal: true,
+                    alertMessage: this.props.responseMessage.error_message,
+                });
+            }
+        }
         if (prevState.type !== this.state.type) {
             if (
                 this.props.params.type !== 'vehicle' &&
@@ -278,22 +299,278 @@ class InsertFacility extends React.Component {
     };
 
     handleSubmit = () => {
-        console.log(this.state.value);
         const { type } = this.props.params;
         let data = { image: [] };
-        this.setState({ showAlertModal: true });
-        for (let i = 0; i < this.state.value.files.length; i++) {
-            data.image.push(this.state.value.files[i].blob);
+
+        if (this.state.value.files.length === 0) {
+            document
+                .getElementById('facility-photos-list')
+                .classList.add('error');
+            document.querySelector('.loading-overlay').classList.remove('show');
+        } else {
+            for (let i = 0; i < this.state.value.files.length; i++) {
+                data.image.push(this.state.value.files[i].blob);
+            }
         }
         if (type === 'vehicle') {
+            if (
+                this.state.value.files.length === 0 ||
+                this.state.value.vehicle.type === '' ||
+                this.state.value.vehicle.name === '' ||
+                this.state.value.vehicle.campus_id === '' ||
+                this.state.value.vehicle.description === '' ||
+                this.state.value.vehicle.license_number === '' ||
+                this.state.value.vehicle.price === '' ||
+                this.state.value.vehicle.vehicle_capacity === '' ||
+                this.state.value.vehicle.sim_category === ''
+            ) {
+                if (this.state.value.vehicle.type === '') {
+                    document
+                        .getElementById('vehicle-type')
+                        .classList.add('error');
+                    document
+                        .querySelector('.loading-overlay')
+                        .classList.remove('show');
+                }
+                if (this.state.value.vehicle.name === '') {
+                    document
+                        .getElementById('vehicle-name')
+                        .classList.add('error');
+                    document
+                        .querySelector('.loading-overlay')
+                        .classList.remove('show');
+                }
+                if (this.state.value.vehicle.campus_id === '') {
+                    document
+                        .getElementById('vehicle-campus_id')
+                        .classList.add('error');
+                    document
+                        .querySelector('.loading-overlay')
+                        .classList.remove('show');
+                }
+                if (this.state.value.vehicle.description === '') {
+                    document
+                        .getElementById('vehicle-description')
+                        .classList.add('error');
+                    document
+                        .querySelector('.loading-overlay')
+                        .classList.remove('show');
+                }
+                if (this.state.value.vehicle.license_number === '') {
+                    document
+                        .getElementById('vehicle-license_number')
+                        .classList.add('error');
+                    document
+                        .querySelector('.loading-overlay')
+                        .classList.remove('show');
+                }
+                if (this.state.value.vehicle.price === '') {
+                    document
+                        .getElementById('vehicle-price')
+                        .classList.add('error');
+                    document
+                        .querySelector('.loading-overlay')
+                        .classList.remove('show');
+                }
+                if (this.state.value.vehicle.vehicle_capacity === '') {
+                    document
+                        .getElementById('vehicle-vehicle_capacity')
+                        .classList.add('error');
+                    document
+                        .querySelector('.loading-overlay')
+                        .classList.remove('show');
+                }
+                if (this.state.value.vehicle.sim_category === '') {
+                    document
+                        .getElementById('vehicle-sim_category')
+                        .classList.add('error');
+                    document
+                        .querySelector('.loading-overlay')
+                        .classList.remove('show');
+                }
+                return;
+            }
             data = { ...data, ...this.state.value.vehicle };
         } else if (type === 'building') {
+            if (
+                this.state.value.files.length === 0 ||
+                this.state.value.building.name === '' ||
+                this.state.value.building.campus_id === '' ||
+                this.state.value.building.description === '' ||
+                this.state.value.building.capacity === ''
+            ) {
+                if (this.state.value.building.name === '') {
+                    document
+                        .getElementById('building-name')
+                        .classList.add('error');
+                    document
+                        .querySelector('.loading-overlay')
+                        .classList.remove('show');
+                }
+                if (this.state.value.building.campus_id === '') {
+                    document
+                        .getElementById('building-campus_id')
+                        .classList.add('error');
+                    document
+                        .querySelector('.loading-overlay')
+                        .classList.remove('show');
+                }
+                if (this.state.value.building.description === '') {
+                    document
+                        .getElementById('building-description')
+                        .classList.add('error');
+                    document
+                        .querySelector('.loading-overlay')
+                        .classList.remove('show');
+                }
+                if (this.state.value.building.capacity === '') {
+                    document
+                        .getElementById('building-capacity')
+                        .classList.add('error');
+                    document
+                        .querySelector('.loading-overlay')
+                        .classList.remove('show');
+                }
+                if (this.state.value.building.price === '') {
+                    document
+                        .getElementById('building-price')
+                        .classList.add('error');
+                    document
+                        .querySelector('.loading-overlay')
+                        .classList.remove('show');
+                }
+                if (this.state.value.building.latitude === '') {
+                    document
+                        .getElementById('building-latitude')
+                        .classList.add('error');
+                    document
+                        .querySelector('.loading-overlay')
+                        .classList.remove('show');
+                }
+                if (this.state.value.building.longitude === '') {
+                    document
+                        .getElementById('building-longitude')
+                        .classList.add('error');
+                    document
+                        .querySelector('.loading-overlay')
+                        .classList.remove('show');
+                }
+                return;
+            }
             data = { ...data, ...this.state.value.building };
         } else if (type === 'room') {
+            if (
+                this.state.value.files.length === 0 ||
+                this.state.value.room.facility_building_id === '' ||
+                this.state.value.room.room_code === '' ||
+                this.state.value.room.name === '' ||
+                this.state.value.room.description === '' ||
+                this.state.value.room.capacity === '' ||
+                this.state.value.room.price === ''
+            ) {
+                if (this.state.value.room.facility_building_id === '') {
+                    document
+                        .getElementById('room-facility_building_id')
+                        .classList.add('error');
+                    document
+                        .querySelector('.loading-overlay')
+                        .classList.remove('show');
+                }
+                if (this.state.value.room.room_code === '') {
+                    document
+                        .getElementById('room-room_code')
+                        .classList.add('error');
+                    document
+                        .querySelector('.loading-overlay')
+                        .classList.remove('show');
+                }
+                if (this.state.value.room.name === '') {
+                    document.getElementById('room-name').classList.add('error');
+                    document
+                        .querySelector('.loading-overlay')
+                        .classList.remove('show');
+                }
+                if (this.state.value.room.description === '') {
+                    document
+                        .getElementById('room-description')
+                        .classList.add('error');
+                    document
+                        .querySelector('.loading-overlay')
+                        .classList.remove('show');
+                }
+                if (this.state.value.room.capacity === '') {
+                    document
+                        .getElementById('room-capacity')
+                        .classList.add('error');
+                    document
+                        .querySelector('.loading-overlay')
+                        .classList.remove('show');
+                }
+                if (this.state.value.room.price === '') {
+                    document
+                        .getElementById('room-price')
+                        .classList.add('error');
+                    document
+                        .querySelector('.loading-overlay')
+                        .classList.remove('show');
+                }
+                return;
+            }
             data = { ...data, ...this.state.value.room };
         } else if (type === 'selasar') {
+            if (
+                this.state.value.files.length === 0 ||
+                this.state.value.selasar.facility_building_id === '' ||
+                this.state.value.selasar.name === '' ||
+                this.state.value.selasar.description === '' ||
+                this.state.value.selasar.capacity === '' ||
+                this.state.value.selasar.price === ''
+            ) {
+                if (this.state.value.selasar.facility_building_id === '') {
+                    document
+                        .getElementById('selasar-facility_building_id')
+                        .classList.add('error');
+                    document
+                        .querySelector('.loading-overlay')
+                        .classList.remove('show');
+                }
+                if (this.state.value.selasar.name === '') {
+                    document
+                        .getElementById('selasar-name')
+                        .classList.add('error');
+                    document
+                        .querySelector('.loading-overlay')
+                        .classList.remove('show');
+                }
+                if (this.state.value.selasar.description === '') {
+                    document
+                        .getElementById('selasar-description')
+                        .classList.add('error');
+                    document
+                        .querySelector('.loading-overlay')
+                        .classList.remove('show');
+                }
+                if (this.state.value.selasar.capacity === '') {
+                    document
+                        .getElementById('selasar-capacity')
+                        .classList.add('error');
+                    document
+                        .querySelector('.loading-overlay')
+                        .classList.remove('show');
+                }
+                if (this.state.value.selasar.price === '') {
+                    document
+                        .getElementById('selasar-price')
+                        .classList.add('error');
+                    document
+                        .querySelector('.loading-overlay')
+                        .classList.remove('show');
+                }
+                return;
+            }
             data = { ...data, ...this.state.value.selasar };
         }
+        document.querySelector('.loading-overlay').classList.add('show');
         if (this.props.params.id) {
             data = {
                 ...data,
@@ -317,6 +594,7 @@ class InsertFacility extends React.Component {
         }
         return (
             <div className="container-insertfacility">
+                <LoadingOverlay />
                 {type === 'vehicle' && (
                     <div className="container-insertfacility__header">
                         <FontAwesomeIcon
@@ -410,6 +688,7 @@ class InsertFacility extends React.Component {
                                                 : ''
                                         }`}
                                         name="type"
+                                        id="vehicle-type"
                                         value={this.state.value.vehicle.type}
                                         onChange={(e) =>
                                             this.setState({
@@ -456,6 +735,7 @@ class InsertFacility extends React.Component {
                                         className="form-control"
                                         type="text"
                                         name="name"
+                                        id="vehicle-name"
                                         placeholder="Masukkan nama kendaraan"
                                         value={this.state.value.vehicle.name}
                                         onChange={(e) =>
@@ -492,6 +772,7 @@ class InsertFacility extends React.Component {
                                                 : ''
                                         }`}
                                         name="campus_id"
+                                        id="vehicle-campus_id"
                                         value={
                                             this.state.value.vehicle.campus_id
                                         }
@@ -539,7 +820,7 @@ class InsertFacility extends React.Component {
                                     <textarea
                                         required
                                         className="form-control"
-                                        id="exampleFormControlTextarea1"
+                                        id="vehicle-description"
                                         rows="8"
                                         placeholder="Masukkan deskripsi"
                                         value={
@@ -576,6 +857,7 @@ class InsertFacility extends React.Component {
                                         className="form-control"
                                         type="text"
                                         name="vehicleLicenseNumber"
+                                        id="vehicle-license_number"
                                         placeholder="Masukkan Nomor Polisi Kendaraan"
                                         value={
                                             this.state.value.vehicle
@@ -612,6 +894,7 @@ class InsertFacility extends React.Component {
                                         className="form-control"
                                         type="text"
                                         name="price"
+                                        id="vehicle-price"
                                         placeholder="Masukkan Harga Sewa per Hari"
                                         value={this.state.value.vehicle.price}
                                         onChange={(e) =>
@@ -644,6 +927,7 @@ class InsertFacility extends React.Component {
                                         className="form-control"
                                         type="number"
                                         name="price"
+                                        id="vehicle-vehicle_capacity"
                                         placeholder="Masukkan Kapasitas Kendaraan"
                                         value={
                                             this.state.value.vehicle
@@ -684,6 +968,7 @@ class InsertFacility extends React.Component {
                                                 : ''
                                         }`}
                                         name="sim_category"
+                                        id="vehicle-sim_category"
                                         value={
                                             this.state.value.vehicle
                                                 .sim_category
@@ -739,6 +1024,7 @@ class InsertFacility extends React.Component {
                                         className="form-control"
                                         type="text"
                                         name="name"
+                                        id="building-name"
                                         placeholder="Masukkan nama gedung"
                                         value={this.state.value.building.name}
                                         onChange={(e) =>
@@ -775,6 +1061,7 @@ class InsertFacility extends React.Component {
                                                 : ''
                                         }`}
                                         name="campus_id"
+                                        id="building-campus_id"
                                         value={
                                             this.state.value.building.campus_id
                                         }
@@ -822,7 +1109,7 @@ class InsertFacility extends React.Component {
                                     <textarea
                                         required
                                         className="form-control"
-                                        id="description"
+                                        id="building-description"
                                         rows="8"
                                         placeholder="Masukkan deskripsi"
                                         value={
@@ -860,6 +1147,7 @@ class InsertFacility extends React.Component {
                                         className="form-control"
                                         type="number"
                                         name="capacity"
+                                        id="building-capacity"
                                         placeholder="Masukkan Kapasitas Gedung"
                                         value={
                                             this.state.value.building.capacity
@@ -895,6 +1183,7 @@ class InsertFacility extends React.Component {
                                         className="form-control"
                                         type="number"
                                         name="price"
+                                        id="building-price"
                                         placeholder="Masukkan Harga Sewa per Hari"
                                         value={this.state.value.building.price}
                                         onChange={(e) =>
@@ -936,6 +1225,7 @@ class InsertFacility extends React.Component {
                                                 : ''
                                         }`}
                                         name="facility_building_id"
+                                        id="room-facility_building_id"
                                         value={
                                             this.state.value.room
                                                 .facility_building_id
@@ -986,6 +1276,7 @@ class InsertFacility extends React.Component {
                                         className="form-control"
                                         type="number"
                                         name="room_code"
+                                        id="room-room_code"
                                         placeholder="Masukkan kode ruangan"
                                         value={this.state.value.room.room_code}
                                         onChange={(e) =>
@@ -1019,6 +1310,7 @@ class InsertFacility extends React.Component {
                                         className="form-control"
                                         type="text"
                                         name="name"
+                                        id="room-name"
                                         placeholder="Masukkan nama ruangan"
                                         value={this.state.value.room.name}
                                         onChange={(e) =>
@@ -1049,7 +1341,7 @@ class InsertFacility extends React.Component {
                                     <textarea
                                         required
                                         className="form-control"
-                                        id="description"
+                                        id="room-description"
                                         rows="8"
                                         placeholder="Masukkan deskripsi"
                                         value={
@@ -1086,6 +1378,7 @@ class InsertFacility extends React.Component {
                                         className="form-control"
                                         type="number"
                                         name="capacity"
+                                        id="room-capacity"
                                         placeholder="Masukkan Kapasitas Ruangan"
                                         value={this.state.value.room.capacity}
                                         onChange={(e) =>
@@ -1119,6 +1412,7 @@ class InsertFacility extends React.Component {
                                         className="form-control"
                                         type="number"
                                         name="price"
+                                        id="room-price"
                                         placeholder="Masukkan Harga Sewa per Hari"
                                         value={this.state.value.room.price}
                                         onChange={(e) =>
@@ -1160,6 +1454,7 @@ class InsertFacility extends React.Component {
                                                 : ''
                                         }`}
                                         name="facility_building_id"
+                                        id="selasar-facility_building_id"
                                         value={
                                             this.state.value.selasar
                                                 .facility_building_id
@@ -1210,6 +1505,7 @@ class InsertFacility extends React.Component {
                                         className="form-control"
                                         type="text"
                                         name="name"
+                                        id="selasar-name"
                                         placeholder="Masukkan nama selasar"
                                         value={this.state.value.selasar.name}
                                         onChange={(e) =>
@@ -1240,7 +1536,7 @@ class InsertFacility extends React.Component {
                                     <textarea
                                         required
                                         className="form-control"
-                                        id="description"
+                                        id="selasar-description"
                                         rows="8"
                                         placeholder="Masukkan deskripsi"
                                         value={
@@ -1277,6 +1573,7 @@ class InsertFacility extends React.Component {
                                         className="form-control"
                                         type="number"
                                         name="capacity"
+                                        id="selasar-capacity"
                                         placeholder="Masukkan Kapasitas Ruangan"
                                         value={
                                             this.state.value.selasar.capacity
@@ -1312,6 +1609,7 @@ class InsertFacility extends React.Component {
                                         className="form-control"
                                         type="number"
                                         name="price"
+                                        id="selasar-price"
                                         placeholder="Masukkan Harga Sewa per Hari"
                                         value={this.state.value.selasar.price}
                                         onChange={(e) =>
@@ -1331,7 +1629,10 @@ class InsertFacility extends React.Component {
                             </div>
                         )}
                         <div className="item item__without__background">
-                            <div className="inner__item">
+                            <div
+                                className="inner__item"
+                                id="facility-photos-list"
+                            >
                                 <h3
                                     className="form-picture-title"
                                     htmlFor="insertPicture"
@@ -1355,7 +1656,7 @@ class InsertFacility extends React.Component {
                                         className="input-file"
                                         type="file"
                                         accept="image/*"
-                                        id="profile-photo-file"
+                                        id="photo-facility-files"
                                         onChange={this.handleFileUpload}
                                         ref={this.imageuploaderRef}
                                         key={Date.now()}
@@ -1479,6 +1780,7 @@ class InsertFacility extends React.Component {
                                         height: '25rem',
                                         width: '100%',
                                     }}
+                                    id="building-latitude"
                                 >
                                     <label
                                         className="form-label"
@@ -1570,6 +1872,7 @@ const mapStateToProps = (state) => {
     return {
         filters: state.facility.filters,
         facility: state.facility.facility,
+        responseMessage: state.facility.insert_update_message,
     };
 };
 

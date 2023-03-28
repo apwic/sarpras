@@ -15,6 +15,7 @@ import {
     SET_CALENDAR_BOOK,
     INSERT_NEW_FACILITY,
     UPDATE_FACILITY,
+    INSERT_UPDATE_RESPONSE,
 } from './actionTypes';
 
 export function openModalFilter() {
@@ -150,5 +151,12 @@ export function updateFacility(type, data, id) {
             data,
             id,
         },
+    };
+}
+
+export function insertUpdateResponse(response) {
+    return {
+        type: INSERT_UPDATE_RESPONSE,
+        payload: response,
     };
 }
