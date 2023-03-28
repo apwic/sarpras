@@ -18,7 +18,7 @@ class MyBooking extends React.Component {
     }
 
     componentDidMount() {
-        this.props.getMyBookingsFunction(this.state.q, '');
+        this.props.getMyBookingsFunction(this.state.query, '');
     }
 
     componentDidUpdate(prevProps, prevState) {

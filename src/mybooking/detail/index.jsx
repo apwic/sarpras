@@ -56,7 +56,10 @@ class MyBookingDetail extends React.Component {
                         className="icon-mybooking-detail"
                     />
                     <h1>
-                        Peminjaman Saya / {this.state.myBooking.facility_id}
+                        Peminjaman Saya /{' '}
+                        {this.state.myBooking.facility
+                            ? this.state.myBooking.facility.name
+                            : '-'}
                     </h1>
                 </div>
                 <div className="container-mybooking-detail__body">
@@ -113,10 +116,10 @@ class MyBookingDetail extends React.Component {
                                                 </td>
                                             )}
                                             <td className="item-detail__value">
-                                                {
-                                                    this.state.myBooking
-                                                        .facility_id
-                                                }
+                                                {this.state.myBooking.facility
+                                                    ? this.state.myBooking
+                                                          .facility.name
+                                                    : ''}
                                             </td>
                                         </tr>
                                         <tr>
@@ -162,7 +165,11 @@ class MyBookingDetail extends React.Component {
                                                     Plat Nomor
                                                 </td>
                                                 <td className="item-detail__value">
-                                                    B 1234 ABC
+                                                    {
+                                                        this.state.myBooking
+                                                            .facility
+                                                            .license_number
+                                                    }
                                                 </td>
                                             </tr>
                                         )}
@@ -181,7 +188,7 @@ class MyBookingDetail extends React.Component {
                                                         10,
                                                     ),
                                                 )}{' '}
-                                                Hari
+                                                hari
                                             </td>
                                         </tr>
                                     </tbody>
