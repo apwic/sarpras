@@ -6,6 +6,7 @@ import MyBookingList from '../common/components/myBookingList';
 import { connect } from 'react-redux';
 import { getMyBookings } from './action';
 import { withRouter } from '../common/withRouter';
+import LoadingScreen from '../common/components/loadingScreen';
 
 class MyBooking extends React.Component {
     constructor(props) {
@@ -73,6 +74,9 @@ class MyBooking extends React.Component {
     };
 
     render() {
+        if (this.state.myBookings.length === 0) {
+            return <LoadingScreen />;
+        }
         return (
             <div className="container-mybooking">
                 <div className="container-mybooking__header">
