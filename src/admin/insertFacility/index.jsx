@@ -192,7 +192,9 @@ class InsertFacility extends React.Component {
 
     urlToBlob = async (url) => {
         try {
-            const response = await fetch(url);
+            const response = await fetch(url, {
+                mode: 'no-cors',
+            });
             const blob = await response.blob();
             this.setState((prevState) => ({
                 value: {
