@@ -7,12 +7,15 @@ import bookingStatusConstant from '../../common/constants/bookingStatusConstant'
 import { getMyBookingClicked } from '../action';
 import { withRouter } from '../../common/withRouter';
 import { connect } from 'react-redux';
+import LoadingScreen from '../../common/components/loadingScreen';
+import facilityTypeConstant from '../../common/constants/facilityTypeConstant';
 
 class MyBookingDetail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             myBooking: {},
+            duration: 0,
             loading: true,
         };
     }
@@ -25,6 +28,7 @@ class MyBookingDetail extends React.Component {
         if (prevProps.myBooking !== this.props.myBooking) {
             this.setState({
                 myBooking: this.props.myBooking,
+                duration: this.props.myBooking.createdAt,
             });
             this.setState({ loading: false });
         }
@@ -34,9 +38,16 @@ class MyBookingDetail extends React.Component {
         this.props.navigate('/booking/my');
     };
 
+    daysDiff = (date1, date2) => {
+        let diffTime = new Date(date2) - new Date(date1);
+        let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        return diffDays;
+    };
+
     render() {
-        let start_date = this.state.myBooking.start_timestamp?.slice(0, 10);
-        let end_date = this.state.myBooking.end_timestamp?.slice(0, 10);
+        if (this.state.loading) {
+            return <LoadingScreen />;
+        }
         return (
             <div className="container-mybooking-detail">
                 <div className="container-mybooking-detail__header">
@@ -73,9 +84,34 @@ class MyBookingDetail extends React.Component {
                                 <table>
                                     <tbody>
                                         <tr>
-                                            <td className="item-detail__label">
-                                                Kendaraan
-                                            </td>
+                                            {this.state.myBooking.category ===
+                                                facilityTypeConstant.BUILDING
+                                                    .name && (
+                                                <td className="item-detail__label">
+                                                    Gedung
+                                                </td>
+                                            )}
+                                            {this.state.myBooking.category ===
+                                                facilityTypeConstant.ROOM
+                                                    .name && (
+                                                <td className="item-detail__label">
+                                                    Ruangan
+                                                </td>
+                                            )}
+                                            {this.state.myBooking.category ===
+                                                facilityTypeConstant.SELASAR
+                                                    .name && (
+                                                <td className="item-detail__label">
+                                                    Selasar
+                                                </td>
+                                            )}
+                                            {this.state.myBooking.category ===
+                                                facilityTypeConstant.VEHICLE
+                                                    .name && (
+                                                <td className="item-detail__label">
+                                                    Kendaraan
+                                                </td>
+                                            )}
                                             <td className="item-detail__value">
                                                 {
                                                     this.state.myBooking
@@ -96,7 +132,15 @@ class MyBookingDetail extends React.Component {
                                                 Tanggal Sewa
                                             </td>
                                             <td className="item-detail__value">
-                                                {start_date} - {end_date}
+                                                {this.state.myBooking.start_timestamp.slice(
+                                                    0,
+                                                    10,
+                                                )}{' '}
+                                                -{' '}
+                                                {this.state.myBooking.end_timestamp.slice(
+                                                    0,
+                                                    10,
+                                                )}
                                             </td>
                                         </tr>
                                         <tr>
@@ -110,27 +154,45 @@ class MyBookingDetail extends React.Component {
                                                 }
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td className="item-detail__label">
-                                                Plat Nomor
-                                            </td>
-                                            <td className="item-detail__value">
-                                                B 1234 ABC
-                                            </td>
-                                        </tr>
+                                        {this.state.myBooking.category ===
+                                            facilityTypeConstant.VEHICLE
+                                                .name && (
+                                            <tr>
+                                                <td className="item-detail__label">
+                                                    Plat Nomor
+                                                </td>
+                                                <td className="item-detail__value">
+                                                    B 1234 ABC
+                                                </td>
+                                            </tr>
+                                        )}
                                         <tr>
                                             <td className="item-detail__label">
                                                 Durasi
                                             </td>
                                             <td className="item-detail__value">
-                                                1 Hari
+                                                {this.daysDiff(
+                                                    this.state.myBooking.start_timestamp.slice(
+                                                        0,
+                                                        10,
+                                                    ),
+                                                    this.state.myBooking.end_timestamp.slice(
+                                                        0,
+                                                        10,
+                                                    ),
+                                                )}{' '}
+                                                Hari
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                             <BookingStatusLabel
-                                status={bookingStatusConstant.PENDING}
+                                status={
+                                    bookingStatusConstant[
+                                        this.state.myBooking.status
+                                    ]
+                                }
                             />
                             <div className="total-price">
                                 <h3 className="total-price__label">
