@@ -128,12 +128,12 @@
     width: 100%;
 }
 
-.container-booking-facilit button.back-btn {
+.container-booking-facility button.back-btn {
     display: flex;
     background-color: transparent;
     border: none;
     cursor: pointer;
-    padding-left: 5px;
+    padding: unset;
     margin-bottom: 0;
     padding-bottom: 0;
     margin-top: 0;
@@ -142,6 +142,7 @@
     align-items: center;
     font-size: 18px;
     margin-top: 3vh;
+    transform: unset;
 }
 
 .booking-info {

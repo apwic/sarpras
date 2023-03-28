@@ -119,3 +119,21 @@ export const updateFacilityApi = async (data, category, id) => {
             return response;
         });
 };
+
+export const getEventsApi = async (start, end) => {
+    return wretchInstance()
+        .url(
+            import.meta.env.VITE_REST_API_URL +
+                '/booking/schedule?start=' +
+                start +
+                '&end=' +
+                end,
+        )
+        .headers({
+            'Content-Type': 'application/json',
+        })
+        .get()
+        .json((response) => {
+            return response;
+        });
+};

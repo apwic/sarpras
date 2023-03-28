@@ -6,6 +6,7 @@ import {
     SET_FILTERS,
     SET_FACILITY_CLICKED,
     SET_CALENDAR_BOOK,
+    SET_EVENTS,
     INSERT_UPDATE_RESPONSE,
 } from './actionTypes';
 
@@ -16,6 +17,7 @@ const initialState = {
     facility: null,
     facilityClicked: {},
     calendarBookRef: null,
+    eventsShown: [],
     insert_update_message: null,
 };
 
@@ -35,6 +37,8 @@ function facilityReducer(state = initialState, action) {
             return { ...state, facilityClicked: action.payload };
         case SET_CALENDAR_BOOK:
             return { ...state, calendarBookRef: action.calendarRef };
+        case SET_EVENTS:
+            return { ...state, eventsShown: action.payload };
         case INSERT_UPDATE_RESPONSE:
             return { ...state, insert_update_message: action.payload };
         default:

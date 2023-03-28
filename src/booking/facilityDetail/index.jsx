@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { getFacilityClicked } from '../action';
 import LoadingScreen from '../../common/components/loadingScreen';
 import { withRouter } from '../../common/withRouter';
-import { postBookingStart, setCalendarBook } from '../action';
+import { postBookingStart } from '../action';
 
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
@@ -22,6 +22,7 @@ import AlertModal from '../../common/components/alertModal';
 import ComponentCalendar from '../../common/components/CalendarComponent';
 import { openModal } from '../../dashboard/action';
 import CalendarModal from '../../common/components/calendarModal';
+import moment from 'moment';
 
 class FacilityDetail extends React.Component {
     constructor(props) {
@@ -38,9 +39,10 @@ class FacilityDetail extends React.Component {
             showAlertModal: false,
             alertMessage: '',
             step: 1,
+            durationDays: 0,
+            viewType: null,
         };
         this.buttonRef = React.createRef();
-        this.calendarRef = React.createRef();
     }
 
     componentDidUpdate(prevProps) {
@@ -59,7 +61,6 @@ class FacilityDetail extends React.Component {
             this.props.params.id.toString(),
             this.props.params.type,
         );
-        this.props.setCalendarBookFunction(this.calendarRef);
     }
 
     handleFileUpload = (e) => {
@@ -104,16 +105,16 @@ class FacilityDetail extends React.Component {
                 alertMessage: 'Isi semua form terlebih dahulu',
             });
         } else {
-            let formData = new FormData();
-            formData.append('facility_id', '40');
-            formData.append('description', this.state.description);
-            formData.append('start_timestamp', this.state.start_timestamp);
-            formData.append('end_timestamp', this.state.end_timestamp);
-            formData.append('cost', this.state.cost);
-            for (let i = 0; i < this.state.file.length; i++)
-                formData.append('file', this.state.file[i]);
-            formData.append('url', this.state.url);
-            this.props.postBookingStartFunction(formData, 'vehicle');
+            const data = {
+                facility_id: this.props.params.id,
+                description: this.state.description,
+                start_timestamp: this.state.start_timestamp,
+                end_timestamp: this.state.end_timestamp,
+                cost: this.state.cost,
+                file: this.state.file,
+                url: this.state.url,
+            };
+            this.props.postBookingStartFunction(data, 'vehicle');
             this.props.navigate('/booking/' + this.props.params.type);
         }
     };
@@ -127,12 +128,23 @@ class FacilityDetail extends React.Component {
         this.setState({ file: file });
     };
 
-    handleDateClick = (arg) => {
-        console.log(arg);
-        this.props.openModalFunction(arg.date);
+    handleDateClick = (arg, type) => {
+        if (type === 'dayGridMonth') {
+            this.setState({
+                start_timestamp: arg.dateStr,
+                viewType: type,
+            });
+            this.props.openModalFunction(arg.date);
+        } else {
+            this.setState({
+                start_timestamp: arg.dateStr,
+                viewType: type,
+            });
+            this.props.openModalFunction(arg.date);
+        }
     };
 
-    handleSubmitDate = () => {
+    handleSubmitDate = (time, duration) => {
         document
             .querySelector('.calendar-component')
             .classList.remove('visible');
@@ -143,9 +155,31 @@ class FacilityDetail extends React.Component {
         document
             .querySelector('.container-booking-facility-detail__body')
             .classList.add('visible');
-        this.setState({
-            step: 2,
-        });
+        if (this.state.viewType === 'dayGridMonth') {
+            this.setState({
+                start_timestamp: time,
+            });
+            const endTimestamp = moment(time)
+                .add(duration, 'hours')
+                .toISOString();
+            this.setState({
+                step: 2,
+                end_timestamp: endTimestamp,
+                durationDays: Math.ceil(duration / 24),
+                cost: this.state.facility.price * Math.ceil(duration / 24),
+            });
+        } else {
+            console.log('time', this.state.start_timestamp);
+            const endTimestamp = moment(this.state.start_timestamp)
+                .add(duration, 'hours')
+                .toISOString();
+            this.setState({
+                step: 2,
+                end_timestamp: endTimestamp,
+                durationDays: Math.ceil(duration / 24),
+                cost: this.state.facility.price * Math.ceil(duration / 24),
+            });
+        }
     };
 
     render() {
@@ -177,8 +211,8 @@ class FacilityDetail extends React.Component {
                     Back
                 </button>
                 <ComponentCalendar
-                    bookRef={this.calendarRef}
                     handleDateClick={this.handleDateClick}
+                    facilityId={this.props.params.id}
                 />
                 <div className="container-booking-facility-detail__body">
                     <div className="facility-information">
@@ -507,9 +541,14 @@ class FacilityDetail extends React.Component {
                                         Detail Harga
                                     </h2>
                                     <div className="count-total">
-                                        <h2>Rp150.0000 x 3 hari</h2>
                                         <div className="detail-total">
-                                            <h1>Rp450.000</h1>
+                                            <h2>
+                                                Rp{this.state.facility.price} x{' '}
+                                                {this.state.durationDays} hari
+                                            </h2>
+                                        </div>
+                                        <div className="detail-total">
+                                            <h1>Rp{this.state.cost}</h1>
                                         </div>
                                     </div>
                                 </div>
@@ -530,7 +569,10 @@ class FacilityDetail extends React.Component {
                         closeModalFunction={this.closeAlertModal}
                     />
                 </div>
-                <CalendarModal handleSubmitDate={this.handleSubmitDate} />
+                <CalendarModal
+                    viewType={this.state.viewType}
+                    handleSubmitDate={this.handleSubmitDate}
+                />
             </div>
         );
     }
@@ -551,7 +593,6 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(getFacilityClicked(id, category)),
         postBookingStartFunction: (data, category) =>
             dispatch(postBookingStart(data, category)),
-        setCalendarBookFunction: (ref) => dispatch(setCalendarBook(ref)),
         openModalFunction: (selectedDate) => dispatch(openModal(selectedDate)),
     };
 };
