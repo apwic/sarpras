@@ -21,6 +21,7 @@ import {
     updateFacility,
 } from '../../booking/action';
 import LoadingScreen from '../../common/components/loadingScreen';
+import AlertModal from '../../common/components/alertModal';
 
 const PinpointEmoji = () => (
     <div
@@ -76,9 +77,11 @@ class InsertFacility extends React.Component {
                     price: '',
                 },
                 files: [],
-                status_maintenance: false,
+                status_maintenance: '',
             },
             loading: false,
+            showAlertModal: false,
+            alertMessage: 'Fasilitas berhasil ditambahkan.',
         };
         this.imageuploaderRef = React.createRef();
     }
@@ -114,20 +117,19 @@ class InsertFacility extends React.Component {
             this.props.params.id &&
             prevProps.facility !== this.props.facility
         ) {
+            console.log(this.props.facility.status_maintenance);
+            this.setState({
+                alertMessage: 'Fasilitas berhasil diperbarui.',
+            });
             for (let i = 0; i < this.props.facility.image.length; i++) {
                 this.urlToBlob(this.props.facility.image[i]);
             }
-            this.setState({
-                value: {
-                    ...this.state.value,
-                    status_maintenance: this.props.facility.status_maintenance,
-                },
-            });
             if (this.props.params.type === 'vehicle') {
                 this.setState({
                     value: {
                         ...this.state.value,
                         vehicle: {
+                            ...this.state.value.vehicle,
                             type: this.props.facility.type,
                             name: this.props.facility.name,
                             campus_id: this.props.facility.campus.id,
@@ -138,6 +140,10 @@ class InsertFacility extends React.Component {
                                 this.props.facility.vehicle_capacity,
                             sim_category: this.props.facility.sim_category,
                         },
+                        status_maintenance: this.props.facility
+                            .status_maintenance
+                            ? '1'
+                            : '0',
                     },
                 });
             } else if (this.props.params.type === 'building') {
@@ -145,15 +151,19 @@ class InsertFacility extends React.Component {
                     value: {
                         ...this.state.value,
                         building: {
+                            ...this.state.value.building,
                             name: this.props.facility.name,
                             campus_id: this.props.facility.campus.id.toString(),
-                            buildingDescription:
-                                this.props.facility.description,
+                            description: this.props.facility.description,
                             capacity: this.props.facility.capacity,
                             price: this.props.facility.price,
                             latitude: this.props.facility.latitude,
                             longitude: this.props.facility.longitude,
                         },
+                        status_maintenance: this.props.facility
+                            .status_maintenance
+                            ? '1'
+                            : '0',
                     },
                 });
             } else if (this.props.params.type === 'room') {
@@ -161,6 +171,7 @@ class InsertFacility extends React.Component {
                     value: {
                         ...this.state.value,
                         room: {
+                            ...this.state.value.room,
                             facility_building_id:
                                 this.props.facility.building.id,
                             room_code: this.props.facility.room_code,
@@ -169,6 +180,10 @@ class InsertFacility extends React.Component {
                             capacity: this.props.facility.capacity,
                             price: this.props.facility.price,
                         },
+                        status_maintenance: this.props.facility
+                            .status_maintenance
+                            ? '1'
+                            : '0',
                     },
                 });
             } else if (this.props.params.type === 'selasar') {
@@ -176,6 +191,7 @@ class InsertFacility extends React.Component {
                     value: {
                         ...this.state.value,
                         selasar: {
+                            ...this.state.value.selasar,
                             facility_building_id:
                                 this.props.facility.building.id,
                             name: this.props.facility.name,
@@ -183,19 +199,27 @@ class InsertFacility extends React.Component {
                             capacity: this.props.facility.capacity,
                             price: this.props.facility.price,
                         },
+                        status_maintenance: this.props.facility
+                            .status_maintenance
+                            ? '1'
+                            : '0',
                     },
                 });
             }
-            this.setState({ loading: false });
+            this.setState({
+                loading: false,
+            });
+            console.log(this.state.value);
         }
     }
 
     urlToBlob = async (url) => {
         try {
-            const response = await fetch(url, {
-                mode: 'no-cors',
-            });
-            const blob = await response.blob();
+            const response = await fetch(url);
+            let blob = await response.blob();
+            blob.type === 'application/octet-stream'
+                ? (blob = new Blob([blob], { type: 'image/jpeg' }))
+                : null;
             this.setState((prevState) => ({
                 value: {
                     ...prevState.value,
@@ -226,14 +250,20 @@ class InsertFacility extends React.Component {
     };
 
     handleFileUpload = (e) => {
-        const files = {
-            blob: e.target.files[0],
-            url: URL.createObjectURL(e.target.files[0]),
-        };
+        if (e.target.files.length + this.state.value.files.length > 10) {
+            return;
+        }
+        const files = [];
+        for (let i = 0; i < e.target.files.length; i++) {
+            files.push({
+                blob: e.target.files[i],
+                url: URL.createObjectURL(e.target.files[i]),
+            });
+        }
         this.setState((prevState) => ({
             value: {
                 ...prevState.value,
-                files: [...prevState.value.files, files],
+                files: [...prevState.value.files, ...files],
             },
         }));
     };
@@ -248,8 +278,10 @@ class InsertFacility extends React.Component {
     };
 
     handleSubmit = () => {
+        console.log(this.state.value);
         const { type } = this.props.params;
         let data = { image: [] };
+        this.setState({ showAlertModal: true });
         for (let i = 0; i < this.state.value.files.length; i++) {
             data.image.push(this.state.value.files[i].blob);
         }
@@ -265,12 +297,17 @@ class InsertFacility extends React.Component {
         if (this.props.params.id) {
             data = {
                 ...data,
-                status_maintenance: this.state.value.status_maintenance,
+                status_maintenance:
+                    this.state.value.status_maintenance === '1' ? true : false,
             };
             this.props.UpdateFacilityFunction(type, data, this.props.params.id);
         } else {
             this.props.InsertFacilityFunction(type, data);
         }
+    };
+
+    closeAlertModal = () => {
+        this.setState({ showAlertModal: false });
     };
 
     render() {
@@ -773,7 +810,7 @@ class InsertFacility extends React.Component {
                                     <br />
                                     <label
                                         className="form-label"
-                                        htmlFor="buildingDescription"
+                                        htmlFor="description"
                                         style={{
                                             display: 'flex',
                                             alignItems: 'center',
@@ -785,12 +822,12 @@ class InsertFacility extends React.Component {
                                     <textarea
                                         required
                                         className="form-control"
-                                        id="buildingDescription"
+                                        id="description"
                                         rows="8"
                                         placeholder="Masukkan deskripsi"
                                         value={
                                             this.state.value.building
-                                                .buildingDescription
+                                                .description
                                         }
                                         onChange={(e) =>
                                             this.setState({
@@ -799,7 +836,7 @@ class InsertFacility extends React.Component {
                                                     building: {
                                                         ...this.state.value
                                                             .building,
-                                                        buildingDescription:
+                                                        description:
                                                             e.target.value,
                                                     },
                                                 },
@@ -1342,7 +1379,10 @@ class InsertFacility extends React.Component {
                                     </div>
                                 </div>
                                 <br />
-                                <div className="list__photo">
+                                <div
+                                    className="list__photo"
+                                    style={{ maxHeight: 'unset' }}
+                                >
                                     {this.state.value.files.map(
                                         (file, index) => (
                                             <div
@@ -1427,10 +1467,8 @@ class InsertFacility extends React.Component {
                                             })
                                         }
                                     >
-                                        <option value={false}>Aktif</option>
-                                        <option value={true}>
-                                            Tidak Aktif
-                                        </option>
+                                        <option value="0">Aktif</option>
+                                        <option value="1">Tidak Aktif</option>
                                     </select>
                                 </div>
                             )}
@@ -1518,6 +1556,11 @@ class InsertFacility extends React.Component {
                         </div>
                     </div>
                 </div>
+                <AlertModal
+                    show={this.state.showAlertModal}
+                    message={this.state.alertMessage}
+                    closeModalFunction={this.closeAlertModal}
+                />
             </div>
         );
     }
