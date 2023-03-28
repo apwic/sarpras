@@ -304,9 +304,7 @@ class Navbar extends React.Component {
                                         this.handleRouteOnclick('/booking/my')
                                     }
                                     className={
-                                        Active === 'My-Booking'
-                                            ? 'active'
-                                            : ''
+                                        Active === 'My-Booking' ? 'active' : ''
                                     }
                                 >
                                     Peminjaman Saya
