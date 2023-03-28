@@ -25,8 +25,8 @@ class MyBookingDetail extends React.Component {
         if (prevProps.myBooking !== this.props.myBooking) {
             this.setState({
                 myBooking: this.props.myBooking,
-                loading: false,
             });
+            this.setState({ loading: false });
         }
     }
 
@@ -35,6 +35,8 @@ class MyBookingDetail extends React.Component {
     };
 
     render() {
+        let start_date = this.state.myBooking.start_timestamp?.slice(0, 10);
+        let end_date = this.state.myBooking.end_timestamp?.slice(0, 10);
         return (
             <div className="container-mybooking-detail">
                 <div className="container-mybooking-detail__header">
@@ -94,15 +96,7 @@ class MyBookingDetail extends React.Component {
                                                 Tanggal Sewa
                                             </td>
                                             <td className="item-detail__value">
-                                                {
-                                                    this.state.myBooking
-                                                        .start_timestamp
-                                                }{' '}
-                                                -{' '}
-                                                {
-                                                    this.state.myBooking
-                                                        .end_timestamp
-                                                }
+                                                {start_date} - {end_date}
                                             </td>
                                         </tr>
                                         <tr>
@@ -136,9 +130,8 @@ class MyBookingDetail extends React.Component {
                                 </table>
                             </div>
                             <BookingStatusLabel
-                                status={bookingStatusConstant.CANCELED}
+                                status={bookingStatusConstant.PENDING}
                             />
-                            <p></p>
                             <div className="total-price">
                                 <h3 className="total-price__label">
                                     Total Biaya

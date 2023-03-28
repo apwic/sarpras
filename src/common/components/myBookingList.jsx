@@ -52,7 +52,9 @@ class MyBookingList extends React.Component {
                             />
                         </div>
                         <div className="my-booking-item__body">
-                            <h3 className="item-name">{myBooking.title}</h3>
+                            <h3 className="item-name">
+                                {myBooking.facility_id}
+                            </h3>
                             <p>{myBooking.description}</p>
                         </div>
                         <div className="my-booking-item__footer">
