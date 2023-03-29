@@ -6,14 +6,17 @@ import interactionPlugin from '@fullcalendar/interaction';
 import bootstrap5Plugin from '@fullcalendar/bootstrap5';
 import { connect } from 'react-redux';
 import { getEvents, setCalendarBook } from '../../booking/action';
-import LoadingScreen from './loadingScreen';
+import EventDetailModal from './eventDetailModal';
 
 class ComponentCalendar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             eventsShown: null,
-            loading: true,
+            show: false,
+            title: '',
+            start: '',
+            end: '',
         };
         this.calendarRef = React.createRef();
     }
@@ -42,6 +45,16 @@ class ComponentCalendar extends React.Component {
         this.filterEvents();
     }
 
+    eventClick = (info) => {
+        const options = { hour12: false, hour: '2-digit', minute: '2-digit' };
+        this.setState({
+            title: info.event.title,
+            start: info.event.start.toLocaleTimeString('en-US', options),
+            end: info.event.end.toLocaleTimeString('en-US', options),
+        });
+        this.setState({ show: true });
+    };
+
     filterEvents() {
         const eventsFacilityMatch = this.props.events.booking.filter(
             (event) => event.facility_id === parseInt(this.props.facilityId),
@@ -54,7 +67,6 @@ class ComponentCalendar extends React.Component {
             color: booking.status === 'PENDING' ? 'red' : 'green',
         }));
         this.setState({ eventsShown });
-        this.setState({ loading: false });
     }
 
     handleCalendarNavigation = (method) => {
@@ -73,13 +85,14 @@ class ComponentCalendar extends React.Component {
 
     handleDateClick = (arg) => {
         const calendarApi = this.calendarRef.current.getApi();
-        this.props.handleDateClick(arg, calendarApi.view.type);
+        this.props.handleDateClick(
+            arg,
+            calendarApi.view.type,
+            this.state.eventsShown,
+        );
     };
 
     render() {
-        // if (this.state.loading) {
-        //     return <LoadingScreen />;
-        // }
         return (
             <div className="calendar-component">
                 <div className="calendar">
@@ -104,8 +117,16 @@ class ComponentCalendar extends React.Component {
                         events={this.state.eventsShown}
                         dateClick={this.handleDateClick}
                         eventTextColor="#FFFFFF"
+                        eventClick={this.eventClick}
                     />
                 </div>
+                <EventDetailModal
+                    calendarModalOpen={this.state.show}
+                    title={this.state.title}
+                    start={this.state.start}
+                    end={this.state.end}
+                    closeModalFunction={() => this.setState({ show: false })}
+                />
             </div>
         );
     }

@@ -41,12 +41,12 @@ class FacilityDetail extends React.Component {
             step: 1,
             durationDays: 0,
             viewType: null,
+            eventsShown: null,
         };
         this.buttonRef = React.createRef();
     }
 
     componentDidUpdate(prevProps) {
-        console.log('update');
         if (prevProps.facility !== this.props.facility) {
             this.setState({
                 facility: this.props.facility,
@@ -56,7 +56,6 @@ class FacilityDetail extends React.Component {
     }
 
     componentDidMount() {
-        console.log('mount');
         this.props.getFacilityClickedFunction(
             this.props.params.id.toString(),
             this.props.params.type,
@@ -115,7 +114,7 @@ class FacilityDetail extends React.Component {
                 url: this.state.url,
             };
             this.props.postBookingStartFunction(data, 'vehicle');
-            this.props.navigate('/booking/' + this.props.params.type);
+            this.props.navigate('/booking/my');
         }
     };
     closeAlertModal = () => {
@@ -128,7 +127,8 @@ class FacilityDetail extends React.Component {
         this.setState({ file: file });
     };
 
-    handleDateClick = (arg, type) => {
+    handleDateClick = (arg, type, event) => {
+        this.setState({ eventsShown: event });
         if (type === 'dayGridMonth') {
             this.setState({
                 start_timestamp: arg.dateStr,
@@ -145,6 +145,76 @@ class FacilityDetail extends React.Component {
     };
 
     handleSubmitDate = (time, duration) => {
+        if (this.state.viewType === 'dayGridMonth') {
+            this.setState({
+                start_timestamp: time,
+            });
+            const endTimestamp = moment(time)
+                .add(duration, 'hours')
+                .toISOString();
+
+            const start = new Date(time);
+            const end = new Date(endTimestamp);
+            const eventsShown = this.state.eventsShown.filter(
+                (event) => event.color === 'green',
+            );
+
+            const overlap = eventsShown.some((existingEvent) => {
+                const existingStart = new Date(existingEvent.start);
+                const existingEnd = new Date(existingEvent.end);
+                return start < existingEnd && existingStart < end;
+            });
+            if (!overlap) {
+                this.setState({
+                    end_timestamp: endTimestamp,
+                    durationDays: Math.ceil(duration / 24),
+                    cost: this.state.facility.price * Math.ceil(duration / 24),
+                });
+                this.setState({ step: 2 });
+                this.hideCalendar();
+            } else {
+                this.setState({
+                    showAlertModal: true,
+                    alertMessage:
+                        'Terdapat Booking Yang Sudah Disetujui Pada Waktu Tersebut',
+                });
+            }
+        } else {
+            const endTimestamp = moment(this.state.start_timestamp)
+                .add(duration, 'hours')
+                .toISOString();
+
+            const start = new Date(this.start_timestamp);
+            const end = new Date(endTimestamp);
+
+            const eventsShown = this.state.eventsShown.filter(
+                (event) => event.color === 'green',
+            );
+
+            const overlap = eventsShown.some((existingEvent) => {
+                const existingStart = new Date(existingEvent.start);
+                const existingEnd = new Date(existingEvent.end);
+                return start < existingEnd && existingStart < end;
+            });
+            if (!overlap) {
+                this.setState({
+                    end_timestamp: endTimestamp,
+                    durationDays: Math.ceil(duration / 24),
+                    cost: this.state.facility.price * Math.ceil(duration / 24),
+                });
+                this.setState({ step: 2 });
+                this.hideCalendar();
+            } else {
+                this.setState({
+                    showAlertModal: true,
+                    alertMessage:
+                        'Terdapat Booking Yang Sudah Disetujui Pada Waktu Tersebut',
+                });
+            }
+        }
+    };
+
+    hideCalendar = () => {
         document
             .querySelector('.calendar-component')
             .classList.remove('visible');
@@ -155,31 +225,6 @@ class FacilityDetail extends React.Component {
         document
             .querySelector('.container-booking-facility-detail__body')
             .classList.add('visible');
-        if (this.state.viewType === 'dayGridMonth') {
-            this.setState({
-                start_timestamp: time,
-            });
-            const endTimestamp = moment(time)
-                .add(duration, 'hours')
-                .toISOString();
-            this.setState({
-                step: 2,
-                end_timestamp: endTimestamp,
-                durationDays: Math.ceil(duration / 24),
-                cost: this.state.facility.price * Math.ceil(duration / 24),
-            });
-        } else {
-            console.log('time', this.state.start_timestamp);
-            const endTimestamp = moment(this.state.start_timestamp)
-                .add(duration, 'hours')
-                .toISOString();
-            this.setState({
-                step: 2,
-                end_timestamp: endTimestamp,
-                durationDays: Math.ceil(duration / 24),
-                cost: this.state.facility.price * Math.ceil(duration / 24),
-            });
-        }
     };
 
     render() {
@@ -579,7 +624,6 @@ class FacilityDetail extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    console.log('map state to props');
     return {
         facility: state.facility.facilityClicked,
         user: state.auth.user,
@@ -587,7 +631,6 @@ const mapStateToProps = (state) => {
     };
 };
 const mapDispatchToProps = (dispatch) => {
-    console.log('map dispatch to props');
     return {
         getFacilityClickedFunction: (id, category) =>
             dispatch(getFacilityClicked(id, category)),
