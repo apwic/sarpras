@@ -1,0 +1,136 @@
+.container-myreport{
+    display: flex;
+    flex-direction: column;
+    padding-left: 7vh;
+    padding-right: 7vh;
+    padding-top: 3vh;
+    min-height: calc(100vh - 60px);
+    padding-bottom: 4vh;
+}
+
+.container-myreport__header{
+    width: 100%;
+    height: 7vh;
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid var(--color-text-secondary);
+}
+
+.container-myreport__header .icon-myreport{
+    width: 2.5vh;
+    height: 2.5vh;
+    margin-right: 1vh;
+}
+
+.container-myreport__body__tools{
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.container-myreport__body{
+    width: 100%;
+    height: 100%;
+    padding-top: 3vh;
+}
+
+.container-myreport__body__items{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    padding-top: 3vh;
+    gap: 16px;
+}
+
+.my-report-item{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    padding: 24px 35px 24px 35px;
+    border-radius: var(--corner-radius-large);
+    background-color: var(--color-background-light);
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+.my-report-item:hover{
+    transform: scale(1.005); 
+    cursor: pointer;
+}
+
+.my-report-item:active{
+    background-color: var(--color-background);
+}
+
+.my-report-item__body {
+    width: calc(100% - 16vh);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.item-labels {
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+}
+
+.item-details {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+h3.item-name{
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.report-date{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.my-report-item__image {
+    width: 16vh;
+    background-color: black;
+    border-radius: var(--corner-radius-large);
+}
+
+.my-report-item__image img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--corner-radius-large);
+}
+
+.icon-filter-item {
+    height: 2.1vh;
+    cursor: pointer;
+}
+
+.list-filter{
+    display: flex;
+    gap: 2vh;
+}
+
+button.filter-item{
+    display: flex;
+    border-radius: 25px;
+    height: 35px;
+    align-items: center;
+}
+
+button.filter-item.selected{
+    background-color: var(--color-background);
+    transform: scale(1.02);
+}

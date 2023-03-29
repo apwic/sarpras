@@ -24,6 +24,7 @@ import LoadingScreen from '../common/components/loadingScreen';
 import FacilityDetail from '../booking/facilityDetail';
 import MyBooking from '../mybooking';
 import MyBookingDetail from '../mybooking/detail';
+import MyReport from '../myreport';
 
 class Home extends React.Component {
     constructor(props) {
@@ -180,6 +181,19 @@ class Home extends React.Component {
                                         <Topbar />
                                         <Navbar />
                                         <MyBookingDetail />
+                                    </div>
+                                }
+                            />
+                        )}
+                        {this.state.user.role ===
+                            roleConstant.BASIC_USER.name && (
+                            <Route
+                                path="/report/my"
+                                element={
+                                    <div>
+                                        <Topbar />
+                                        <Navbar />
+                                        <MyReport />
                                     </div>
                                 }
                             />

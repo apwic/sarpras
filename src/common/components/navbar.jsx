@@ -91,6 +91,13 @@ class Navbar extends React.Component {
                     AdminExpand: false,
                 });
                 break;
+            case '/report/my':
+                this.setState({
+                    Active: 'My-Report',
+                    BookingExpand: false,
+                    AdminExpand: false,
+                });
+                break;
             case '/admin/vehicle':
                 this.setState({
                     Active: 'Admin-Vehicle',
@@ -151,6 +158,9 @@ class Navbar extends React.Component {
                     break;
                 case '/booking/my':
                     this.setState({ Active: 'My-Booking' });
+                    break;
+                case '/report/my':
+                    this.setState({ Active: 'My-Report' });
                     break;
                 case '/admin/vehicle':
                     this.setState({ Active: 'Admin-Vehicle' });
@@ -314,7 +324,14 @@ class Navbar extends React.Component {
                     )}
                     {this.state.user.role === roleConstant.BASIC_USER.name && (
                         <div className="element">
-                            <div className="header">
+                            <div
+                                className={`header ${
+                                    Active === 'My-Report' ? 'active' : ''
+                                }`}
+                                onClick={() =>
+                                    this.handleRouteOnclick('/report/my')
+                                }
+                            >
                                 <FontAwesomeIcon
                                     className="header-icon"
                                     icon={faFlag}
