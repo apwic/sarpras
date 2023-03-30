@@ -20,7 +20,6 @@ class AdminFacilityList extends React.Component {
     }
     componentDidUpdate(prevProps) {
         if (prevProps.facilities !== this.props.facilities) {
-            console.log(this.props.facilities);
             this.setState({
                 facilities: this.props.facilities,
             });

@@ -45,7 +45,6 @@ class FilterModal extends React.Component {
     };
 
     handleCloseModal = () => {
-        console.log(this.props.filters);
         this.props.closeModalFunction();
     };
 

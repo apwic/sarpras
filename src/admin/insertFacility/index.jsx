@@ -143,7 +143,6 @@ class InsertFacility extends React.Component {
             this.props.params.id &&
             prevProps.facility !== this.props.facility
         ) {
-            console.log(this.props.facility.status_maintenance);
             this.setState({
                 alertMessage: 'Fasilitas berhasil diperbarui.',
             });
@@ -235,7 +234,6 @@ class InsertFacility extends React.Component {
             this.setState({
                 loading: false,
             });
-            console.log(this.state.value);
         }
     }
 
@@ -1816,8 +1814,7 @@ class InsertFacility extends React.Component {
                                                     : 107.6057882,
                                         }}
                                         defaultZoom={15}
-                                        onClick={(e) => (
-                                            console.log(e),
+                                        onClick={(e) =>
                                             this.setState({
                                                 value: {
                                                     ...this.state.value,
@@ -1829,7 +1826,7 @@ class InsertFacility extends React.Component {
                                                     },
                                                 },
                                             })
-                                        )}
+                                        }
                                     >
                                         <PinpointEmoji
                                             lat={

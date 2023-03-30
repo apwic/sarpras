@@ -24,7 +24,6 @@ function* getUser() {
     try {
         const response = yield call(getUserApi);
         if (response.http_status && response.http_status === 401) {
-            console.log('Unauthorized');
             storage.removeCreds();
             window.location.href = '/';
         }

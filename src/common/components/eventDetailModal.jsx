@@ -11,7 +11,6 @@ class EventDetailModal extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (prevProps.calendarModalOpen !== this.props.calendarModalOpen) {
-            console.log(this.props.event);
             this.setState({ show: this.props.calendarModalOpen });
         }
     }

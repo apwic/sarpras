@@ -57,7 +57,6 @@ class Dashboard extends React.Component {
             this.setState({ user: this.props.user });
         }
         if (prevProps.statistics !== this.props.statistics) {
-            console.log(this.props.statistics);
             this.setState({ statistics: this.props.statistics });
         }
     }
