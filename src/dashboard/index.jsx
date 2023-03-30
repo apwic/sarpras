@@ -8,14 +8,10 @@ import {
     faPeopleLine,
     faTruck,
 } from '@fortawesome/free-solid-svg-icons';
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction';
-import bootstrap5Plugin from '@fullcalendar/bootstrap5';
+import ComponentCalendar from '../common/components/CalendarComponent';
 import { connect } from 'react-redux';
 import React from 'react';
-import { openModal, setCalendar } from './action';
+import { getStatistics, openModal, setCalendar } from './action';
 import CalendarModal from '../common/components/calendarModal';
 import { getUser } from '../common/auth/action';
 import LoadingScreen from '../common/components/loadingScreen';
@@ -28,6 +24,8 @@ class Dashboard extends React.Component {
             showModal: false,
             selectedDate: null,
             user: this.props.user ? this.props.user : null,
+            statistics: null,
+            monthYear: null,
         };
     }
 
@@ -36,11 +34,31 @@ class Dashboard extends React.Component {
             this.props.getUserFunction();
         }
         this.props.setCalendarFunction(this.calendarRef);
+        const currentTime = new Date();
+        const currentMonthName = currentTime.toLocaleString('default', {
+            month: 'long',
+        });
+        const currentMonth = currentTime.getMonth() + 1;
+        const currentYear = currentTime.getFullYear();
+        this.setState({
+            monthYear: {
+                month: currentMonth,
+                year: currentYear,
+                monthName: currentMonthName,
+            },
+        });
+        this.props.getStatisticsFunction(
+            '?month=' + currentMonth + '&year=' + currentYear,
+        );
     }
 
     componentDidUpdate(prevProps) {
         if (prevProps.user !== this.props.user) {
             this.setState({ user: this.props.user });
+        }
+        if (prevProps.statistics !== this.props.statistics) {
+            console.log(this.props.statistics);
+            this.setState({ statistics: this.props.statistics });
         }
     }
 
@@ -71,8 +89,28 @@ class Dashboard extends React.Component {
                                 <div className="item__body">
                                     <p>Jumlah peminjaman</p>
                                     <div className="item__body__peminjaman">
-                                        <p>20 peminjam (Februari)</p>
-                                        <p>200 peminjam (2023)</p>
+                                        <p>
+                                            {this.state.statistics
+                                                ? this.state.statistics.building
+                                                      .month
+                                                : '0'}{' '}
+                                            peminjam (
+                                            {this.state.monthYear
+                                                ? this.state.monthYear.monthName
+                                                : '0'}
+                                            )
+                                        </p>
+                                        <p>
+                                            {this.state.statistics
+                                                ? this.state.statistics.building
+                                                      .year
+                                                : '0'}{' '}
+                                            peminjam (
+                                            {this.state.monthYear
+                                                ? this.state.monthYear.year
+                                                : '0'}
+                                            )
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -98,8 +136,28 @@ class Dashboard extends React.Component {
                                 <div className="item__body">
                                     <p>Jumlah peminjaman</p>
                                     <div className="item__body__peminjaman">
-                                        <p>20 peminjam (Februari)</p>
-                                        <p>200 peminjam (2023)</p>
+                                        <p>
+                                            {this.state.statistics
+                                                ? this.state.statistics.room
+                                                      .month
+                                                : '0'}{' '}
+                                            peminjam (
+                                            {this.state.monthYear
+                                                ? this.state.monthYear.monthName
+                                                : '0'}
+                                            )
+                                        </p>
+                                        <p>
+                                            {this.state.statistics
+                                                ? this.state.statistics.room
+                                                      .year
+                                                : '0'}{' '}
+                                            peminjam (
+                                            {this.state.monthYear
+                                                ? this.state.monthYear.year
+                                                : '0'}
+                                            )
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -125,8 +183,28 @@ class Dashboard extends React.Component {
                                 <div className="item__body">
                                     <p>Jumlah peminjaman</p>
                                     <div className="item__body__peminjaman">
-                                        <p>20 peminjam (Februari)</p>
-                                        <p>200 peminjam (2023)</p>
+                                        <p>
+                                            {this.state.statistics
+                                                ? this.state.statistics.selasar
+                                                      .month
+                                                : '0'}{' '}
+                                            peminjam (
+                                            {this.state.monthYear
+                                                ? this.state.monthYear.monthName
+                                                : '0'}
+                                            )
+                                        </p>
+                                        <p>
+                                            {this.state.statistics
+                                                ? this.state.statistics.selasar
+                                                      .year
+                                                : '0'}{' '}
+                                            peminjam (
+                                            {this.state.monthYear
+                                                ? this.state.monthYear.year
+                                                : '0'}
+                                            )
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -152,8 +230,28 @@ class Dashboard extends React.Component {
                                 <div className="item__body">
                                     <p>Jumlah peminjaman</p>
                                     <div className="item__body__peminjaman">
-                                        <p>20 peminjam (Februari)</p>
-                                        <p>200 peminjam (2023)</p>
+                                        <p>
+                                            {this.state.statistics
+                                                ? this.state.statistics.vehicle
+                                                      .month
+                                                : '0'}{' '}
+                                            peminjam (
+                                            {this.state.monthYear
+                                                ? this.state.monthYear.monthName
+                                                : '0'}
+                                            )
+                                        </p>
+                                        <p>
+                                            {this.state.statistics
+                                                ? this.state.statistics.vehicle
+                                                      .year
+                                                : '0'}{' '}
+                                            peminjam (
+                                            {this.state.monthYear
+                                                ? this.state.monthYear.year
+                                                : '0'}
+                                            )
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -172,54 +270,10 @@ class Dashboard extends React.Component {
                             </div>
                         </div>
                     </div>
-                    <div className="container-dashboard__body__calendar">
-                        <div className="item__header">
-                            <h2
-                                style={{
-                                    marginBottom: '30px',
-                                    textAlign: 'center',
-                                }}
-                            >
-                                Kalender Status Peminjaman
-                            </h2>
-                        </div>
-                        <FullCalendar
-                            themeSystem="bootstrap5"
-                            ref={this.calendarRef}
-                            plugins={[
-                                dayGridPlugin,
-                                timeGridPlugin,
-                                interactionPlugin,
-                                bootstrap5Plugin,
-                            ]}
-                            initialView={'dayGridMonth'}
-                            headerToolbar={{
-                                start: 'prevYear prev,next nextYear',
-                                center: 'title',
-                                end: 'today dayGridMonth,timeGridWeek',
-                            }}
-                            events={[
-                                {
-                                    title: 'CRCS STEI Multipurpose',
-                                    date: '2023-02-01T07:00:00+07:00',
-                                    color: 'red',
-                                },
-                                {
-                                    title: 'Labtek V',
-                                    date: '2023-02-02T07:00:00+09:00',
-                                },
-                                {
-                                    title: 'Harbolnas',
-                                    date: '2023-01-29',
-                                    color: 'red',
-                                    display: 'background',
-                                    textColor: '#FFFFFF',
-                                },
-                            ]}
-                            dateClick={this.handleDateClick}
-                            eventTextColor="#FFFFFF"
-                        />
-                    </div>
+                    <ComponentCalendar
+                        handleDateClick={this.handleDateClick}
+                        facilityId="all"
+                    />
                     <CalendarModal />
                 </div>
             </div>
@@ -231,6 +285,7 @@ const mapStateToProps = (state) => {
     return {
         calendarModalOpen: state.dashboard.calendarModalOpen,
         user: state.auth.user,
+        statistics: state.dashboard.statistics,
     };
 };
 
@@ -240,6 +295,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(setCalendar(calendarRef)),
         openModalFunction: (selectedDate) => dispatch(openModal(selectedDate)),
         getUserFunction: () => dispatch(getUser()),
+        getStatisticsFunction: (params) => dispatch(getStatistics(params)),
     };
 };
 

@@ -1,4 +1,10 @@
-import { SET_CALENDAR, OPEN_MODAL, CLOSE_MODAL } from './actionTypes';
+import {
+    SET_CALENDAR,
+    OPEN_MODAL,
+    CLOSE_MODAL,
+    GET_STATISTICS,
+    SET_STATISTICS,
+} from './actionTypes';
 
 export function setCalendar(calendarRef) {
     return {
@@ -17,5 +23,19 @@ export function openModal(selectedDate) {
 export function closeModal() {
     return {
         type: CLOSE_MODAL,
+    };
+}
+
+export function getStatistics(params) {
+    return {
+        type: GET_STATISTICS,
+        params,
+    };
+}
+
+export function setStatistics(stats) {
+    return {
+        type: SET_STATISTICS,
+        stats,
     };
 }

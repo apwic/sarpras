@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import { getEvents, setCalendarBook } from '../../booking/action';
 import EventDetailModal from './eventDetailModal';
 import { Spinner } from 'react-bootstrap';
+import { withRouter } from '../withRouter';
 
 class ComponentCalendar extends React.Component {
     constructor(props) {
@@ -63,9 +64,15 @@ class ComponentCalendar extends React.Component {
     };
 
     filterEvents = () => {
-        const eventsFacilityMatch = this.props.events.booking.filter(
-            (event) => event.facility_id === parseInt(this.props.facilityId),
-        );
+        var eventsFacilityMatch;
+        if (this.props.facilityId === 'all') {
+            eventsFacilityMatch = this.props.events.booking;
+        } else {
+            eventsFacilityMatch = this.props.events.booking.filter(
+                (event) =>
+                    event.facility_id === parseInt(this.props.facilityId),
+            );
+        }
         const eventsHolidayMatch = this.props.events.holiday;
         const events = eventsFacilityMatch.map((booking) => ({
             id: booking.id,
@@ -93,19 +100,34 @@ class ComponentCalendar extends React.Component {
     };
 
     handleDateClick = (arg) => {
-        const calendarApi = this.calendarRef.current.getApi();
-        this.props.handleDateClick(
-            arg,
-            calendarApi.view.type,
-            this.state.eventsShown,
-        );
+        if (this.props.params.type) {
+            const calendarApi = this.calendarRef.current.getApi();
+            this.props.handleDateClick(
+                arg,
+                calendarApi.view.type,
+                this.state.eventsShown,
+            );
+        }
     };
 
     render() {
         return (
             <div className="calendar-component">
                 <div className="calendar">
-                    <h2 style={{ marginBottom: '25px' }}>Pilih Tanggal Sewa</h2>
+                    {this.props.facilityId === 'all' ? (
+                        <h2
+                            style={{
+                                marginBottom: '30px',
+                                textAlign: 'center',
+                            }}
+                        >
+                            Kalender Status Peminjaman
+                        </h2>
+                    ) : (
+                        <h2 style={{ marginBottom: '25px' }}>
+                            Pilih Tanggal Sewa
+                        </h2>
+                    )}
                     <div
                         className="calendar-container"
                         style={{ position: 'relative' }}
@@ -171,4 +193,6 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ComponentCalendar);
+export default withRouter(
+    connect(mapStateToProps, mapDispatchToProps)(ComponentCalendar),
+);

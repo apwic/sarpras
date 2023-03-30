@@ -1,3 +1,5 @@
 export const SET_CALENDAR = 'SET_CALENDAR';
 export const OPEN_MODAL = 'OPEN_MODAL';
 export const CLOSE_MODAL = 'CLOSE_MODAL';
+export const GET_STATISTICS = 'GET_STATISTICS';
+export const SET_STATISTICS = 'SET_STATISTICS';

@@ -186,13 +186,12 @@ class Navbar extends React.Component {
     }
 
     handleTransitionEnd = () => {
-        if (document.location.pathname === '/') {
-            this.props.calendarRef.current.getApi().updateSize();
-        } else if (
+        if (
+            document.location.pathname === '/' ||
             document.location.pathname ===
-            `/booking/${this.props.params.type}/${this.props.params.id}`
+                `/booking/${this.props.params.type}/${this.props.params.id}`
         ) {
-            this.props.bookRef.current.getApi().updateSize();
+            this.props.calenderRef.current.getApi().updateSize();
         }
         document.querySelector('body').classList.remove('animate');
     };
@@ -502,7 +501,7 @@ const mapStateToProps = (state) => {
     return {
         calendarRef: state.dashboard.calendarRef,
         user: state.auth.user,
-        bookRef: state.facility.calendarBookRef,
+        calenderRef: state.facility.calendarBookRef,
     };
 };
 
@@ -511,8 +510,8 @@ const mapDispatchToProps = (dispatch) => {
         setCalendarFunction: (calendarRef) =>
             dispatch(setCalendar(calendarRef)),
         getUserFunction: () => dispatch(getUser()),
-        setCalendarBookFunction: (bookRef) =>
-            dispatch(setCalendarBook(bookRef)),
+        setCalendarBookFunction: (calenderRef) =>
+            dispatch(setCalendarBook(calenderRef)),
     };
 };
 

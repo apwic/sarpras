@@ -1,9 +1,15 @@
-import { SET_CALENDAR, OPEN_MODAL, CLOSE_MODAL } from './actionTypes';
+import {
+    SET_CALENDAR,
+    OPEN_MODAL,
+    CLOSE_MODAL,
+    SET_STATISTICS,
+} from './actionTypes';
 
 const initialState = {
     calendarRef: null,
     calendarModalOpen: false,
     selectedDate: null,
+    statistics: null,
 };
 
 function dashboardReducer(state = initialState, action) {
@@ -18,6 +24,8 @@ function dashboardReducer(state = initialState, action) {
             };
         case CLOSE_MODAL:
             return { ...state, calendarModalOpen: false, selectedDate: null };
+        case SET_STATISTICS:
+            return { ...state, statistics: action.stats };
         default:
             return state;
     }
