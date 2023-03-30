@@ -55,10 +55,7 @@ class MyBooking extends React.Component {
                 this.state.filters,
             );
         }
-        if (
-            prevState.query !== this.state.query ||
-            prevState.filters !== this.state.filters
-        ) {
+        if (prevState.filters !== this.state.filters) {
             this.setState({
                 filters: [
                     {
@@ -87,10 +84,16 @@ class MyBooking extends React.Component {
         );
     };
 
-    handleSearch = (e) => {
+    handleSearch = (event) => {
         this.setState({
-            query: e.target.value,
+            query: event.target.value,
         });
+        this.props.getMyBookingsFunction(
+            this.state.currentPage,
+            5,
+            event.target.value,
+            this.state.filters,
+        );
     };
 
     handleMyBookingClicked = (id) => {

@@ -7,7 +7,6 @@ import { getFacilityApi } from '../booking/api';
 function* getMyBookings(action) {
     try {
         const response = yield call(getMyBookingsApi, action.payload);
-        console.log(response.data);
         yield put(setMyBookings(response.data));
         yield put(setTotalBookings(response.data.total_rows));
     } catch (error) {
