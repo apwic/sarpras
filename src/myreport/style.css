@@ -33,7 +33,7 @@
 .container-myreport__body{
     width: 100%;
     height: 100%;
-    padding-top: 3vh;
+    padding-top: 2.5vh;
 }
 
 .container-myreport__body__items{
@@ -41,7 +41,8 @@
     height: auto;
     display: flex;
     flex-direction: column;
-    padding-top: 3vh;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
     gap: 16px;
 }
 
