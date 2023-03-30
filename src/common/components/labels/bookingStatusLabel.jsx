@@ -22,20 +22,12 @@ class BookingStatusLabel extends React.Component {
             this.props.status === bookingStatusConstant.ON_VERIFICATION
         ) {
             this.setState({ color: '#ED9121' });
-        } else if (
-            this.props.status === bookingStatusConstant.WAITING_FOR_PAYMENT
-        ) {
-            this.setState({ color: '#ED9121' });
-        } else if (
-            this.props.status === bookingStatusConstant.PAYMENT_SUCCESS
-        ) {
-            this.setState({ color: '#00B140' });
-        } else if (this.props.status === bookingStatusConstant.ENDED) {
+        } else if (this.props.status === bookingStatusConstant.APPROVED) {
             this.setState({ color: '#00B140' });
         } else if (
             this.props.status === bookingStatusConstant.WAITING_FOR_RATING
         ) {
-            this.setState({ color: '#00B140' });
+            this.setState({ color: '#ED9121' });
         } else if (this.props.status === bookingStatusConstant.DONE) {
             this.setState({ color: '#00B140' });
         }
