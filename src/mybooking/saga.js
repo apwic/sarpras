@@ -1,5 +1,4 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-
 import { GET_MYBOOKINGS, GET_MYBOOKING_CLICKED } from './actionTypes';
 import { setMyBookings, setMyBookingClicked, setTotalBookings } from './action';
 import { getMyBookingsApi, getMyBookingClickedApi } from './api';
@@ -8,14 +7,9 @@ import { getFacilityApi } from '../booking/api';
 function* getMyBookings(action) {
     try {
         const response = yield call(getMyBookingsApi, action.payload);
-        for (let i = 0; i < response.data.length; i++) {
-            let type = response.data[i].category.toLowerCase();
-            let id = response.data[i].facility_id;
-            let facility = yield call(getFacilityApi, { type, id });
-            response.data[i].facility = yield facility.data;
-        }
+        console.log(response.data);
         yield put(setMyBookings(response.data));
-        yield put(setTotalBookings(response.data.length));
+        yield put(setTotalBookings(response.data.total_rows));
     } catch (error) {
         console.log(error);
     }

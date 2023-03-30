@@ -1,66 +1,90 @@
 import React from 'react';
 import './style.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faSearch } from '@fortawesome/free-solid-svg-icons';
+import {
+    faUser,
+    faSearch,
+    faTimes,
+    faFilter,
+} from '@fortawesome/free-solid-svg-icons';
 import MyBookingList from '../common/components/myBookingList';
 import { connect } from 'react-redux';
-import { getMyBookings } from './action';
+import { getMyBookings, openModalFilter, closeModalFilter } from './action';
 import { withRouter } from '../common/withRouter';
 import LoadingScreen from '../common/components/loadingScreen';
+import FilterModal from '../common/components/filterModal';
+import { Pagination } from 'react-bootstrap';
 
 class MyBooking extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            myBookings: [],
+            myBookings: null,
+            currentPage: 1,
+            maxPage: 1,
             query: '',
             filters: '',
+            appliedFilters: [],
         };
     }
 
     componentDidMount() {
-        this.props.getMyBookingsFunction(this.state.query, '');
+        this.props.getMyBookingsFunction(
+            this.state.currentPage,
+            5,
+            this.state.query,
+            this.state.filters,
+        );
     }
 
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.myBookings !== this.props.myBookings) {
             this.setState({
                 myBookings: this.props.myBookings,
+                maxPage: Math.ceil(this.props.myBookings.total_rows / 5),
             });
+        }
+        if (prevState.currentPage !== this.state.currentPage) {
+            this.setState({
+                myBookings: null,
+            });
+            this.props.getMyBookingsFunction(
+                this.state.currentPage,
+                5,
+                this.state.query,
+                this.state.filters,
+            );
         }
         if (
             prevState.query !== this.state.query ||
             prevState.filters !== this.state.filters
         ) {
-            this.props.getMyBookingsFunction(
-                this.state.query,
-                this.state.filters,
-            );
+            this.setState({
+                filters: [
+                    {
+                        id: 0,
+                        name: 'status_list',
+                        display: 'Status',
+                        options: this.props.filters.status_list,
+                    },
+                ],
+            });
         }
     }
 
-    handleFilterOption = (option) => {
-        option.forEach((optionFilter) => {
-            if (optionFilter === 1) {
-                this.setState.filters = 'status=PENDING';
-            } else if (optionFilter === 2) {
-                this.setState.filters = 'status=CANCELED';
-            } else if (optionFilter === 3) {
-                this.setState.filters = 'status=REJECTED';
-            } else if (optionFilter === 4) {
-                this.setState.filters = 'status=ON_VERIFICATION';
-            } else if (optionFilter === 5) {
-                this.setState.filters = 'status=WAITING_FOR_PAYMENT';
-            } else if (optionFilter === 6) {
-                this.setState.filters = 'status=PAYMENT_SUCCESS';
-            } else if (optionFilter === 7) {
-                this.setState.filters = 'status=ENDED';
-            } else if (optionFilter === 8) {
-                this.setState.filters = 'status=WAITING_FOR_RATING';
-            } else if (optionFilter === 9) {
-                this.setState.filters = 'status=DONE';
-            }
+    handleFilterOption = (filters) => {
+        let filterString = this.convertToFilterString(filters);
+        this.setState({
+            filters: filterString,
+            appliedFilters: filters,
+            currentPage: 1,
         });
+        this.props.getMyBookingsFunction(
+            this.state.currentPage,
+            5,
+            this.state.query,
+            filterString,
+        );
     };
 
     handleSearch = (e) => {
@@ -73,8 +97,26 @@ class MyBooking extends React.Component {
         this.props.navigate(`/booking/${id}`);
     };
 
+    renderPaginationNumbers = () => {
+        let paginationNumbers = [];
+        for (let i = 1; i <= this.state.maxPage; i++) {
+            paginationNumbers.push(i);
+        }
+        return paginationNumbers.map((number) => {
+            return (
+                <Pagination.Item
+                    key={number}
+                    active={number === this.state.currentPage}
+                    onClick={() => this.setState({ currentPage: number })}
+                >
+                    {number}
+                </Pagination.Item>
+            );
+        });
+    };
+
     render() {
-        if (this.state.myBookings.length === 0) {
+        if (this.state.myBookings === null) {
             return <LoadingScreen />;
         }
         return (
@@ -98,27 +140,60 @@ class MyBooking extends React.Component {
                                 className="icon-search"
                             />
                         </div>
-                        <div className="filter-bar">
-                            <select
-                                className="form-select form-select-hidden"
-                                name="bookingFilter"
-                                defaultValue={''}
-                            >
-                                <option value="" disabled hidden>
-                                    Status
-                                </option>
-                                <option value="1">
-                                    Pengajuan Baru Diterima
-                                </option>
-                                <option value="2">Peminjaman Dibatalkan</option>
-                                <option value="3">Pengajuan Ditolak</option>
-                                <option value="4">Proses Verifikasi</option>
-                                <option value="5">Menunggu Pembayaran</option>
-                                <option value="6">Pembayaran Berhasil</option>
-                                <option value="7">Peminjaman Berakhir</option>
-                                <option value="8">Menunggu Penilaian</option>
-                                <option value="9">Selesai</option>
-                            </select>
+                        <div className="filter__items">
+                            {this.state.appliedFilters &&
+                                this.state.appliedFilters.map(
+                                    (appliedFilters, index) => {
+                                        return (
+                                            appliedFilters && (
+                                                <button
+                                                    className="filter-item-label"
+                                                    key={appliedFilters}
+                                                    onClick={() => {
+                                                        let newFilters =
+                                                            this.state
+                                                                .appliedFilters;
+                                                        delete newFilters[
+                                                            index
+                                                        ];
+                                                        this.handleFilterOption(
+                                                            newFilters,
+                                                        );
+                                                    }}
+                                                >
+                                                    {
+                                                        this.state.filters[
+                                                            index
+                                                        ].display
+                                                    }{' '}
+                                                    :{' '}
+                                                    {
+                                                        this.state.filters[
+                                                            index
+                                                        ].options.find(
+                                                            (obj) =>
+                                                                obj.id ===
+                                                                appliedFilters,
+                                                        ).name
+                                                    }{' '}
+                                                    <FontAwesomeIcon
+                                                        icon={faTimes}
+                                                    />
+                                                </button>
+                                            )
+                                        );
+                                    },
+                                )}
+                            <FontAwesomeIcon
+                                icon={faFilter}
+                                onClick={() => this.props.openModalFunction()}
+                                className="icon-filter-item"
+                            />
+                            <FilterModal
+                                filterlist={this.state.filters}
+                                filters={this.state.appliedFilters}
+                                filtersubmitfunction={this.handleFilterOption}
+                            />
                         </div>
                     </div>
                     <div className="container-mybooking__body__items">
@@ -128,6 +203,37 @@ class MyBooking extends React.Component {
                         />
                     </div>
                 </div>
+                <Pagination>
+                    <Pagination.First
+                        onClick={() => this.setState({ currentPage: 1 })}
+                    />
+                    <Pagination.Prev
+                        onClick={() =>
+                            this.setState({
+                                currentPage:
+                                    this.state.currentPage <= 1
+                                        ? 1
+                                        : this.state.currentPage - 1,
+                            })
+                        }
+                    />
+                    {this.renderPaginationNumbers()}
+                    <Pagination.Next
+                        onClick={() =>
+                            this.setState({
+                                currentPage:
+                                    this.state.currentPage >= this.state.maxPage
+                                        ? this.state.maxPage
+                                        : this.state.currentPage + 1,
+                            })
+                        }
+                    />
+                    <Pagination.Last
+                        onClick={() =>
+                            this.setState({ currentPage: this.state.maxPage })
+                        }
+                    />
+                </Pagination>
             </div>
         );
     }
@@ -136,13 +242,16 @@ class MyBooking extends React.Component {
 const mapStateToProps = (state) => {
     return {
         myBookings: state.myBooking.myBookings,
+        filterModalOpen: state.myBooking.filterModalOpen,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getMyBookingsFunction: (query, filters) =>
-            dispatch(getMyBookings(query, filters)),
+        openModalFunction: () => dispatch(openModalFilter()),
+        closeModalFunction: () => dispatch(closeModalFilter()),
+        getMyBookingsFunction: (page, limit, query, filters) =>
+            dispatch(getMyBookings(page, limit, query, filters)),
     };
 };
 

@@ -1,8 +1,18 @@
 import { wretchInstance } from '../common/wretchInstance';
 
-export const getMyBookingsApi = () => {
+export const getMyBookingsApi = (payload) => {
     return wretchInstance()
-        .url(import.meta.env.VITE_REST_API_URL + '/booking/my')
+        .url(
+            import.meta.env.VITE_REST_API_URL +
+                '/booking/my' +
+                '?q=' +
+                payload.query +
+                '&page=' +
+                payload.page +
+                '&limit=' +
+                payload.limit +
+                (payload.filters !== '' ? '&' + payload.filters : ''),
+        )
         .headers({
             'Content-Type': 'application/json',
         })

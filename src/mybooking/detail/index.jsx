@@ -15,7 +15,7 @@ class MyBookingDetail extends React.Component {
         super(props);
         this.state = {
             myBooking: {},
-            duration: 0,
+            duration: '',
             loading: true,
         };
     }
@@ -28,7 +28,10 @@ class MyBookingDetail extends React.Component {
         if (prevProps.myBooking !== this.props.myBooking) {
             this.setState({
                 myBooking: this.props.myBooking,
-                duration: this.props.myBooking.createdAt,
+                duration: this.getDuration(
+                    this.props.myBooking.start_timestamp.slice(0, 10),
+                    this.props.myBooking.end_timestamp.slice(0, 10),
+                ),
             });
             this.setState({ loading: false });
         }
@@ -38,10 +41,10 @@ class MyBookingDetail extends React.Component {
         this.props.navigate('/booking/my');
     };
 
-    daysDiff = (date1, date2) => {
-        let diffTime = new Date(date2) - new Date(date1);
+    getDuration = (startDate, endDate) => {
+        let diffTime = new Date(endDate) - new Date(startDate);
         let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        return diffDays;
+        return diffDays + ' hari';
     };
 
     render() {
@@ -119,7 +122,7 @@ class MyBookingDetail extends React.Component {
                                                 {this.state.myBooking.facility
                                                     ? this.state.myBooking
                                                           .facility.name
-                                                    : ''}
+                                                    : '-'}
                                             </td>
                                         </tr>
                                         <tr>
@@ -127,7 +130,7 @@ class MyBookingDetail extends React.Component {
                                                 Nama
                                             </td>
                                             <td className="item-detail__value">
-                                                {this.state.myBooking.user_id}
+                                                {this.props.user.name}
                                             </td>
                                         </tr>
                                         <tr>
@@ -151,10 +154,10 @@ class MyBookingDetail extends React.Component {
                                                 Deskripsi
                                             </td>
                                             <td className="item-detail__value">
-                                                {
-                                                    this.state.myBooking
-                                                        .description
-                                                }
+                                                {this.state.myBooking.facility
+                                                    ? this.state.myBooking
+                                                          .facility.description
+                                                    : '-'}
                                             </td>
                                         </tr>
                                         {this.state.myBooking.category ===
@@ -165,11 +168,12 @@ class MyBookingDetail extends React.Component {
                                                     Plat Nomor
                                                 </td>
                                                 <td className="item-detail__value">
-                                                    {
-                                                        this.state.myBooking
-                                                            .facility
-                                                            .license_number
-                                                    }
+                                                    {this.state.myBooking
+                                                        .facility
+                                                        ? this.state.myBooking
+                                                              .facility
+                                                              .license_number
+                                                        : '-'}
                                                 </td>
                                             </tr>
                                         )}
@@ -178,17 +182,7 @@ class MyBookingDetail extends React.Component {
                                                 Durasi
                                             </td>
                                             <td className="item-detail__value">
-                                                {this.daysDiff(
-                                                    this.state.myBooking.start_timestamp.slice(
-                                                        0,
-                                                        10,
-                                                    ),
-                                                    this.state.myBooking.end_timestamp.slice(
-                                                        0,
-                                                        10,
-                                                    ),
-                                                )}{' '}
-                                                hari
+                                                {this.state.duration}
                                             </td>
                                         </tr>
                                     </tbody>
@@ -226,6 +220,7 @@ class MyBookingDetail extends React.Component {
 const mapStateToProps = (state) => {
     return {
         myBooking: state.myBooking.myBookingClicked,
+        user: state.auth.user,
     };
 };
 

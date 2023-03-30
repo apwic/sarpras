@@ -42,54 +42,51 @@ class MyBookingList extends React.Component {
         if (this.state.myBookings.length === 0) {
             return <EmptyScreen />;
         }
-        return this.state.myBookings.map((myBooking) => {
+        return this.state.myBookings.rows.map((myBooking) => {
             return (
-                <a
+                <div
+                    className="my-booking-item"
                     onClick={() =>
                         this.props.handleMyBookingClicked(myBooking.id)
                     }
                     key={myBooking.id}
                 >
-                    <div className="my-booking-item">
-                        <div className="my-booking-item__header">
-                            <FacilityTypeLabel
-                                type={facilityTypeConstant[myBooking.category]}
+                    <div className="my-booking-item__header">
+                        <FacilityTypeLabel
+                            type={facilityTypeConstant[myBooking.category]}
+                        />
+                        <BookingStatusLabel
+                            status={bookingStatusConstant[myBooking.status]}
+                        />
+                    </div>
+                    <div className="my-booking-item__body">
+                        <h3 className="item-name">
+                            {myBooking.facility ? myBooking.facility.name : '-'}
+                        </h3>
+                        <p>{myBooking.description}</p>
+                    </div>
+                    <div className="my-booking-item__footer">
+                        <div className="booking-date">
+                            <FontAwesomeIcon
+                                icon={faCalendarAlt}
+                                className="icon-booking-date"
                             />
-                            <BookingStatusLabel
-                                status={bookingStatusConstant[myBooking.status]}
-                            />
+                            <label className="label-booking-date">
+                                dibuat{' '}
+                                {this.daysDiff(
+                                    myBooking.createdAt.slice(0, 10),
+                                )}{' '}
+                                hari yang lalu oleh Saya
+                            </label>
                         </div>
-                        <div className="my-booking-item__body">
-                            <h3 className="item-name">
-                                {myBooking.facility
-                                    ? myBooking.facility.name
-                                    : '-'}
-                            </h3>
-                            <p>{myBooking.description}</p>
-                        </div>
-                        <div className="my-booking-item__footer">
-                            <div className="booking-date">
-                                <FontAwesomeIcon
-                                    icon={faCalendarAlt}
-                                    className="icon-booking-date"
-                                />
-                                <label className="label-booking-date">
-                                    dibuat{' '}
-                                    {this.daysDiff(
-                                        myBooking.createdAt.slice(0, 10),
-                                    )}{' '}
-                                    hari yang lalu oleh Saya
-                                </label>
-                            </div>
-                            <div className="booking-time">
-                                <label className="label-booking-time">
-                                    {myBooking.start_timestamp.slice(0, 10)} -{' '}
-                                    {myBooking.end_timestamp.slice(0, 10)}
-                                </label>
-                            </div>
+                        <div className="booking-time">
+                            <label className="label-booking-time">
+                                {myBooking.start_timestamp.slice(0, 10)} -{' '}
+                                {myBooking.end_timestamp.slice(0, 10)}
+                            </label>
                         </div>
                     </div>
-                </a>
+                </div>
             );
         });
     }

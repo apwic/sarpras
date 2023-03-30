@@ -42,6 +42,7 @@
     display: flex;
     flex-direction: column;
     padding-top: 3vh;
+    padding-bottom: 3vh;
     gap: 16px;
 }
 
@@ -93,4 +94,26 @@ h3.item-name{
     display: flex;
     align-items: center;
     gap: 8px;
+}
+
+.icon-filter-item {
+    height: 2.1vh;
+    cursor: pointer;
+}
+
+.list-filter{
+    display: flex;
+    gap: 2vh;
+}
+
+button.filter-item{
+    display: flex;
+    border-radius: 25px;
+    height: 35px;
+    align-items: center;
+}
+
+button.filter-item.selected{
+    background-color: var(--color-background);
+    transform: scale(1.02);
 }

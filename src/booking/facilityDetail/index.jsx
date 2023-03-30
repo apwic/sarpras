@@ -44,7 +44,6 @@ class FacilityDetail extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        console.log('update');
         if (prevProps.facility !== this.props.facility) {
             this.setState({
                 facility: this.props.facility,
@@ -54,7 +53,6 @@ class FacilityDetail extends React.Component {
     }
 
     componentDidMount() {
-        console.log('mount');
         this.props.getFacilityClickedFunction(
             this.props.params.id.toString(),
             this.props.params.type,
@@ -537,7 +535,6 @@ class FacilityDetail extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    console.log('map state to props');
     return {
         facility: state.facility.facilityClicked,
         user: state.auth.user,
@@ -545,7 +542,6 @@ const mapStateToProps = (state) => {
     };
 };
 const mapDispatchToProps = (dispatch) => {
-    console.log('map dispatch to props');
     return {
         getFacilityClickedFunction: (id, category) =>
             dispatch(getFacilityClicked(id, category)),

@@ -4,12 +4,18 @@ import {
     GET_MYBOOKING_CLICKED,
     SET_MYBOOKING_CLICKED,
     SET_TOTAL_BOOKINGS,
+    OPEN_MODAL_FILTER,
+    CLOSE_MODAL_FILTER,
+    GET_FILTERS,
+    SET_FILTERS,
 } from './actionTypes';
 
-export function getMyBookings(query, filters) {
+export function getMyBookings(page, limit, query, filters) {
     return {
         type: GET_MYBOOKINGS,
         payload: {
+            page,
+            limit,
             query,
             filters,
         },
@@ -41,5 +47,30 @@ export function setTotalBookings(total) {
     return {
         type: SET_TOTAL_BOOKINGS,
         payload: total,
+    };
+}
+
+export function openModalFilter() {
+    return {
+        type: OPEN_MODAL_FILTER,
+    };
+}
+
+export function closeModalFilter() {
+    return {
+        type: CLOSE_MODAL_FILTER,
+    };
+}
+
+export function getFilters() {
+    return {
+        type: GET_FILTERS,
+    };
+}
+
+export function setFilters(data) {
+    return {
+        type: SET_FILTERS,
+        payload: data,
     };
 }
