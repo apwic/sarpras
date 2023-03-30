@@ -485,3 +485,28 @@ button.btn-primary:disabled{
     height: 15px;
     cursor: pointer;
 }
+
+.container-booking-facility .fc-day {
+    cursor: pointer;
+}
+
+.container-booking-facility .fc-day:hover {
+    background-color: var(--color-background);
+}
+
+.container-booking-facility .fc-day-past:hover {
+    cursor: default;
+    background-color: unset;
+}
+
+.container-booking-facility .fc-daygrid-block-event .fc-event-time, .fc-daygrid-block-event .fc-event-title {
+    white-space: normal;
+}
+
+.container-booking-facility .fc-daygrid-block-event .fc-event-time {
+    overflow: visible;
+}
+
+.container-booking-facility .fc-daygrid-block-event:hover {
+    filter: brightness(95%);
+}

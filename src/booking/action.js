@@ -18,6 +18,7 @@ import {
     GET_EVENTS,
     SET_EVENTS,
     INSERT_UPDATE_RESPONSE,
+    DELETE_RESPONSE,
 } from './actionTypes';
 
 export function openModalFilter() {
@@ -176,6 +177,13 @@ export function setEvents(data) {
 export function insertUpdateResponse(response) {
     return {
         type: INSERT_UPDATE_RESPONSE,
+        payload: response,
+    };
+}
+
+export function deleteResponse(response) {
+    return {
+        type: DELETE_RESPONSE,
         payload: response,
     };
 }

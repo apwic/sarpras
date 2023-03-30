@@ -7,6 +7,7 @@ import bootstrap5Plugin from '@fullcalendar/bootstrap5';
 import { connect } from 'react-redux';
 import { getEvents, setCalendarBook } from '../../booking/action';
 import EventDetailModal from './eventDetailModal';
+import { Spinner } from 'react-bootstrap';
 
 class ComponentCalendar extends React.Component {
     constructor(props) {
@@ -14,9 +15,7 @@ class ComponentCalendar extends React.Component {
         this.state = {
             eventsShown: null,
             show: false,
-            title: '',
-            start: '',
-            end: '',
+            eventClicked: null,
         };
         this.calendarRef = React.createRef();
     }
@@ -32,55 +31,65 @@ class ComponentCalendar extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (prevProps.events !== this.props.events) {
+            document.querySelector('#loading-calendar').style.display = 'none';
             this.filterEvents();
         }
     }
 
-    fetchEvents() {
-        const calendarApi = this.calendarRef.current.getApi();
-        const view = calendarApi.view;
-        const startOfMonth = view.activeStart.toISOString().substring(0, 10);
-        const endOfMonth = view.activeEnd.toISOString().substring(0, 10);
-        this.props.getEventsFunction(startOfMonth, endOfMonth);
-        this.filterEvents();
-    }
+    fetchEvents = () => {
+        if (this.calendarRef.current) {
+            document.querySelector('#loading-calendar').style.display = 'block';
+            const calendarApi = this.calendarRef.current.getApi();
+            const view = calendarApi.view;
+            const startOfMonth = view.activeStart.toISOString().slice(0, 10);
+            const endOfMonth = view.activeEnd.toISOString().slice(0, 10);
+            this.props.getEventsFunction(startOfMonth, endOfMonth);
+        }
+    };
 
     eventClick = (info) => {
-        const options = { hour12: false, hour: '2-digit', minute: '2-digit' };
+        if (info.event.display === 'list-item') {
+            return;
+        }
         this.setState({
-            title: info.event.title,
-            start: info.event.start.toLocaleTimeString('en-US', options),
-            end: info.event.end.toLocaleTimeString('en-US', options),
+            eventClicked: {
+                calendar: info.event,
+                event: this.state.eventsShown.find(
+                    (event) => event.id === parseInt(info.event.id),
+                ),
+            },
         });
         this.setState({ show: true });
     };
 
-    filterEvents() {
+    filterEvents = () => {
         const eventsFacilityMatch = this.props.events.booking.filter(
             (event) => event.facility_id === parseInt(this.props.facilityId),
         );
-        const eventsShown = eventsFacilityMatch.map((booking) => ({
+        const eventsHolidayMatch = this.props.events.holiday;
+        const events = eventsFacilityMatch.map((booking) => ({
             id: booking.id,
-            title: booking.description,
+            title: booking.user.name + ', ' + booking.facility.name,
             start: booking.start_timestamp,
             end: booking.end_timestamp,
             color: booking.status === 'PENDING' ? 'red' : 'green',
+            display: 'block',
+            overlap: false,
         }));
+        const eventsHoliday = eventsHolidayMatch.map((holiday) => ({
+            title: holiday.summary,
+            start: new Date(holiday.date),
+            allDay: true,
+            display: 'list-item',
+            color: 'red',
+        }));
+        const eventsShown = events.concat(eventsHoliday);
         this.setState({ eventsShown });
-    }
+    };
 
-    handleCalendarNavigation = (method) => {
-        const calendarApi = this.calendarRef.current.getApi();
-        calendarApi[method]();
+    handleCalendarNavigation = () => {
+        this.setState({ eventsShown: null });
         this.fetchEvents();
-    };
-
-    handleDayGridMonthClicked = () => {
-        this.handleCalendarNavigation('changeView', 'dayGridMonth');
-    };
-
-    handleTimeGridWeekClicked = () => {
-        this.handleCalendarNavigation('changeView', 'timeGridWeek');
     };
 
     handleDateClick = (arg) => {
@@ -96,35 +105,52 @@ class ComponentCalendar extends React.Component {
         return (
             <div className="calendar-component">
                 <div className="calendar">
-                    <div className="header">
-                        <h1>PILIH TANGGAL SEWA</h1>
+                    <h2 style={{ marginBottom: '25px' }}>Pilih Tanggal Sewa</h2>
+                    <div
+                        className="calendar-container"
+                        style={{ position: 'relative' }}
+                    >
+                        <Spinner
+                            id="loading-calendar"
+                            animation="border"
+                            variant="primary"
+                            style={{
+                                position: 'absolute',
+                                inset: 'auto',
+                                zIndex: '1',
+                                top: 'calc(50% - 1rem)',
+                                left: 'calc(50% - 1rem)',
+                            }}
+                        />
+                        <FullCalendar
+                            viewClassNames={
+                                this.state.eventsShown === null ? 'hidden' : ''
+                            }
+                            themeSystem="bootstrap5"
+                            ref={this.calendarRef}
+                            plugins={[
+                                dayGridPlugin,
+                                timeGridPlugin,
+                                interactionPlugin,
+                                bootstrap5Plugin,
+                            ]}
+                            initialView={'dayGridMonth'}
+                            headerToolbar={{
+                                start: 'prevYear prev,next nextYear',
+                                center: 'title',
+                                end: 'today dayGridMonth,timeGridWeek',
+                            }}
+                            events={this.state.eventsShown}
+                            datesSet={(e) => this.handleCalendarNavigation(e)}
+                            dateClick={this.handleDateClick}
+                            eventTextColor="#FFFFFF"
+                            eventClick={this.eventClick}
+                        />
                     </div>
-                    <FullCalendar
-                        themeSystem="bootstrap5"
-                        ref={this.calendarRef}
-                        plugins={[
-                            dayGridPlugin,
-                            timeGridPlugin,
-                            interactionPlugin,
-                            bootstrap5Plugin,
-                        ]}
-                        initialView={'dayGridMonth'}
-                        headerToolbar={{
-                            start: 'prevYear prev,next nextYear',
-                            center: 'title',
-                            end: 'today dayGridMonth,timeGridWeek',
-                        }}
-                        events={this.state.eventsShown}
-                        dateClick={this.handleDateClick}
-                        eventTextColor="#FFFFFF"
-                        eventClick={this.eventClick}
-                    />
                 </div>
                 <EventDetailModal
                     calendarModalOpen={this.state.show}
-                    title={this.state.title}
-                    start={this.state.start}
-                    end={this.state.end}
+                    event={this.state.eventClicked}
                     closeModalFunction={() => this.setState({ show: false })}
                 />
             </div>

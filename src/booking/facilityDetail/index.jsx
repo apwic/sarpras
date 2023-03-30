@@ -22,7 +22,6 @@ import AlertModal from '../../common/components/alertModal';
 import ComponentCalendar from '../../common/components/CalendarComponent';
 import { openModal } from '../../dashboard/action';
 import CalendarModal from '../../common/components/calendarModal';
-import moment from 'moment';
 
 class FacilityDetail extends React.Component {
     constructor(props) {
@@ -31,9 +30,10 @@ class FacilityDetail extends React.Component {
             facility: {},
             loading: true,
             file: [],
+            unit: '',
             description: '',
-            start_timestamp: '2022-03-16',
-            end_timestamp: '2022-03-18',
+            start_timestamp: null,
+            end_timestamp: null,
             url: '',
             cost: '450.000',
             showAlertModal: false,
@@ -42,6 +42,7 @@ class FacilityDetail extends React.Component {
             durationDays: 0,
             viewType: null,
             eventsShown: null,
+            phoneNumber: '',
         };
         this.buttonRef = React.createRef();
     }
@@ -79,42 +80,56 @@ class FacilityDetail extends React.Component {
                 .querySelector('.calendar-component')
                 .classList.remove('hidden');
             document
-                .querySelector('.calendar-component')
-                .classList.add('visible');
-            document
                 .querySelector('.container-booking-facility-detail__body')
                 .classList.remove('visible');
-            document
-                .querySelector('.container-booking-facility-detail__body')
-                .classList.add('hidden');
         }
     };
 
     handleFileSubmit = () => {
         if (
+            this.state.unit === '' ||
             this.state.file.length === 0 ||
             this.state.description === '' ||
-            this.state.start_timestamp === '' ||
-            this.state.end_timestamp === '' ||
+            this.state.start_timestamp === null ||
+            this.state.end_timestamp === null ||
             this.state.cost === '' ||
-            this.state.url === ''
+            this.state.url === '' ||
+            this.state.phoneNumber === ''
         ) {
             this.setState({
                 showAlertModal: true,
                 alertMessage: 'Isi semua form terlebih dahulu',
             });
+            if (this.state.unit === '') {
+                document.querySelector('#booking-unit').classList.add('error');
+            }
+            if (this.state.file.length === 0) {
+                document
+                    .querySelector('#booking-file-button')
+                    .classList.add('error');
+            }
+            if (this.state.phoneNumber === '') {
+                document.querySelector('#booking-phone').classList.add('error');
+            }
+            if (this.state.description === '') {
+                document
+                    .querySelector('#booking-description')
+                    .classList.add('error');
+            }
+            if (this.state.url === '') {
+                document.querySelector('#booking-url').classList.add('error');
+            }
         } else {
             const data = {
                 facility_id: this.props.params.id,
                 description: this.state.description,
-                start_timestamp: this.state.start_timestamp,
-                end_timestamp: this.state.end_timestamp,
+                start_timestamp: this.state.start_timestamp.toISOString(),
+                end_timestamp: this.state.end_timestamp.toISOString(),
                 cost: this.state.cost,
                 file: this.state.file,
                 url: this.state.url,
             };
-            this.props.postBookingStartFunction(data, 'vehicle');
-            this.props.navigate('/booking/my');
+            this.props.postBookingStartFunction(data, this.props.params.type);
         }
     };
     closeAlertModal = () => {
@@ -128,89 +143,78 @@ class FacilityDetail extends React.Component {
     };
 
     handleDateClick = (arg, type, event) => {
-        this.setState({ eventsShown: event });
-        if (type === 'dayGridMonth') {
+        if (arg.date < new Date()) {
             this.setState({
-                start_timestamp: arg.dateStr,
-                viewType: type,
+                showAlertModal: true,
+                alertMessage: 'Tidak Bisa Memilih Tanggal Sebelum Hari Ini',
             });
-            this.props.openModalFunction(arg.date);
-        } else {
-            this.setState({
-                start_timestamp: arg.dateStr,
-                viewType: type,
-            });
-            this.props.openModalFunction(arg.date);
+            return;
         }
+        this.setState({
+            eventsShown: event,
+            start_timestamp: arg.date,
+            viewType: type,
+        });
+        this.props.openModalFunction(arg.date);
     };
 
     handleSubmitDate = (time, duration) => {
+        var overlap;
+        var endTimestamp;
         if (this.state.viewType === 'dayGridMonth') {
             this.setState({
                 start_timestamp: time,
             });
-            const endTimestamp = moment(time)
-                .add(duration, 'hours')
-                .toISOString();
 
-            const start = new Date(time);
-            const end = new Date(endTimestamp);
+            endTimestamp = new Date(time);
+            endTimestamp.setHours(endTimestamp.getHours() + duration);
+
             const eventsShown = this.state.eventsShown.filter(
                 (event) => event.color === 'green',
             );
 
-            const overlap = eventsShown.some((existingEvent) => {
+            overlap = eventsShown.some((existingEvent) => {
                 const existingStart = new Date(existingEvent.start);
                 const existingEnd = new Date(existingEvent.end);
-                return start < existingEnd && existingStart < end;
+                return time < existingEnd && existingStart < endTimestamp;
             });
-            if (!overlap) {
-                this.setState({
-                    end_timestamp: endTimestamp,
-                    durationDays: Math.ceil(duration / 24),
-                    cost: this.state.facility.price * Math.ceil(duration / 24),
-                });
-                this.setState({ step: 2 });
-                this.hideCalendar();
-            } else {
-                this.setState({
-                    showAlertModal: true,
-                    alertMessage:
-                        'Terdapat Booking Yang Sudah Disetujui Pada Waktu Tersebut',
-                });
-            }
         } else {
-            const endTimestamp = moment(this.state.start_timestamp)
-                .add(duration, 'hours')
-                .toISOString();
-
-            const start = new Date(this.start_timestamp);
-            const end = new Date(endTimestamp);
+            endTimestamp = new Date(this.state.start_timestamp);
+            endTimestamp.setHours(endTimestamp.getHours() + duration);
 
             const eventsShown = this.state.eventsShown.filter(
                 (event) => event.color === 'green',
             );
 
-            const overlap = eventsShown.some((existingEvent) => {
+            overlap = eventsShown.some((existingEvent) => {
                 const existingStart = new Date(existingEvent.start);
                 const existingEnd = new Date(existingEvent.end);
-                return start < existingEnd && existingStart < end;
+                return (
+                    this.state.start_timestamp < existingEnd &&
+                    existingStart < endTimestamp
+                );
             });
-            if (!overlap) {
-                this.setState({
-                    end_timestamp: endTimestamp,
-                    durationDays: Math.ceil(duration / 24),
-                    cost: this.state.facility.price * Math.ceil(duration / 24),
-                });
-                this.setState({ step: 2 });
-                this.hideCalendar();
-            } else {
-                this.setState({
-                    showAlertModal: true,
-                    alertMessage:
-                        'Terdapat Booking Yang Sudah Disetujui Pada Waktu Tersebut',
-                });
-            }
+        }
+        if (!overlap) {
+            const startDay = new Date(time);
+            const endDay = new Date(endTimestamp);
+            startDay.setHours(0, 0, 0, 0);
+            endDay.setHours(0, 0, 0, 0);
+            const timeDiff = endDay.getTime() - startDay.getTime();
+            const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)) + 1;
+            this.setState({
+                end_timestamp: endTimestamp,
+                durationDays: daysDiff,
+                cost: this.state.facility.price * daysDiff,
+            });
+            this.setState({ step: 2 });
+            this.hideCalendar();
+        } else {
+            this.setState({
+                showAlertModal: true,
+                alertMessage:
+                    'Terdapat Booking Yang Sudah Disetujui Pada Waktu Tersebut',
+            });
         }
     };
 
@@ -321,11 +325,24 @@ class FacilityDetail extends React.Component {
                             </div>
                             <div className="detail-information">
                                 <div className="information__section">
-                                    <div className="description-item">
-                                        <p className="tag">Tipe</p>
-                                        <p>: {this.state.facility.type}</p>
-                                    </div>
-                                    <br />
+                                    {this.state.facility.category ===
+                                        'ROOM' && (
+                                        <div>
+                                            <div className="description-item">
+                                                <p className="tag">
+                                                    Kode Ruangan:
+                                                </p>
+                                                <p>
+                                                    :{' '}
+                                                    {
+                                                        this.state.facility
+                                                            .room_code
+                                                    }
+                                                </p>
+                                            </div>
+                                            <br />
+                                        </div>
+                                    )}
                                     <div className="description-item">
                                         <p className="tag">Nama</p>
                                         <p>: {this.state.facility.name}</p>
@@ -338,13 +355,55 @@ class FacilityDetail extends React.Component {
                                         </p>
                                     </div>
                                     <br />
-                                    <div className="description-item">
-                                        <p className="tag">Nomor Polisi</p>
-                                        <p>
-                                            :{' '}
-                                            {this.state.facility.license_number}
-                                        </p>
-                                    </div>
+                                    {this.state.facility.category ===
+                                        'VEHICLE' && (
+                                        <div>
+                                            <div className="description-item">
+                                                <p className="tag">Tipe</p>
+                                                <p>
+                                                    : {this.state.facility.type}
+                                                </p>
+                                            </div>
+                                            <br />
+                                        </div>
+                                    )}
+                                    {this.state.facility.category ===
+                                        'VEHICLE' && (
+                                        <div>
+                                            <div className="description-item">
+                                                <p className="tag">
+                                                    Nomor Polisi
+                                                </p>
+                                                <p>
+                                                    :{' '}
+                                                    {
+                                                        this.state.facility
+                                                            .license_number
+                                                    }
+                                                </p>
+                                            </div>
+                                            <br />
+                                        </div>
+                                    )}
+                                    {(this.state.facility.category === 'ROOM' ||
+                                        this.state.facility.category ===
+                                            'SELASAR') && (
+                                        <div>
+                                            <div className="description-item">
+                                                <p className="tag">
+                                                    Lokasi Gedung:
+                                                </p>
+                                                <p>
+                                                    :{' '}
+                                                    {
+                                                        this.state.facility
+                                                            .building.name
+                                                    }
+                                                </p>
+                                            </div>
+                                            <br />
+                                        </div>
+                                    )}
                                 </div>
                                 <div className="information__section">
                                     <div className="description-item">
@@ -354,25 +413,41 @@ class FacilityDetail extends React.Component {
                                         <p>: {this.state.facility.price}</p>
                                     </div>
                                     <br />
+                                    {this.state.facility.category ===
+                                        'VEHICLE' && (
+                                        <div>
+                                            <div className="description-item">
+                                                <p className="tag">
+                                                    Kapasitas Kendaraan
+                                                </p>
+                                                <p>
+                                                    :{' '}
+                                                    {
+                                                        this.state.facility
+                                                            .vehicle_capacity
+                                                    }
+                                                </p>
+                                            </div>
+                                            <br />
+                                            <div className="description-item">
+                                                <p className="tag">
+                                                    Jenis SIM yang Dibutuhkan
+                                                </p>
+                                                <p>
+                                                    :{' '}
+                                                    {
+                                                        this.state.facility
+                                                            .sim_category
+                                                    }
+                                                </p>
+                                            </div>
+                                            <br />
+                                        </div>
+                                    )}
                                     <div className="description-item">
-                                        <p className="tag">
-                                            Kapasitas Kendaraan
-                                        </p>
+                                        <p className="tag">Lokasi Kampus</p>
                                         <p>
-                                            :{' '}
-                                            {
-                                                this.state.facility
-                                                    .vehicle_capacity
-                                            }
-                                        </p>
-                                    </div>
-                                    <br />
-                                    <div className="description-item">
-                                        <p className="tag">
-                                            Jenis SIM yang Dibutuhkan
-                                        </p>
-                                        <p>
-                                            : {this.state.facility.sim_category}
+                                            : {this.state.facility.campus.name}
                                         </p>
                                     </div>
                                 </div>
@@ -397,6 +472,7 @@ class FacilityDetail extends React.Component {
                                         className="form-control"
                                         type="text"
                                         name="name"
+                                        id="booking-name"
                                         placeholder={this.props.user.name}
                                         disabled
                                     />
@@ -415,6 +491,7 @@ class FacilityDetail extends React.Component {
                                         className="form-control"
                                         type="text"
                                         name="email"
+                                        id="booking-email"
                                         placeholder={this.props.user.email}
                                         disabled
                                     />
@@ -433,8 +510,14 @@ class FacilityDetail extends React.Component {
                                         className="form-control"
                                         type="text"
                                         name="unitName"
-                                        placeholder={this.state.facility.name}
-                                        disabled
+                                        id="booking-unit"
+                                        placeholder="Masukan unit anda"
+                                        value={this.state.unit}
+                                        onChange={(e) => {
+                                            this.setState({
+                                                unit: e.target.value,
+                                            });
+                                        }}
                                     />
                                     <br />
                                     <label
@@ -445,14 +528,15 @@ class FacilityDetail extends React.Component {
                                             alignItems: 'center',
                                         }}
                                     >
-                                        Nomor Telepon Peminjam
+                                        Nomor Telepon Penanggung Jawab
                                         <p style={{ color: 'red' }}>*</p>
                                     </label>
                                     <input
                                         className="form-control"
                                         type="number"
                                         name="phoneNumber"
-                                        placeholder="08123456789"
+                                        id="booking-phone"
+                                        placeholder="Masukan nomor telepon penanggung jawab"
                                         onChange={(e) => {
                                             this.setState({
                                                 phoneNumber: e.target.value,
@@ -462,7 +546,7 @@ class FacilityDetail extends React.Component {
                                     <br />
                                     <label
                                         className="form-label"
-                                        htmlFor="exampleFormControlTextarea1"
+                                        htmlFor="booking-description"
                                         style={{
                                             display: 'flex',
                                             alignItems: 'center',
@@ -473,7 +557,7 @@ class FacilityDetail extends React.Component {
                                     </label>
                                     <textarea
                                         className="form-control"
-                                        id="exampleFormControlTextarea1"
+                                        id="booking-description"
                                         rows="3"
                                         placeholder="Masukkan deskripsi"
                                         onChange={(e) => {
@@ -500,6 +584,7 @@ class FacilityDetail extends React.Component {
                                             e.preventDefault();
                                             this.buttonRef.current.click();
                                         }}
+                                        id="booking-file-button"
                                     >
                                         Tambahkan File
                                     </button>
@@ -513,9 +598,9 @@ class FacilityDetail extends React.Component {
                                         key={Date.now()}
                                         multiple
                                     />
-                                    <div className="file-uploaded">
-                                        {this.state.file &&
-                                            this.state.file.map(
+                                    {this.state.file && (
+                                        <div className="file-uploaded">
+                                            {this.state.file.map(
                                                 (file, index) => (
                                                     <div
                                                         className="file-uploaded-item"
@@ -524,6 +609,14 @@ class FacilityDetail extends React.Component {
                                                             display: 'flex',
                                                             alignItems:
                                                                 'center',
+                                                        }}
+                                                        onClick={() => {
+                                                            window.open(
+                                                                URL.createObjectURL(
+                                                                    file,
+                                                                ),
+                                                                '_blank',
+                                                            );
                                                         }}
                                                     >
                                                         <p>{file.name}</p>
@@ -536,11 +629,14 @@ class FacilityDetail extends React.Component {
                                                         >
                                                             <FontAwesomeIcon
                                                                 icon={faTrash}
-                                                                onClick={() =>
+                                                                onClick={(
+                                                                    e,
+                                                                ) => {
+                                                                    e.stopPropagation();
                                                                     this.handleFileDelete(
                                                                         index,
-                                                                    )
-                                                                }
+                                                                    );
+                                                                }}
                                                                 className="icon-trash red"
                                                                 style={{
                                                                     width: '15px',
@@ -552,9 +648,8 @@ class FacilityDetail extends React.Component {
                                                     </div>
                                                 ),
                                             )}
-                                    </div>
-                                    <br />
-                                    <br />
+                                        </div>
+                                    )}
                                     <label
                                         className="form-label"
                                         htmlFor="url"
@@ -575,6 +670,7 @@ class FacilityDetail extends React.Component {
                                         className="form-control"
                                         type="text"
                                         name="url"
+                                        id="booking-url"
                                         placeholder="https://e-office/..."
                                     />
                                     <br />
@@ -582,22 +678,50 @@ class FacilityDetail extends React.Component {
                             </div>
                             <div className="booking__section__right">
                                 <div className="booking-info">
-                                    <h2 className="judul-harga">
-                                        Detail Harga
-                                    </h2>
-                                    <div className="count-total">
-                                        <div className="detail-total">
-                                            <h2>
-                                                Rp{this.state.facility.price} x{' '}
-                                                {this.state.durationDays} hari
-                                            </h2>
+                                    <div>
+                                        <div className="description-item">
+                                            <p className="tag">Waktu Mulai</p>
+                                            <p>
+                                                {this.state.start_timestamp
+                                                    ? this.state.start_timestamp.toLocaleString()
+                                                    : ''}
+                                            </p>
                                         </div>
-                                        <div className="detail-total">
-                                            <h1>Rp{this.state.cost}</h1>
+                                    </div>
+                                    <br />
+                                    <div>
+                                        <div className="description-item">
+                                            <p className="tag">Waktu Selesai</p>
+                                            <p>
+                                                {this.state.end_timestamp
+                                                    ? this.state.end_timestamp.toLocaleString()
+                                                    : ''}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="booking-price-info">
+                                        <h2 className="judul-harga">
+                                            Detail Harga
+                                        </h2>
+                                        <div className="count-total">
+                                            <div className="detail-total">
+                                                <p>
+                                                    Rp
+                                                    {
+                                                        this.state.facility
+                                                            .price
+                                                    }{' '}
+                                                    x {this.state.durationDays}{' '}
+                                                    hari
+                                                </p>
+                                            </div>
+                                            <div className="detail-total">
+                                                <h2>: Rp{this.state.cost}</h2>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="button__book">
+                                <div className="button__book__finalize">
                                     <button
                                         className="btn btn-primary"
                                         onClick={this.handleFileSubmit}

@@ -20,6 +20,8 @@ import FilterModal from '../../common/components/filterModal';
 import AdminFacilityList from '../../common/components/adminFacilityList';
 import LoadingScreen from '../../common/components/loadingScreen';
 import { withRouter } from '../../common/withRouter';
+import AlertModal from '../../common/components/alertModal';
+import AlertDeleteModal from '../../common/components/alertDeleteModal';
 
 class ManageVehicle extends React.Component {
     constructor(props) {
@@ -31,6 +33,12 @@ class ManageVehicle extends React.Component {
             q: '',
             filters: null,
             appliedFilters: [],
+            showAlertDelete: false,
+            showAlert: false,
+            facilityToDelete: null,
+            alertDeleteMessage:
+                'Apakah anda yakin ingin menghapus fasilitas ini?',
+            alertMessage: '',
         };
     }
     componentDidMount() {
@@ -45,6 +53,14 @@ class ManageVehicle extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
+        if (prevProps.deleteMessage !== this.props.deleteMessage) {
+            if (this.props.deleteMessage.error_message) {
+                this.setState({
+                    showAlert: true,
+                    alertMessage: this.props.deleteMessage.error_message,
+                });
+            }
+        }
         if (prevProps.facilities !== this.props.facilities) {
             this.setState({
                 facilities: this.props.facilities,
@@ -154,10 +170,14 @@ class ManageVehicle extends React.Component {
         });
     };
 
-    handleDeleteFacility = (id) => {
+    handleDeleteClicked = (id) => {
         this.setState({
-            facilities: null,
+            showAlertDelete: true,
+            facilityToDelete: id,
         });
+    };
+
+    handleDeleteFacility = (id) => {
         this.props.deleteFacilityFunction(
             'vehicle',
             id,
@@ -165,6 +185,23 @@ class ManageVehicle extends React.Component {
             this.state.q,
             this.convertToFilterString(this.state.appliedFilters),
         );
+        this.setState({
+            facilities: null,
+            showAlertDelete: false,
+            facilityToDelete: null,
+        });
+    };
+
+    closeAlertModal = () => {
+        this.setState({
+            showAlert: false,
+        });
+    };
+
+    closeDeleteAlertModal = () => {
+        this.setState({
+            showAlertDelete: false,
+        });
     };
 
     render() {
@@ -173,6 +210,18 @@ class ManageVehicle extends React.Component {
         }
         return (
             <div className="container-booking-facility">
+                <AlertModal
+                    show={this.state.showAlert}
+                    message={this.state.alertMessage}
+                    closeModalFunction={this.closeAlertModal}
+                />
+                <AlertDeleteModal
+                    show={this.state.showAlertDelete}
+                    message={this.state.alertDeleteMessage}
+                    closeAlertFunction={this.closeDeleteAlertModal}
+                    handleCancelAlert={this.closeDeleteAlertModal}
+                    handleYesAlert={this.handleDeleteFacility}
+                />
                 <div className="container-booking-facility__header">
                     <FontAwesomeIcon
                         icon={faTruck}
@@ -259,7 +308,7 @@ class ManageVehicle extends React.Component {
                         <AdminFacilityList
                             facilities={this.state.facilities.rows}
                             type="vehicles"
-                            handledelete={this.handleDeleteFacility}
+                            handledelete={this.handleDeleteClicked}
                         />
                     </div>
                     <FilterModal
@@ -309,6 +358,7 @@ const mapStateToProps = (state) => {
         filterModalOpen: state.facility.filterModalOpen,
         facilities: state.facility.facilities,
         filters: state.facility.filters,
+        deleteMessage: state.facility.delete_message,
     };
 };
 

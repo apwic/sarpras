@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 import EmptyScreen from './emptyScreen';
-import AlertDeleteModal from './alertDeleteModal';
 import { withRouter } from '../withRouter';
 
 class AdminFacilityList extends React.Component {
@@ -11,43 +10,22 @@ class AdminFacilityList extends React.Component {
         super(props);
         this.state = {
             facilities: [],
-            showAlertDelete: [],
-            alertDeleteMessage:
-                'Apakah anda yakin ingin menghapus fasilitas ini?',
         };
     }
 
     componentDidMount() {
-        for (let i = 0; i < this.props.facilities.length; i++) {
-            this.state.showAlertDelete.push(false);
-        }
         this.setState({
             facilities: this.props.facilities,
         });
     }
     componentDidUpdate(prevProps) {
         if (prevProps.facilities !== this.props.facilities) {
+            console.log(this.props.facilities);
             this.setState({
                 facilities: this.props.facilities,
             });
         }
     }
-
-    closeAlertFunction = (index) => {
-        var temp = this.state.showAlertDelete;
-        temp[index] = false;
-        this.setState({
-            showAlertDelete: temp,
-        });
-    };
-
-    showAlertDeleteFunction = (index) => {
-        var temp = this.state.showAlertDelete;
-        temp[index] = true;
-        this.setState({
-            showAlertDelete: temp,
-        });
-    };
 
     handleEditFunction = (index) => {
         this.props.navigate(
@@ -82,7 +60,7 @@ class AdminFacilityList extends React.Component {
                                 <FontAwesomeIcon
                                     icon={faTrashAlt}
                                     onClick={() =>
-                                        this.showAlertDeleteFunction(index)
+                                        this.props.handledelete(facility.id)
                                     }
                                 />
                             </div>
@@ -127,18 +105,6 @@ class AdminFacilityList extends React.Component {
                             </button>
                         </div>
                     </div>
-                    <AlertDeleteModal
-                        show={this.state.showAlertDelete[index]}
-                        message={this.state.alertDeleteMessage}
-                        closeAlertFunction={() =>
-                            this.closeAlertFunction(index)
-                        }
-                        handleCancelAlert={() => this.closeAlertFunction(index)}
-                        handleYesAlert={() => {
-                            this.props.handledelete(facility.id);
-                            this.closeAlertFunction(index);
-                        }}
-                    />
                 </div>
             );
         });
