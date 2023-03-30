@@ -20,6 +20,7 @@ import {
     postBookingSuccess,
     setEvents,
     insertUpdateResponse,
+    deleteResponse,
 } from './action';
 import {
     getFacilitiesApi,
@@ -53,7 +54,7 @@ function* getFacility(action) {
 
 function* deleteFacility(action) {
     try {
-        yield call(deleteFacilityApi, action.payload);
+        const response = yield call(deleteFacilityApi, action.payload);
         yield put(
             getFacilities(
                 action.payload.type + 's',
@@ -63,6 +64,7 @@ function* deleteFacility(action) {
                 action.payload.filters,
             ),
         );
+        yield put(deleteResponse(response));
     } catch (error) {
         console.log(error);
     }

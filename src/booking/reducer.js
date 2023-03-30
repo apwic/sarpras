@@ -8,6 +8,7 @@ import {
     SET_CALENDAR_BOOK,
     SET_EVENTS,
     INSERT_UPDATE_RESPONSE,
+    DELETE_RESPONSE,
 } from './actionTypes';
 
 const initialState = {
@@ -19,6 +20,7 @@ const initialState = {
     calendarBookRef: null,
     eventsShown: [],
     insert_update_message: null,
+    delete_message: null,
 };
 
 function facilityReducer(state = initialState, action) {
@@ -41,6 +43,8 @@ function facilityReducer(state = initialState, action) {
             return { ...state, eventsShown: action.payload };
         case INSERT_UPDATE_RESPONSE:
             return { ...state, insert_update_message: action.payload };
+        case DELETE_RESPONSE:
+            return { ...state, delete_message: action.payload };
         default:
             return state;
     }

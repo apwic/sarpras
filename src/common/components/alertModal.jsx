@@ -31,6 +31,8 @@ class AlertModal extends React.Component {
                 onHide={this.props.closeModalFunction}
                 backdrop={false}
                 className="no-background"
+                restoreFocus={false}
+                scrollable={true}
             >
                 <Modal.Header closeButton className="alert-modal-title">
                     {this.props.message}

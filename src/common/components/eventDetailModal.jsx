@@ -11,6 +11,7 @@ class EventDetailModal extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (prevProps.calendarModalOpen !== this.props.calendarModalOpen) {
+            console.log(this.props.event);
             this.setState({ show: this.props.calendarModalOpen });
         }
     }
@@ -22,9 +23,12 @@ class EventDetailModal extends React.Component {
                     show={this.state.show}
                     onHide={this.props.closeModalFunction}
                     centered
+                    restoreFocus={false}
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title>{this.props.title}</Modal.Title>
+                        <Modal.Title>
+                            {this.props.event ? this.props.event.id : ''}
+                        </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <p>

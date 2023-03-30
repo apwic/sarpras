@@ -220,3 +220,8 @@ button.btn-secondary:hover {
 .search__box__input::placeholder{
   color: var(--color-text-secondary);
 }
+
+.error {
+  border: 1px solid red;
+  background: rgb(255, 248, 248);
+}
