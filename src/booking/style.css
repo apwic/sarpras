@@ -188,3 +188,11 @@ button.filter-item.selected{
     background-color: var(--color-background);
     transform: scale(1.02);
 }
+
+input.input-date{
+    width: 100%;
+    height: 4vh;
+    border-radius: var(--corner-radius);
+    border: 1px solid var(--color-text-secondary);
+    padding: 1vh;
+}

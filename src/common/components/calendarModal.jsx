@@ -9,6 +9,8 @@ class CalendarModal extends React.Component {
         this.state = {
             show: props.show,
             selectedDate: props.selectedDate,
+            duration: '',
+            timeStart: '',
         };
     }
 
@@ -23,7 +25,42 @@ class CalendarModal extends React.Component {
 
     onClick = () => {
         this.props.closeModalFunction();
-        this.props.handleSubmitDate();
+        if (this.props.viewType === 'dayGridMonth') {
+            const date = new Date(this.state.selectedDate);
+
+            const [hours, minutes] = this.state.timeStart
+                .split(':')
+                .map(Number);
+
+            date.setHours(hours);
+            date.setMinutes(minutes);
+
+            const year = date.getFullYear();
+            const month = ('0' + (date.getMonth() + 1)).slice(-2);
+            const day = ('0' + date.getDate()).slice(-2);
+            const hour = ('0' + date.getHours()).slice(-2);
+            const timezoneOffset = date.getTimezoneOffset();
+            const timezoneOffsetHours = Math.abs(
+                Math.floor(timezoneOffset / 60),
+            );
+            const timezoneOffsetMinutes = Math.abs(timezoneOffset % 60);
+            const timezoneOffsetString = `${timezoneOffset >= 0 ? '-' : '+'}${(
+                '0' + timezoneOffsetHours
+            ).slice(-2)}:${('0' + timezoneOffsetMinutes).slice(-2)}`;
+
+            const formattedDate = `${year}-${month}-${day}T${hour}:${minutes}:00${timezoneOffsetString}`;
+            this.props.handleSubmitDate(formattedDate, this.state.duration);
+        } else {
+            this.props.handleSubmitDate(
+                this.state.selectedDate.toISOString(),
+                this.state.duration,
+            );
+        }
+    };
+
+    padZero = (num) => {
+        // Pad a number with a leading zero if it's less than 10
+        return num < 10 ? `0${num}` : num;
     };
 
     render() {
@@ -47,40 +84,62 @@ class CalendarModal extends React.Component {
                     </Modal.Header>
                     <Modal.Body>
                         <form>
-                            <label
-                                className="form-label"
-                                htmlFor="booking-type"
-                            >
-                                Pilih Jenis:{' '}
-                            </label>
-                            <select
-                                className="form-select"
-                                style={{ borderRadius: '10px' }}
-                                id="booking-type"
-                                name="booking-type"
-                            >
-                                <option value="Gedung">Gedung</option>
-                                <option value="Ruangan">Ruangan</option>
-                                <option value="Selasar">Selasar</option>
-                                <option value="Kendaraan">Kendaraan</option>
-                            </select>
-                            <label
-                                className="form-label"
-                                htmlFor="booking-type"
-                            >
-                                Pilih Gedung:{' '}
-                            </label>
-                            <select
-                                className="form-select"
-                                style={{ borderRadius: '10px' }}
-                                id="booking-type"
-                                name="booking-type"
-                            >
-                                <option value="Gedung">CRCS</option>
-                                <option value="Ruangan">Labtek V</option>
-                                <option value="Selasar">Labtek I</option>
-                                <option value="Kendaraan">Labtek 0</option>
-                            </select>
+                            {this.props.viewType === 'dayGridMonth' ? (
+                                <div>
+                                    <label
+                                        className="form-label"
+                                        htmlFor="booking-duration"
+                                    >
+                                        Jam Mulai Sewa ( format 24 jam ) :{' '}
+                                    </label>
+                                    <br />
+                                    <input
+                                        type="time"
+                                        className="input-date"
+                                        onChange={(e) =>
+                                            this.setState({
+                                                timeStart: e.target.value,
+                                            })
+                                        }
+                                    />
+                                    <br />
+                                    <label
+                                        className="form-label"
+                                        htmlFor="booking-duration"
+                                    >
+                                        Durasi Sewa (dalam jam) :{' '}
+                                    </label>
+                                    <br />
+                                    <input
+                                        type="number"
+                                        className="input-date"
+                                        onChange={(e) =>
+                                            this.setState({
+                                                duration: e.target.value,
+                                            })
+                                        }
+                                    />
+                                </div>
+                            ) : (
+                                <div>
+                                    <label
+                                        className="form-label"
+                                        htmlFor="booking-duration"
+                                    >
+                                        Durasi Sewa (dalam jam) :{' '}
+                                    </label>
+                                    <br />
+                                    <input
+                                        type="number"
+                                        className="input-date"
+                                        onChange={(e) =>
+                                            this.setState({
+                                                duration: e.target.value,
+                                            })
+                                        }
+                                    />
+                                </div>
+                            )}
                         </form>
                     </Modal.Body>
                     <Modal.Footer>
@@ -90,7 +149,14 @@ class CalendarModal extends React.Component {
                         >
                             Batalkan
                         </Button>
-                        <Button variant="primary" onClick={this.onClick}>
+                        <Button
+                            variant="primary"
+                            onClick={this.onClick}
+                            disabled={
+                                this.state.duration === '' &&
+                                this.state.timeStart === ''
+                            }
+                        >
                             Lanjutkan
                         </Button>
                     </Modal.Footer>

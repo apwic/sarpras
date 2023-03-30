@@ -15,6 +15,8 @@ import {
     SET_CALENDAR_BOOK,
     INSERT_NEW_FACILITY,
     UPDATE_FACILITY,
+    GET_EVENTS,
+    SET_EVENTS,
     INSERT_UPDATE_RESPONSE,
 } from './actionTypes';
 
@@ -151,6 +153,23 @@ export function updateFacility(type, data, id) {
             data,
             id,
         },
+    };
+}
+
+export function getEvents(start, end) {
+    return {
+        type: GET_EVENTS,
+        payload: {
+            start,
+            end,
+        },
+    };
+}
+
+export function setEvents(data) {
+    return {
+        type: SET_EVENTS,
+        payload: data,
     };
 }
 
