@@ -81,8 +81,13 @@ class MyBookingList extends React.Component {
                         </div>
                         <div className="booking-time">
                             <label className="label-booking-time">
-                                {myBooking.start_timestamp.slice(0, 10)} -{' '}
-                                {myBooking.end_timestamp.slice(0, 10)}
+                                {new Date(
+                                    myBooking.start_timestamp,
+                                ).toLocaleString()}{' '}
+                                -{' '}
+                                {new Date(
+                                    myBooking.end_timestamp,
+                                ).toLocaleString()}
                             </label>
                         </div>
                     </div>

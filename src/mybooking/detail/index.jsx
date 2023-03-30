@@ -15,7 +15,6 @@ class MyBookingDetail extends React.Component {
         super(props);
         this.state = {
             myBooking: {},
-            duration: '',
             loading: true,
         };
     }
@@ -28,10 +27,6 @@ class MyBookingDetail extends React.Component {
         if (prevProps.myBooking !== this.props.myBooking) {
             this.setState({
                 myBooking: this.props.myBooking,
-                duration: this.getDuration(
-                    this.props.myBooking.start_timestamp.slice(0, 10),
-                    this.props.myBooking.end_timestamp.slice(0, 10),
-                ),
             });
             this.setState({ loading: false });
         }
@@ -43,8 +38,20 @@ class MyBookingDetail extends React.Component {
 
     getDuration = (startDate, endDate) => {
         let diffTime = new Date(endDate) - new Date(startDate);
-        let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        return diffDays + ' hari';
+        let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        let diffHours = Math.floor(diffTime / (1000 * 60 * 60));
+        let diffMinutes = Math.floor(diffTime / (1000 * 60));
+        let duration = '';
+        if (diffDays > 0) {
+            duration += diffDays + ' hari ';
+        } else if (diffHours > 0) {
+            duration += diffHours + ' jam ';
+        } else if (diffMinutes > 0) {
+            duration += diffMinutes + ' menit ';
+        } else {
+            return '0 menit';
+        }
+        return duration.trim();
     };
 
     render() {
@@ -135,18 +142,16 @@ class MyBookingDetail extends React.Component {
                                         </tr>
                                         <tr>
                                             <td className="item-detail__label">
-                                                Tanggal Sewa
+                                                Waktu Sewa
                                             </td>
                                             <td className="item-detail__value">
-                                                {this.state.myBooking.start_timestamp.slice(
-                                                    0,
-                                                    10,
-                                                )}{' '}
+                                                {new Date(
+                                                    this.state.myBooking.start_timestamp,
+                                                ).toLocaleString()}{' '}
                                                 -{' '}
-                                                {this.state.myBooking.end_timestamp.slice(
-                                                    0,
-                                                    10,
-                                                )}
+                                                {new Date(
+                                                    this.state.myBooking.end_timestamp,
+                                                ).toLocaleString()}
                                             </td>
                                         </tr>
                                         <tr>
@@ -182,7 +187,14 @@ class MyBookingDetail extends React.Component {
                                                 Durasi
                                             </td>
                                             <td className="item-detail__value">
-                                                {this.state.duration}
+                                                {this.getDuration(
+                                                    new Date(
+                                                        this.state.myBooking.start_timestamp,
+                                                    ),
+                                                    new Date(
+                                                        this.state.myBooking.end_timestamp,
+                                                    ),
+                                                )}
                                             </td>
                                         </tr>
                                     </tbody>
