@@ -44,7 +44,10 @@ class MyBooking extends React.Component {
                 maxPage: Math.ceil(this.props.myBookings.total_rows / 5),
             });
         }
-        if (prevState.currentPage !== this.state.currentPage) {
+        if (
+            prevState.currentPage !== this.state.currentPage &&
+            prevState.query === this.state.query
+        ) {
             this.setState({
                 myBookings: null,
             });
@@ -87,6 +90,7 @@ class MyBooking extends React.Component {
     handleSearch = (event) => {
         this.setState({
             query: event.target.value,
+            currentPage: 1,
         });
         this.props.getMyBookingsFunction(
             this.state.currentPage,
