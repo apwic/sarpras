@@ -110,6 +110,11 @@ class InsertFacility extends React.Component {
                     showAlertModal: true,
                     alertMessage: this.props.responseMessage.message,
                 });
+                clearInterval(this.intervalId);
+                this.intervalId = setInterval(() => {
+                    this.handleBack();
+                    clearInterval(this.intervalId);
+                }, 1000);
             } else if (
                 this.props.responseMessage &&
                 this.props.responseMessage.error_message

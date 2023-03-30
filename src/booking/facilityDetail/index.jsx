@@ -22,6 +22,7 @@ import AlertModal from '../../common/components/alertModal';
 import ComponentCalendar from '../../common/components/CalendarComponent';
 import { openModal } from '../../dashboard/action';
 import CalendarModal from '../../common/components/calendarModal';
+import LoadingOverlay from '../../common/components/loadingOverlay';
 
 class FacilityDetail extends React.Component {
     constructor(props) {
@@ -53,6 +54,25 @@ class FacilityDetail extends React.Component {
                 facility: this.props.facility,
             });
             this.setState({ loading: false });
+        }
+        if (prevProps.newBookingMessage !== this.props.newBookingMessage) {
+            if (this.props.newBookingMessage.message) {
+                this.setState({
+                    showAlertModal: true,
+                    alertMessage: this.props.newBookingMessage.message,
+                });
+                clearInterval(this.intervalId);
+                this.intervalId = setInterval(() => {
+                    this.props.navigate('/booking/my');
+                    clearInterval(this.intervalId);
+                }, 1000);
+            } else if (this.props.newBookingMessage.error_message) {
+                this.setState({
+                    showAlertModal: true,
+                    alertMessage: this.props.newBookingMessage.error_message,
+                });
+            }
+            document.querySelector('.loading-overlay').classList.remove('show');
         }
     }
 
@@ -130,6 +150,7 @@ class FacilityDetail extends React.Component {
                 url: this.state.url,
             };
             this.props.postBookingStartFunction(data, this.props.params.type);
+            document.querySelector('.loading-overlay').classList.add('show');
         }
     };
     closeAlertModal = () => {
@@ -237,6 +258,7 @@ class FacilityDetail extends React.Component {
         }
         return (
             <div className="container-booking-facility">
+                <LoadingOverlay />
                 <div className="container-booking-facility__header">
                     <FontAwesomeIcon
                         icon={faTruck}
@@ -752,6 +774,7 @@ const mapStateToProps = (state) => {
         facility: state.facility.facilityClicked,
         user: state.auth.user,
         calendarModalOpen: state.dashboard.calendarModalOpen,
+        newBookingMessage: state.facility.new_booking_message,
     };
 };
 const mapDispatchToProps = (dispatch) => {

@@ -9,6 +9,7 @@ import {
     SET_EVENTS,
     INSERT_UPDATE_RESPONSE,
     DELETE_RESPONSE,
+    NEW_BOOKING_RESPONSE,
 } from './actionTypes';
 
 const initialState = {
@@ -21,6 +22,7 @@ const initialState = {
     eventsShown: [],
     insert_update_message: null,
     delete_message: null,
+    new_booking_message: null,
 };
 
 function facilityReducer(state = initialState, action) {
@@ -45,6 +47,8 @@ function facilityReducer(state = initialState, action) {
             return { ...state, insert_update_message: action.payload };
         case DELETE_RESPONSE:
             return { ...state, delete_message: action.payload };
+        case NEW_BOOKING_RESPONSE:
+            return { ...state, new_booking_message: action.payload };
         default:
             return state;
     }

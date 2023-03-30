@@ -9,7 +9,6 @@ import {
     GET_FILTERS,
     SET_FILTERS,
     POST_BOOKING_START,
-    POST_BOOKING_SUCCESS,
     GET_FACILITY_CLICKED,
     SET_FACILITY_CLICKED,
     SET_CALENDAR_BOOK,
@@ -19,6 +18,7 @@ import {
     SET_EVENTS,
     INSERT_UPDATE_RESPONSE,
     DELETE_RESPONSE,
+    NEW_BOOKING_RESPONSE,
 } from './actionTypes';
 
 export function openModalFilter() {
@@ -116,12 +116,6 @@ export function postBookingStart(data, category) {
     };
 }
 
-export function postBookingSuccess() {
-    return {
-        type: POST_BOOKING_SUCCESS,
-    };
-}
-
 export function setFacilityClicked(response) {
     return {
         type: SET_FACILITY_CLICKED,
@@ -184,6 +178,13 @@ export function insertUpdateResponse(response) {
 export function deleteResponse(response) {
     return {
         type: DELETE_RESPONSE,
+        payload: response,
+    };
+}
+
+export function newBookingResponse(response) {
+    return {
+        type: NEW_BOOKING_RESPONSE,
         payload: response,
     };
 }

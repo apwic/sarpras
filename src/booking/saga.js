@@ -17,10 +17,10 @@ import {
     setFilters,
     setFacility,
     setFacilityClicked,
-    postBookingSuccess,
     setEvents,
     insertUpdateResponse,
     deleteResponse,
+    newBookingResponse,
 } from './action';
 import {
     getFacilitiesApi,
@@ -92,8 +92,8 @@ function* getFacilityClicked(action) {
 function* postBooking(action) {
     const { data, category } = action.payload;
     try {
-        yield call(postBookingApi, data, category);
-        yield put(postBookingSuccess());
+        const response = yield call(postBookingApi, data, category);
+        yield put(newBookingResponse(response));
     } catch (error) {
         console.log(error);
     }
