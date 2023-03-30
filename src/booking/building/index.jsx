@@ -50,7 +50,10 @@ class BookingBuilding extends React.Component {
                 maxPage: Math.ceil(this.props.facilities.total_rows / 9),
             });
         }
-        if (prevState.currentPage !== this.state.currentPage) {
+        if (
+            prevState.currentPage !== this.state.currentPage &&
+            prevState.q === this.state.q
+        ) {
             this.setState({
                 facilities: null,
             });
@@ -112,6 +115,7 @@ class BookingBuilding extends React.Component {
     handleSearch = (event) => {
         this.setState({
             q: event.target.value,
+            currentPage: 1,
         });
         this.props.getFacilitiesFunction(
             'buildings',
