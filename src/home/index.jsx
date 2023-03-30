@@ -25,6 +25,7 @@ import FacilityDetail from '../booking/facilityDetail';
 import MyBooking from '../mybooking';
 import MyBookingDetail from '../mybooking/detail';
 import MyReport from '../myreport';
+import ReportManagement from '../reportManagement';
 
 class Home extends React.Component {
     constructor(props) {
@@ -266,6 +267,25 @@ class Home extends React.Component {
                                         <Topbar />
                                         <Navbar />
                                         <InsertFacility />
+                                    </div>
+                                }
+                            />
+                        )}
+                        {(this.state.user.role ===
+                            roleConstant.SANITATION_STAFF.name ||
+                            this.state.user.role ===
+                                roleConstant.DEFECT_STAFF.name ||
+                            this.state.user.role ===
+                                roleConstant.LOSS_STAFF.name ||
+                            this.state.user.role ===
+                                roleConstant.SAFETY_STAFF.name) && (
+                            <Route
+                                path="/manage/report"
+                                element={
+                                    <div>
+                                        <Topbar />
+                                        <Navbar />
+                                        <ReportManagement />
                                     </div>
                                 }
                             />

@@ -126,6 +126,13 @@ class Navbar extends React.Component {
                     AdminExpand: true,
                 });
                 break;
+            case '/manage/report':
+                this.setState({
+                    Active: 'Report-Management',
+                    BookingExpand: false,
+                    AdminExpand: false,
+                });
+                break;
         }
     }
 
@@ -173,6 +180,9 @@ class Navbar extends React.Component {
                     break;
                 case '/admin/selasar':
                     this.setState({ Active: 'Admin-Selasar' });
+                    break;
+                case '/manage/report':
+                    this.setState({ Active: 'Report-Management' });
                     break;
             }
         }
@@ -462,26 +472,35 @@ class Navbar extends React.Component {
                             </div>
                         </div>
                     )}
-                    {this.state.user.role ===
+                    {(this.state.user.role ===
                         roleConstant.SANITATION_STAFF.name ||
                         this.state.user.role ===
                             roleConstant.DEFECT_STAFF.name ||
                         this.state.user.role ===
                             roleConstant.SAFETY_STAFF.name ||
-                        (this.state.user.role ===
-                            roleConstant.LOSS_STAFF.name && (
-                            <div className="element">
-                                <div className="header">
-                                    <FontAwesomeIcon
-                                        className="header-icon"
-                                        icon={faFlag}
-                                    />
-                                    <h3 className="header-name">
-                                        Manajemen Keluhan
-                                    </h3>
-                                </div>
+                        this.state.user.role ===
+                            roleConstant.LOSS_STAFF.name) && (
+                        <div className="element">
+                            <div
+                                className={`header ${
+                                    Active === 'Report-Management'
+                                        ? 'active'
+                                        : ''
+                                }`}
+                                onClick={() =>
+                                    this.handleRouteOnclick('/manage/report')
+                                }
+                            >
+                                <FontAwesomeIcon
+                                    className="header-icon"
+                                    icon={faFlag}
+                                />
+                                <h3 className="header-name">
+                                    Manajemen Keluhan
+                                </h3>
                             </div>
-                        ))}
+                        </div>
+                    )}
                 </div>
                 <div className="bottom">
                     <p className="bottom-text">&#169; 2023</p>
