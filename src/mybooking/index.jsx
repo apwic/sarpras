@@ -66,7 +66,10 @@ class MyBooking extends React.Component {
         if (prevProps.myBookings !== this.props.myBookings) {
             this.setState({
                 myBookings: this.props.myBookings,
-                maxPage: Math.ceil(this.props.myBookings.total_rows / 5),
+                maxPage:
+                    this.props.myBookings.total_rows > 0
+                        ? Math.ceil(this.props.myBookings.total_rows / 5)
+                        : 1,
             });
         }
         if (
@@ -157,8 +160,8 @@ class MyBooking extends React.Component {
         if (this.state.myBookings === null) {
             return <LoadingScreen />;
         }
-        console.log(this.state.filters);
-        console.log(this.state.appliedFilters);
+        console.log(this.state.currentPage);
+        console.log(this.state.maxPage);
         return (
             <div className="container-mybooking">
                 <div className="container-mybooking__header">
