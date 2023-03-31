@@ -10,12 +10,12 @@ import {
     faBookOpen,
 } from '@fortawesome/free-solid-svg-icons';
 import './style.css';
-import { withRouter } from '../../common/withRouter';
+import { withRouter } from '../../../common/withRouter';
 import { connect } from 'react-redux';
-import bookingStatusConstant from '../../common/constants/bookingStatusConstant';
-import BookingStatusLabel from '../../common/components/labels/bookingStatusLabel';
-import AlertModal from '../../common/components/alertModal';
-import facilityTypeConstant from '../../common/constants/facilityTypeConstant';
+import bookingStatusConstant from '../../../common/constants/bookingStatusConstant';
+import BookingStatusLabel from '../../../common/components/labels/bookingStatusLabel';
+import AlertModal from '../../../common/components/alertModal';
+import facilityTypeConstant from '../../../common/constants/facilityTypeConstant';
 
 class BookingManagementDetail extends React.Component {
     constructor(props) {

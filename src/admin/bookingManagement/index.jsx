@@ -9,9 +9,9 @@ import {
     faBookOpen,
 } from '@fortawesome/free-solid-svg-icons';
 import { connect } from 'react-redux';
-import { withRouter } from '../common/withRouter';
-import LoadingScreen from '../common/components/loadingScreen';
-import BookingManagementList from '../common/components/bookingManagamentList';
+import { withRouter } from '../../common/withRouter';
+import LoadingScreen from '../../common/components/loadingScreen';
+import BookingManagementList from '../../common/components/bookingManagamentList';
 // import FilterModal from '../common/components/filterModal';
 
 class BookingManagement extends React.Component {
