@@ -709,6 +709,7 @@ class FacilityDetail extends React.Component {
                                                           'id-ID',
                                                       )
                                                     : ''}
+                                                {' WIB'}
                                             </p>
                                         </div>
                                     </div>
@@ -722,6 +723,7 @@ class FacilityDetail extends React.Component {
                                                           'id-ID',
                                                       )
                                                     : ''}
+                                                {' WIB'}
                                             </p>
                                         </div>
                                     </div>

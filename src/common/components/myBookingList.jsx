@@ -90,6 +90,7 @@ class MyBookingList extends React.Component {
                                             {new Date(
                                                 myBooking.start_timestamp,
                                             ).toLocaleString('id-ID')}
+                                            {' WIB'}
                                         </td>
                                     </tr>
                                     <tr>
@@ -100,6 +101,7 @@ class MyBookingList extends React.Component {
                                             {new Date(
                                                 myBooking.end_timestamp,
                                             ).toLocaleString('id-ID')}
+                                            {' WIB'}
                                         </td>
                                     </tr>
                                 </tbody>

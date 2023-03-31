@@ -73,7 +73,8 @@ class CalendarModal extends React.Component {
                                     ? 'Pada tanggal ' +
                                       this.state.selectedDate.toLocaleString(
                                           'id-ID',
-                                      )
+                                      ) +
+                                      ' WIB'
                                     : ''}
                             </p>
                         </Modal.Title>

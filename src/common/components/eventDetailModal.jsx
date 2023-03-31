@@ -51,7 +51,8 @@ class EventDetailModal extends React.Component {
                                     :{' '}
                                     {new Date(
                                         this.state.booking.start_timestamp,
-                                    ).toLocaleString('id-ID')}
+                                    ).toLocaleTimeString('id-ID')}
+                                    {' WIB'}
                                 </p>
                             </div>
                             <br />
@@ -61,7 +62,8 @@ class EventDetailModal extends React.Component {
                                     :{' '}
                                     {new Date(
                                         this.state.booking.end_timestamp,
-                                    ).toLocaleString('id-ID')}
+                                    ).toLocaleTimeString('id-ID')}
+                                    {' WIB'}
                                 </p>
                             </div>
                             <br />
