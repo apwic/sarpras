@@ -44,8 +44,8 @@ class Profile extends React.Component {
     componentDidMount() {
         if (this.props.user === null) {
             this.props.getUserFunction();
-            this.props.getTotalBookingsFunction();
         }
+        this.props.getTotalBookingsFunction();
     }
 
     componentDidUpdate(prevProps) {
@@ -56,6 +56,10 @@ class Profile extends React.Component {
                     image: this.props.user.image,
                 },
                 no_telp: this.props.user.no_telp,
+            });
+        }
+        if (prevProps.totalBookings !== this.props.totalBookings) {
+            this.setState({
                 totalBookings: this.props.totalBookings,
             });
         }
@@ -112,7 +116,10 @@ class Profile extends React.Component {
         let emailValue = this.state.user.email;
         let phoneValue = this.state.no_telp;
 
-        if (this.state.user.name === '') {
+        if (
+            this.state.user.name === '' ||
+            this.state.totalBookings === undefined
+        ) {
             return <LoadingScreen />;
         }
         return (
@@ -239,7 +246,7 @@ const mapDispatchToProps = (dispatch) => {
         getUserFunction: () => dispatch(getUser()),
         openModalFunction: (imgUrl) => dispatch(openModal(imgUrl)),
         editProfileFunction: (user) => dispatch(editProfile(user)),
-        getTotalBookingsFunction: () => dispatch(getMyBookings()),
+        getTotalBookingsFunction: () => dispatch(getMyBookings(1, 5, '', '')),
     };
 };
 
