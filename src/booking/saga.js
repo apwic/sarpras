@@ -10,6 +10,7 @@ import {
     INSERT_NEW_FACILITY,
     UPDATE_FACILITY,
     GET_EVENTS,
+    GET_BOOKING,
 } from './actionTypes';
 import {
     setFacilities,
@@ -21,6 +22,7 @@ import {
     insertUpdateResponse,
     deleteResponse,
     newBookingResponse,
+    setBooking,
 } from './action';
 import {
     getFacilitiesApi,
@@ -32,6 +34,7 @@ import {
     insertNewFacilityApi,
     updateFacilityApi,
     getEventsApi,
+    getBookingApi,
 } from './api';
 
 function* getFacilitiesSaga(action) {
@@ -129,6 +132,15 @@ function* getEvents(action) {
     }
 }
 
+function* getBooking(action) {
+    try {
+        const response = yield call(getBookingApi, action.payload.id);
+        yield put(setBooking(response.data));
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 const facilitiesSaga = [
     takeLatest(GET_FACILITIES, getFacilitiesSaga),
     takeLatest(DELETE_FACILITIES, deleteFacility),
@@ -139,6 +151,7 @@ const facilitiesSaga = [
     takeLatest(INSERT_NEW_FACILITY, insertNewFacility),
     takeLatest(UPDATE_FACILITY, updateFacility),
     takeLatest(GET_EVENTS, getEvents),
+    takeLatest(GET_BOOKING, getBooking),
 ];
 
 export default facilitiesSaga;

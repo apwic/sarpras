@@ -66,10 +66,14 @@ class CalendarModal extends React.Component {
                                 {this.state.selectedDate &&
                                 this.props.viewType === 'dayGridMonth'
                                     ? 'Pada tanggal ' +
-                                      this.state.selectedDate.toLocaleDateString()
+                                      this.state.selectedDate.toLocaleDateString(
+                                          'id-ID',
+                                      )
                                     : this.state.selectedDate
                                     ? 'Pada tanggal ' +
-                                      this.state.selectedDate.toLocaleString()
+                                      this.state.selectedDate.toLocaleString(
+                                          'id-ID',
+                                      )
                                     : ''}
                             </p>
                         </Modal.Title>
@@ -128,7 +132,9 @@ class CalendarModal extends React.Component {
                                         className="input-date"
                                         onChange={(e) =>
                                             this.setState({
-                                                duration: e.target.value,
+                                                duration: parseInt(
+                                                    e.target.value,
+                                                ),
                                             })
                                         }
                                     />

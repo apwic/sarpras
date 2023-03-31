@@ -19,6 +19,8 @@ import {
     INSERT_UPDATE_RESPONSE,
     DELETE_RESPONSE,
     NEW_BOOKING_RESPONSE,
+    GET_BOOKING,
+    SET_BOOKING,
 } from './actionTypes';
 
 export function openModalFilter() {
@@ -186,5 +188,21 @@ export function newBookingResponse(response) {
     return {
         type: NEW_BOOKING_RESPONSE,
         payload: response,
+    };
+}
+
+export function getBooking(id) {
+    return {
+        type: GET_BOOKING,
+        payload: {
+            id,
+        },
+    };
+}
+
+export function setBooking(data) {
+    return {
+        type: SET_BOOKING,
+        payload: data,
     };
 }

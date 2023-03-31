@@ -35,7 +35,7 @@ class Dashboard extends React.Component {
         }
         this.props.setCalendarFunction(this.calendarRef);
         const currentTime = new Date();
-        const currentMonthName = currentTime.toLocaleString('default', {
+        const currentMonthName = currentTime.toLocaleString('id-ID', {
             month: 'long',
         });
         const currentMonth = currentTime.getMonth() + 1;
@@ -66,7 +66,7 @@ class Dashboard extends React.Component {
     };
 
     render() {
-        if (this.state.user === null) {
+        if (this.state.user === null || this.state.statistics === null) {
             return <LoadingScreen />;
         }
         return (
@@ -93,7 +93,7 @@ class Dashboard extends React.Component {
                                                 ? this.state.statistics.building
                                                       .month
                                                 : '0'}{' '}
-                                            peminjam (
+                                            peminjaman (
                                             {this.state.monthYear
                                                 ? this.state.monthYear.monthName
                                                 : '0'}
@@ -104,7 +104,7 @@ class Dashboard extends React.Component {
                                                 ? this.state.statistics.building
                                                       .year
                                                 : '0'}{' '}
-                                            peminjam (
+                                            peminjaman (
                                             {this.state.monthYear
                                                 ? this.state.monthYear.year
                                                 : '0'}
@@ -140,7 +140,7 @@ class Dashboard extends React.Component {
                                                 ? this.state.statistics.room
                                                       .month
                                                 : '0'}{' '}
-                                            peminjam (
+                                            peminjaman (
                                             {this.state.monthYear
                                                 ? this.state.monthYear.monthName
                                                 : '0'}
@@ -151,7 +151,7 @@ class Dashboard extends React.Component {
                                                 ? this.state.statistics.room
                                                       .year
                                                 : '0'}{' '}
-                                            peminjam (
+                                            peminjaman (
                                             {this.state.monthYear
                                                 ? this.state.monthYear.year
                                                 : '0'}
@@ -187,7 +187,7 @@ class Dashboard extends React.Component {
                                                 ? this.state.statistics.selasar
                                                       .month
                                                 : '0'}{' '}
-                                            peminjam (
+                                            peminjaman (
                                             {this.state.monthYear
                                                 ? this.state.monthYear.monthName
                                                 : '0'}
@@ -198,7 +198,7 @@ class Dashboard extends React.Component {
                                                 ? this.state.statistics.selasar
                                                       .year
                                                 : '0'}{' '}
-                                            peminjam (
+                                            peminjaman (
                                             {this.state.monthYear
                                                 ? this.state.monthYear.year
                                                 : '0'}
@@ -234,7 +234,7 @@ class Dashboard extends React.Component {
                                                 ? this.state.statistics.vehicle
                                                       .month
                                                 : '0'}{' '}
-                                            peminjam (
+                                            peminjaman (
                                             {this.state.monthYear
                                                 ? this.state.monthYear.monthName
                                                 : '0'}
@@ -245,7 +245,7 @@ class Dashboard extends React.Component {
                                                 ? this.state.statistics.vehicle
                                                       .year
                                                 : '0'}{' '}
-                                            peminjam (
+                                            peminjaman (
                                             {this.state.monthYear
                                                 ? this.state.monthYear.year
                                                 : '0'}

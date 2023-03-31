@@ -705,7 +705,9 @@ class FacilityDetail extends React.Component {
                                             <p className="tag">Waktu Mulai</p>
                                             <p>
                                                 {this.state.start_timestamp
-                                                    ? this.state.start_timestamp.toLocaleString()
+                                                    ? this.state.start_timestamp.toLocaleString(
+                                                          'id-ID',
+                                                      )
                                                     : ''}
                                             </p>
                                         </div>
@@ -716,7 +718,9 @@ class FacilityDetail extends React.Component {
                                             <p className="tag">Waktu Selesai</p>
                                             <p>
                                                 {this.state.end_timestamp
-                                                    ? this.state.end_timestamp.toLocaleString()
+                                                    ? this.state.end_timestamp.toLocaleString(
+                                                          'id-ID',
+                                                      )
                                                     : ''}
                                             </p>
                                         </div>

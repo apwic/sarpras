@@ -79,7 +79,7 @@ class ComponentCalendar extends React.Component {
             title: booking.user.name + ', ' + booking.facility.name,
             start: booking.start_timestamp,
             end: booking.end_timestamp,
-            color: booking.status === 'PENDING' ? 'red' : 'green',
+            color: booking.status === 'PENDING' ? '#ED9121' : '#00B140',
             display: 'block',
             overlap: false,
         }));
@@ -140,7 +140,7 @@ class ComponentCalendar extends React.Component {
                                 position: 'absolute',
                                 inset: 'auto',
                                 zIndex: '1',
-                                top: 'calc(50% - 1rem)',
+                                top: 'calc(50% + 1.1rem)',
                                 left: 'calc(50% - 1rem)',
                             }}
                         />
@@ -167,6 +167,7 @@ class ComponentCalendar extends React.Component {
                             dateClick={this.handleDateClick}
                             eventTextColor="#FFFFFF"
                             eventClick={this.eventClick}
+                            contentHeight="auto"
                         />
                     </div>
                 </div>

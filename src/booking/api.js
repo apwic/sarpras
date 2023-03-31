@@ -137,3 +137,12 @@ export const getEventsApi = async (start, end) => {
             return response;
         });
 };
+
+export const getBookingApi = (id) => {
+    return wretchInstance()
+        .url(import.meta.env.VITE_REST_API_URL + '/booking/' + id)
+        .get()
+        .json((response) => {
+            return response;
+        });
+};
