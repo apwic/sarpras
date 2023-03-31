@@ -160,8 +160,6 @@ class MyBooking extends React.Component {
         if (this.state.myBookings === null) {
             return <LoadingScreen />;
         }
-        console.log(this.state.currentPage);
-        console.log(this.state.maxPage);
         return (
             <div className="container-mybooking">
                 <div className="container-mybooking__header">

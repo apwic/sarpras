@@ -46,56 +46,6 @@
     gap: 16px;
 }
 
-.my-booking-item{
-    width: 100%;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    padding: 24px 35px 24px 35px;
-    gap: 16px;
-    border-radius: var(--corner-radius-large);
-    background-color: var(--color-background-light);
-    box-shadow: var(--shadow);
-    transition: var(--transition);
-}
-
-.my-booking-item:hover{
-    transform: scale(1.005); 
-    cursor: pointer;
-}
-
-.my-booking-item:active{
-    background-color: var(--color-background);
-}
-
-.my-booking-item__header{
-    display: flex;
-    justify-content: space-between;
-}
-
-.my-booking-item__body{
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-h3.item-name{
-    font-size: 20px;
-    font-weight: bold;
-    margin: 0;
-}
-
-.my-booking-item__footer{
-    display: flex;
-    justify-content: space-between;
-}
-
-.booking-date{
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
 .icon-filter-item {
     height: 2.1vh;
     cursor: pointer;

@@ -142,13 +142,19 @@ class MyBookingDetail extends React.Component {
                                         </tr>
                                         <tr>
                                             <td className="item-detail__label">
-                                                Waktu Sewa
+                                                Waktu Mulai Sewa
                                             </td>
                                             <td className="item-detail__value">
                                                 {new Date(
                                                     this.state.myBooking.start_timestamp,
                                                 ).toLocaleString()}{' '}
-                                                -{' '}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="item-detail__label">
+                                                Waktu Selesai Sewa
+                                            </td>
+                                            <td className="item-detail__value">
                                                 {new Date(
                                                     this.state.myBooking.end_timestamp,
                                                 ).toLocaleString()}

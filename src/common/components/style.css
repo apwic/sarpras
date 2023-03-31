@@ -510,3 +510,72 @@ button.btn-primary:disabled{
 .container-booking-facility .fc-daygrid-block-event:hover {
     filter: brightness(95%);
 }
+
+.my-booking-item{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 24px 35px 24px 35px;
+    gap: 16px;
+    border-radius: var(--corner-radius-large);
+    background-color: var(--color-background-light);
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+.my-booking-item:hover{
+    transform: scale(1.005); 
+    cursor: pointer;
+}
+
+.my-booking-item:active{
+    background-color: var(--color-background);
+}
+
+.my-booking-item__header{
+    display: flex;
+    justify-content: space-between;
+}
+
+.my-booking-item__body{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.my-booking-item__footer{
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap-reverse;
+    row-gap: 16px;
+    justify-content: space-between;
+}
+
+h3.item-name{
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.booking-date{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.booking-time{
+    min-width: 20%;
+}
+
+.booking-time table{
+    width: 100%;
+}
+
+.booking-time__label{
+    font-weight: bold;
+}
+
+.booking-time__value{
+    text-align: right;
+}

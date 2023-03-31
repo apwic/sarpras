@@ -80,15 +80,30 @@ class MyBookingList extends React.Component {
                             </label>
                         </div>
                         <div className="booking-time">
-                            <label className="label-booking-time">
-                                {new Date(
-                                    myBooking.start_timestamp,
-                                ).toLocaleString()}{' '}
-                                -{' '}
-                                {new Date(
-                                    myBooking.end_timestamp,
-                                ).toLocaleString()}
-                            </label>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td className="booking-time__label">
+                                            Waktu Mulai
+                                        </td>
+                                        <td className="booking-time__value">
+                                            {new Date(
+                                                myBooking.start_timestamp,
+                                            ).toLocaleString()}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td className="booking-time__label">
+                                            Waktu Selesai
+                                        </td>
+                                        <td className="booking-time__value">
+                                            {new Date(
+                                                myBooking.end_timestamp,
+                                            ).toLocaleString()}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
