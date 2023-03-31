@@ -1,0 +1,274 @@
+.container-mybooking-detail{
+    display: flex;
+    flex-direction: column;
+    padding-left: 7vh;
+    padding-right: 7vh;
+    padding-top: 3vh;
+    min-height: calc(100vh - 60px);
+    padding-bottom: 4vh;
+}
+
+.container-mybooking-detail__header{
+    width: 100%;
+    height: 7vh;
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid var(--color-text-secondary);
+}
+
+.container-mybooking-detail__header .icon-mybooking-detail{
+    width: 2.5vh;
+    height: 2.5vh;
+    margin-right: 1vh;
+}
+
+.container-mybooking-detail__body{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-top: 3vh;
+    row-gap: 1.5rem;
+}
+
+.container-mybooking-detail__body__item{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    gap: 3rem;
+    row-gap: 3rem;
+    flex-flow: row wrap;
+    position: relative;
+}
+
+.item-container{
+    background-color: var(--color-background-light);
+    min-height: fit-content;
+    height: fit-content;
+    width: calc(100% / 2 - 2rem);
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--corner-radius-large);
+    box-shadow: var(--shadow);
+    padding: 35px;
+    position: relative;
+    gap: 1rem;
+}
+
+h3.item-title{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.item-detail{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.item-detail table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.item-detail tr{
+    height: 2rem;
+}
+
+.item-detail td.item-detail__label{
+    font-weight: bold;
+}
+
+.total-price{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+h3.total-price__label {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+h3.total-price__value {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.booking-description p{
+    line-height: 1.5rem;
+    text-align: justify;
+}
+
+.edit-status-dropdown {
+    border-radius: var(--corner-radius-large);
+    position: fixed;
+    top: 100px;
+    right: 10px;
+    width: 250px;
+    background-color: var(--color-background-light);
+    color: var(--color-text-secondary);
+    /* padding: 10px 0; */
+    box-shadow: var(--shadow);
+    z-index: 50;
+    height: fit-content;
+}
+
+.modal-edit-status-header h2{
+    padding-top: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid var(--color-text-secondary);
+}
+
+
+.icon-close{
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    color: var(--color-text-primary);
+    cursor: pointer;
+}
+
+.modal-edit-status-header h2{
+    color: var(--color-text-primary);
+    font-size: 18px;
+}
+.edit-status-dropdown.hide {
+    display: none;
+}
+.edit-status-dropdown ul {
+    padding: 0;
+    display: block;
+    margin-bottom: 0;
+    list-style-type: none;
+}
+
+.edit-status-dropdown li {
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    padding-left: 1vh;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+    font-size: 16px;
+    font-weight: 600;
+    transition: var(--transition);
+    color: var(--color-text-primary);
+}
+.edit-status-dropdown li p{
+    padding-left: 10px;
+}
+
+.selected-status-management-booking{
+    background-color: var(--color-background);
+}
+
+.edit-status-dropdown li:hover {
+    cursor: pointer;
+    text-decoration: none;
+    background-color: var(--color-background);
+}
+
+.edit-status-dropdown li.active {
+    color: var(--color-background-light);
+    font-weight: 700;
+}
+.edit-facility-dropdown {
+
+    border-radius: var(--corner-radius-large);
+    position: fixed;
+    top: 280px;
+    right: 10px;
+    width: 250px;
+    background-color: var(--color-background-light);
+    color: var(--color-text-secondary);
+    /* padding: 10px 0; */
+    box-shadow: var(--shadow);
+    z-index: 50;
+    height: fit-content;
+}
+
+.modal-edit-status-header h2{
+    padding-top: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid var(--color-text-secondary);
+}
+
+
+.icon-close{
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    color: var(--color-text-primary);
+    cursor: pointer;
+}
+
+.modal-edit-status-header h2{
+    color: var(--color-text-primary);
+    font-size: 18px;
+}
+.edit-facility-dropdown.hide {
+    display: none;
+}
+.edit-facility-dropdown ul {
+    padding: 0;
+    display: block;
+    margin-bottom: 0;
+    list-style-type: none;
+}
+
+.edit-facility-dropdown li {
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    padding-left: 1vh;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+    font-size: 16px;
+    font-weight: 600;
+    transition: var(--transition);
+    color: var(--color-text-primary);
+}
+.edit-facility-dropdown li p{
+    padding-left: 10px;
+}
+
+.selected-status-management-booking{
+    background-color: var(--color-background);
+}
+
+.edit-facility-dropdown li:hover {
+    cursor: pointer;
+    text-decoration: none;
+    background-color: var(--color-background);
+}
+
+.edit-facility-dropdown li.active {
+    color: var(--color-background-light);
+    font-weight: 700;
+}
+
+.checked-logo{
+    width: 10%;
+}
+
+.editable-booking__item input{
+    width: 80%;
+    font-weight: bold;
+    height: 30px;
+    padding-left: 10px;
+    font-size: var(--font-size-body);
+    color: var(--color-text-primary);
+    border-radius: var(--corner-radius);
+    border: 1px solid var(--color-text-secondary);
+}
