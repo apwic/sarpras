@@ -14,6 +14,8 @@ import { withRouter } from '../common/withRouter';
 import LoadingScreen from '../common/components/loadingScreen';
 import FilterModal from '../common/components/filterModal';
 import { Pagination } from 'react-bootstrap';
+import bookingStatusConstant from '../common/constants/bookingStatusConstant';
+import facilityTypeConstant from '../common/constants/facilityTypeConstant';
 
 class MyBooking extends React.Component {
     constructor(props) {
@@ -23,7 +25,30 @@ class MyBooking extends React.Component {
             currentPage: 1,
             maxPage: 1,
             query: '',
-            filters: '',
+            filters: [
+                {
+                    id: 0,
+                    name: 'status_list',
+                    display: 'Status',
+                    options: Object.values(bookingStatusConstant).map(
+                        (status) => ({
+                            id: status.name,
+                            name: status.value,
+                        }),
+                    ),
+                },
+                {
+                    id: 1,
+                    name: 'category_list',
+                    display: 'Kategori',
+                    options: Object.values(facilityTypeConstant).map(
+                        (type) => ({
+                            id: type.name,
+                            name: type.value,
+                        }),
+                    ),
+                },
+            ],
             appliedFilters: [],
         };
     }
@@ -33,7 +58,7 @@ class MyBooking extends React.Component {
             this.state.currentPage,
             5,
             this.state.query,
-            this.state.filters,
+            this.convertToFilterString(this.state.appliedFilters),
         );
     }
 
@@ -55,27 +80,15 @@ class MyBooking extends React.Component {
                 this.state.currentPage,
                 5,
                 this.state.query,
-                this.state.filters,
+                this.convertToFilterString(this.state.appliedFilters),
             );
-        }
-        if (prevState.filters !== this.state.filters) {
-            this.setState({
-                filters: [
-                    {
-                        id: 0,
-                        name: 'status_list',
-                        display: 'Status',
-                        options: this.props.filters.status_list,
-                    },
-                ],
-            });
         }
     }
 
     handleFilterOption = (filters) => {
         let filterString = this.convertToFilterString(filters);
         this.setState({
-            filters: filterString,
+            myBookings: null,
             appliedFilters: filters,
             currentPage: 1,
         });
@@ -87,6 +100,24 @@ class MyBooking extends React.Component {
         );
     };
 
+    convertToFilterString = (filters) => {
+        if (filters.length === 0) {
+            return '';
+        }
+        let filterString = '';
+        for (let i = 0; i < filters.length; i++) {
+            if (filters[i]) {
+                if (filterString !== '') {
+                    filterString += '&';
+                }
+                filterString += this.state.filters[i].name + '=' + filters[i];
+            }
+        }
+        filterString = filterString.replace('status_list', 'status');
+        filterString = filterString.replace('category_list', 'category');
+        return filterString;
+    };
+
     handleSearch = (event) => {
         this.setState({
             query: event.target.value,
@@ -96,7 +127,7 @@ class MyBooking extends React.Component {
             this.state.currentPage,
             5,
             event.target.value,
-            this.state.filters,
+            this.convertToFilterString(this.state.appliedFilters),
         );
     };
 
@@ -126,6 +157,8 @@ class MyBooking extends React.Component {
         if (this.state.myBookings === null) {
             return <LoadingScreen />;
         }
+        console.log(this.state.filters);
+        console.log(this.state.appliedFilters);
         return (
             <div className="container-mybooking">
                 <div className="container-mybooking__header">

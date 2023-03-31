@@ -6,8 +6,6 @@ import {
     SET_TOTAL_BOOKINGS,
     OPEN_MODAL_FILTER,
     CLOSE_MODAL_FILTER,
-    GET_FILTERS,
-    SET_FILTERS,
 } from './actionTypes';
 
 export function getMyBookings(page, limit, query, filters) {
@@ -59,18 +57,5 @@ export function openModalFilter() {
 export function closeModalFilter() {
     return {
         type: CLOSE_MODAL_FILTER,
-    };
-}
-
-export function getFilters() {
-    return {
-        type: GET_FILTERS,
-    };
-}
-
-export function setFilters(data) {
-    return {
-        type: SET_FILTERS,
-        payload: data,
     };
 }
