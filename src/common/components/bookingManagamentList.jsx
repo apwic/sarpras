@@ -8,24 +8,24 @@ import FacilityTypeLabel from './labels/facilityTypeLabel';
 import EmptyScreen from './emptyScreen';
 import BookingStatusLabel from './labels/bookingStatusLabel';
 
-class BookingManaga extends React.Component {
+class bookingManagamentList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            myBookings: [],
+            bookingList: [],
         };
     }
 
     componentDidMount() {
         this.setState({
-            myBookings: this.props.myBookings,
+            bookingList: this.props.bookingList,
         });
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.myBookings !== this.props.myBookings) {
+        if (prevProps.bookingList !== this.props.bookingList) {
             this.setState({
-                myBookings: this.props.myBookings,
+                bookingList: this.props.bookingList,
             });
         }
     }
@@ -39,31 +39,31 @@ class BookingManaga extends React.Component {
     };
 
     render() {
-        if (this.state.myBookings.length === 0) {
+        if (this.state.bookingList.length === 0) {
             return <EmptyScreen />;
         }
-        return this.state.myBookings.rows.map((myBooking) => {
+        return this.state.bookingList.rows.map((booking) => {
             return (
                 <div
                     className="my-booking-item"
                     onClick={() =>
-                        this.props.handleMyBookingClicked(myBooking.id)
+                        this.props.handleMyBookingClicked(booking.id)
                     }
-                    key={myBooking.id}
+                    key={booking.id}
                 >
                     <div className="my-booking-item__header">
                         <FacilityTypeLabel
-                            type={facilityTypeConstant[myBooking.category]}
+                            type={facilityTypeConstant[booking.category]}
                         />
                         <BookingStatusLabel
-                            status={bookingStatusConstant[myBooking.status]}
+                            status={bookingStatusConstant[booking.status]}
                         />
                     </div>
                     <div className="my-booking-item__body">
                         <h3 className="item-name">
-                            {myBooking.facility ? myBooking.facility.name : '-'}
+                            {booking.facility ? booking.facility.name : '-'}
                         </h3>
-                        <p>{myBooking.description}</p>
+                        <p>{booking.description}</p>
                     </div>
                     <div className="my-booking-item__footer">
                         <div className="booking-date">
@@ -73,22 +73,37 @@ class BookingManaga extends React.Component {
                             />
                             <label className="label-booking-date">
                                 dibuat{' '}
-                                {this.daysDiff(
-                                    myBooking.createdAt.slice(0, 10),
-                                )}{' '}
-                                hari yang lalu oleh Saya
+                                {this.daysDiff(booking.createdAt.slice(0, 10))}{' '}
+                                hari yang lalu oleh {booking.user.name}
                             </label>
                         </div>
                         <div className="booking-time">
-                            <label className="label-booking-time">
-                                {new Date(
-                                    myBooking.start_timestamp,
-                                ).toLocaleString()}{' '}
-                                -{' '}
-                                {new Date(
-                                    myBooking.end_timestamp,
-                                ).toLocaleString()}
-                            </label>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td className="booking-time__label">
+                                            Waktu Mulai
+                                        </td>
+                                        <td className="booking-time__value">
+                                            {new Date(
+                                                booking.start_timestamp,
+                                            ).toLocaleString('id-ID')}
+                                            {' WIB'}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td className="booking-time__label">
+                                            Waktu Selesai
+                                        </td>
+                                        <td className="booking-time__value">
+                                            {new Date(
+                                                booking.end_timestamp,
+                                            ).toLocaleString('id-ID')}
+                                            {' WIB'}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -97,4 +112,4 @@ class BookingManaga extends React.Component {
     }
 }
 
-export default BookingManaga;
+export default bookingManagamentList;

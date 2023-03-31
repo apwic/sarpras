@@ -5,6 +5,7 @@ import authSaga from './auth/saga';
 import facilitiesSaga from '../booking/saga';
 import myBookingSaga from '../mybooking/saga';
 import dashboardSaga from '../dashboard/saga';
+import bookingManagementSaga from '../admin/bookingManagement/saga';
 
 export default function* rootSaga() {
     yield all([
@@ -14,5 +15,6 @@ export default function* rootSaga() {
         ...facilitiesSaga,
         ...myBookingSaga,
         ...dashboardSaga,
+        ...bookingManagementSaga,
     ]);
 }

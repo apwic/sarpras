@@ -133,6 +133,13 @@ class Navbar extends React.Component {
                     AdminExpand: false,
                 });
                 break;
+            case '/manage/booking':
+                this.setState({
+                    Active: 'Booking-Management',
+                    BookingExpand: false,
+                    AdminExpand: false,
+                });
+                break;
         }
     }
 
@@ -183,6 +190,9 @@ class Navbar extends React.Component {
                     break;
                 case '/manage/report':
                     this.setState({ Active: 'Report-Management' });
+                    break;
+                case '/manage/booking':
+                    this.setState({ Active: 'Booking-Management' });
                     break;
             }
         }
@@ -461,7 +471,16 @@ class Navbar extends React.Component {
                     {this.state.user.role ===
                         roleConstant.BOOKING_STAFF.name && (
                         <div className="element">
-                            <div className="header">
+                            <div
+                                className={`header ${
+                                    Active === 'Booking-Management'
+                                        ? 'active'
+                                        : ''
+                                }`}
+                                onClick={() =>
+                                    this.handleRouteOnclick('/manage/booking')
+                                }
+                            >
                                 <FontAwesomeIcon
                                     className="header-icon"
                                     icon={faBookOpen}

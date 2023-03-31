@@ -1,4 +1,4 @@
-.container-mybooking-detail{
+.container-bookingManagement-detail{
     display: flex;
     flex-direction: column;
     padding-left: 7vh;
@@ -8,7 +8,7 @@
     padding-bottom: 4vh;
 }
 
-.container-mybooking-detail__header{
+.container-bookingManagement-detail__header{
     width: 100%;
     height: 7vh;
     display: flex;
@@ -16,13 +16,13 @@
     border-bottom: 2px solid var(--color-text-secondary);
 }
 
-.container-mybooking-detail__header .icon-mybooking-detail{
+.container-bookingManagement-detail__header .icon-bookingManagement-detail{
     width: 2.5vh;
     height: 2.5vh;
     margin-right: 1vh;
 }
 
-.container-mybooking-detail__body{
+.container-bookingManagement-detail__body{
     width: 100%;
     height: 100%;
     display: flex;
@@ -31,7 +31,7 @@
     row-gap: 1.5rem;
 }
 
-.container-mybooking-detail__body__item{
+.container-bookingManagement-detail__body__item{
     width: 100%;
     height: 100%;
     display: flex;

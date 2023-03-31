@@ -6,6 +6,7 @@ import profileReducer from '../profile/reducer';
 import supeUserReducer from '../superuser/reducer';
 import authReducer from './auth/reducer';
 import myBookingReducer from '../mybooking/reducer';
+import bookingManagementReducer from '../admin/bookingManagement/reducer';
 import rootSaga from './saga';
 
 const rootReducer = combineReducers({
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
     profile: profileReducer,
     facility: facilityReducer,
     myBooking: myBookingReducer,
+    bookingManagement: bookingManagementReducer,
 });
 
 const sagaMiddleware = createSagaMiddleware();

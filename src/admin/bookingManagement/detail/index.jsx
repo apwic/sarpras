@@ -15,6 +15,7 @@ import { connect } from 'react-redux';
 import bookingStatusConstant from '../../../common/constants/bookingStatusConstant';
 import BookingStatusLabel from '../../../common/components/labels/bookingStatusLabel';
 import AlertModal from '../../../common/components/alertModal';
+import { getBooking } from '../action';
 import facilityTypeConstant from '../../../common/constants/facilityTypeConstant';
 
 class BookingManagementDetail extends React.Component {
@@ -81,16 +82,16 @@ class BookingManagementDetail extends React.Component {
     };
 
     componentDidMount() {
-        // this.props.getMyBookingClickedFunction(this.props.params.id.toString());
+        this.props.getBookingFunction(this.props.params.id.toString());
     }
 
     componentDidUpdate(prevProps) {
-        // if (prevProps.myBooking !== this.props.myBooking) {
-        //     this.setState({
-        //         myBooking: this.props.myBooking,
-        //     });
-        //     this.setState({ loading: false });
-        // }
+        if (prevProps.bookingManagement !== this.props.bookingManagement) {
+            this.setState({
+                bookingManagement: this.props.bookingManagement,
+            });
+            this.setState({ loading: false });
+        }
     }
 
     handleNavigateBack = () => {
@@ -154,16 +155,16 @@ class BookingManagementDetail extends React.Component {
         let selectedFacility = this.state.selectedGedung;
         return (
             <div className="container-management-all">
-                <div className="container-mybooking-detail">
-                    <div className="container-mybooking-detail__header">
+                <div className="container-bookingManagement-detail">
+                    <div className="container-bookingManagement-detail__header">
                         <FontAwesomeIcon
                             icon={faBookOpen}
-                            className="icon-mybooking-detail"
+                            className="icon-bookingManagement-detail"
                         />
                         <h1>Manajemen Peminjaman / </h1>
                     </div>
-                    <div className="container-mybooking-detail__body">
-                        <div className="container-mybooking-button-back">
+                    <div className="container-bookingManagement-detail__body">
+                        <div className="container-bookingManagement-button-back">
                             <button
                                 className="back-btn"
                                 onClick={this.handleNavigateBack}
@@ -180,7 +181,7 @@ class BookingManagementDetail extends React.Component {
                                 Back
                             </button>
                         </div>
-                        <div className="container-mybooking-detail__body__item">
+                        <div className="container-bookingManagement-detail__body__item">
                             <div className="item-container">
                                 <h3 className="item-title">
                                     Rincian Peminjaman
@@ -539,11 +540,15 @@ class BookingManagementDetail extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    return {};
+    return {
+        booking: state.bookingManagement.booking,
+    };
 };
 
 const mapDispatchToProps = (dispatch) => {
-    return {};
+    return {
+        getBookingFunction: (id) => dispatch(getBooking(id)),
+    };
 };
 
 export default withRouter(

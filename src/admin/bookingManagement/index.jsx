@@ -2,194 +2,120 @@ import React from 'react';
 import './style.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    faUser,
     faSearch,
-    faTimes,
     faFilter,
     faBookOpen,
+    faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 import { connect } from 'react-redux';
 import { withRouter } from '../../common/withRouter';
 import LoadingScreen from '../../common/components/loadingScreen';
 import BookingManagementList from '../../common/components/bookingManagamentList';
-// import FilterModal from '../common/components/filterModal';
+import { Pagination } from 'react-bootstrap';
+import { closeModalFilter, getBookingList, openModalFilter } from './action';
+import bookingStatusConstant from '../../common/constants/bookingStatusConstant';
+import facilityTypeConstant from '../../common/constants/facilityTypeConstant';
+import FilterModal from '../../common/components/filterModal';
 
 class BookingManagement extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            myBookings: {
-                rows: [
-                    {
-                        attachment: [
-                            'https://storage.googleapis.com/sarpras/document/bo…g-48/cbb0fd0ba7d111b126f74526678f30d094c3cb5e.pdf',
-                        ],
-                        category: 'BUILDING',
-                        cost: 1000,
-                        createdAt: '2023-03-30T11:46:18.572Z',
-                        description: 'Ngabuburit',
-                        end_timestamp: '2023-04-05T13:00:00.000Z',
-                        facility: {
-                            id: 74,
-                            name: 'Gedung Sate',
-                            description: 'Bukan gedung ITB',
-                        },
-                        facility_id: 74,
-                        id: 48,
-                        letter: null,
-                        payment_id: null,
-                        rekening_va: null,
-                        start_timestamp: '2023-04-05T10:00:00.000Z',
-                        status: 'PENDING',
-                        updatedAt: '2023-03-30T11:46:18.915Z',
-                        url: '23232323',
-                        user_id: 1,
-                        verifier_id: null,
-                    },
-                    {
-                        attachment: [
-                            'https://storage.googleapis.com/sarpras/document/bo…g-48/cbb0fd0ba7d111b126f74526678f30d094c3cb5e.pdf',
-                        ],
-                        category: 'BUILDING',
-                        cost: 1000,
-                        createdAt: '2023-03-30T11:46:18.572Z',
-                        description: 'Ngabuburit',
-                        end_timestamp: '2023-04-05T13:00:00.000Z',
-                        facility: {
-                            id: 74,
-                            name: 'Gedung Sate',
-                            description: 'Bukan gedung ITB',
-                        },
-                        facility_id: 74,
-                        id: 48,
-                        letter: null,
-                        payment_id: null,
-                        rekening_va: null,
-                        start_timestamp: '2023-04-05T10:00:00.000Z',
-                        status: 'PENDING',
-                        updatedAt: '2023-03-30T11:46:18.915Z',
-                        url: '23232323',
-                        user_id: 1,
-                        verifier_id: null,
-                    },
-                    {
-                        attachment: [
-                            'https://storage.googleapis.com/sarpras/document/bo…g-48/cbb0fd0ba7d111b126f74526678f30d094c3cb5e.pdf',
-                        ],
-                        category: 'BUILDING',
-                        cost: 1000,
-                        createdAt: '2023-03-30T11:46:18.572Z',
-                        description: 'Ngabuburit',
-                        end_timestamp: '2023-04-05T13:00:00.000Z',
-                        facility: {
-                            id: 74,
-                            name: 'Gedung Sate',
-                            description: 'Bukan gedung ITB',
-                        },
-                        facility_id: 74,
-                        id: 48,
-                        letter: null,
-                        payment_id: null,
-                        rekening_va: null,
-                        start_timestamp: '2023-04-05T10:00:00.000Z',
-                        status: 'PENDING',
-                        updatedAt: '2023-03-30T11:46:18.915Z',
-                        url: '23232323',
-                        user_id: 1,
-                        verifier_id: null,
-                    },
-                    {
-                        attachment: [
-                            'https://storage.googleapis.com/sarpras/document/bo…g-48/cbb0fd0ba7d111b126f74526678f30d094c3cb5e.pdf',
-                        ],
-                        category: 'BUILDING',
-                        cost: 1000,
-                        createdAt: '2023-03-30T11:46:18.572Z',
-                        description: 'Ngabuburit',
-                        end_timestamp: '2023-04-05T13:00:00.000Z',
-                        facility: {
-                            id: 74,
-                            name: 'Gedung Sate',
-                            description: 'Bukan gedung ITB',
-                        },
-                        facility_id: 74,
-                        id: 48,
-                        letter: null,
-                        payment_id: null,
-                        rekening_va: null,
-                        start_timestamp: '2023-04-05T10:00:00.000Z',
-                        status: 'PENDING',
-                        updatedAt: '2023-03-30T11:46:18.915Z',
-                        url: '23232323',
-                        user_id: 1,
-                        verifier_id: null,
-                    },
-                ],
-                total_rows: 4,
-            },
+            bookingList: null,
             currentPage: 1,
             maxPage: 1,
             query: '',
-            filters: '',
+            filters: [
+                {
+                    id: 0,
+                    name: 'status_list',
+                    display: 'Status',
+                    options: Object.values(bookingStatusConstant).map(
+                        (status) => ({
+                            id: status.name,
+                            name: status.value,
+                        }),
+                    ),
+                },
+                {
+                    id: 1,
+                    name: 'category_list',
+                    display: 'Kategori',
+                    options: Object.values(facilityTypeConstant).map(
+                        (type) => ({
+                            id: type.name,
+                            name: type.value,
+                        }),
+                    ),
+                },
+            ],
             appliedFilters: [],
         };
     }
 
     componentDidMount() {
-        // this.props.getMyBookingsFunction(
-        //     this.state.currentPage,
-        //     5,
-        //     this.state.query,
-        //     this.state.filters,
-        // );
+        this.props.getBookingListFunction(
+            this.state.query,
+            this.state.currentPage,
+            5,
+            this.convertToFilterString(this.state.appliedFilters),
+        );
     }
 
     componentDidUpdate(prevProps, prevState) {
-        // if (prevProps.myBookings !== this.props.myBookings) {
-        //     this.setState({
-        //         myBookings: this.props.myBookings,
-        //         maxPage: Math.ceil(this.props.myBookings.total_rows / 5),
-        //     });
-        // }
-        // if (
-        //     prevState.currentPage !== this.state.currentPage &&
-        //     prevState.query === this.state.query
-        // ) {
-        //     this.setState({
-        //         myBookings: null,
-        //     });
-        //     this.props.getMyBookingsFunction(
-        //         this.state.currentPage,
-        //         5,
-        //         this.state.query,
-        //         this.state.filters,
-        //     );
-        // }
-        // if (prevState.filters !== this.state.filters) {
-        //     this.setState({
-        //         filters: [
-        //             {
-        //                 id: 0,
-        //                 name: 'status_list',
-        //                 display: 'Status',
-        //                 options: this.props.filters.status_list,
-        //             },
-        //         ],
-        //     });
-        // }
+        if (prevProps.bookingList !== this.props.bookingList) {
+            this.setState({
+                bookingList: this.props.bookingList,
+                maxPage:
+                    this.props.bookingList.total_rows > 0
+                        ? Math.ceil(this.props.bookingList.total_rows / 5)
+                        : 1,
+            });
+        }
+        if (
+            prevState.currentPage !== this.state.currentPage &&
+            prevState.query === this.state.query
+        ) {
+            this.setState({
+                bookingList: null,
+            });
+            this.props.getBookingListFunction(
+                this.state.query,
+                this.state.currentPage,
+                5,
+                this.convertToFilterString(this.state.appliedFilters),
+            );
+        }
     }
+    convertToFilterString = (filters) => {
+        if (filters.length === 0) {
+            return '';
+        }
+        let filterString = '';
+        for (let i = 0; i < filters.length; i++) {
+            if (filters[i]) {
+                if (filterString !== '') {
+                    filterString += '&';
+                }
+                filterString += this.state.filters[i].name + '=' + filters[i];
+            }
+        }
+        filterString = filterString.replace('status_list', 'status');
+        filterString = filterString.replace('category_list', 'category');
+        return filterString;
+    };
 
     handleFilterOption = (filters) => {
         let filterString = this.convertToFilterString(filters);
         this.setState({
-            filters: filterString,
+            bookingList: null,
             appliedFilters: filters,
             currentPage: 1,
         });
-        this.props.getMyBookingsFunction(
+        this.props.getBookingListFunction(
+            this.state.query,
             this.state.currentPage,
             5,
-            this.state.query,
             filterString,
         );
     };
@@ -199,16 +125,16 @@ class BookingManagement extends React.Component {
             query: event.target.value,
             currentPage: 1,
         });
-        this.props.getMyBookingsFunction(
+        this.props.getBookingListFunction(
+            event.target.value,
             this.state.currentPage,
             5,
-            event.target.value,
             this.state.filters,
         );
     };
 
-    handleMyBookingClicked = (id) => {
-        this.props.navigate(`/booking/${id}`);
+    handlebookingManagementClicked = (id) => {
+        this.props.navigate(`/manage/booking/${id}`);
     };
 
     renderPaginationNumbers = () => {
@@ -230,20 +156,20 @@ class BookingManagement extends React.Component {
     };
 
     render() {
-        // if (this.state.myBookings === null) {
-        //     return <LoadingScreen />;
-        // }
+        if (this.state.bookingList === null) {
+            return <LoadingScreen />;
+        }
         return (
-            <div className="container-mybooking">
-                <div className="container-mybooking__header">
+            <div className="container-bookingManagement">
+                <div className="container-bookingManagement__header">
                     <FontAwesomeIcon
                         icon={faBookOpen}
-                        className="icon-mybooking"
+                        className="icon-bookingManagement"
                     />
                     <h1>Manajemen Peminjaman</h1>
                 </div>
-                <div className="container-mybooking__body">
-                    <div className="container-mybooking__body__tools">
+                <div className="container-bookingManagement__body">
+                    <div className="container-bookingManagement__body__tools">
                         <div className="search__box">
                             <input
                                 className="search__box__input"
@@ -258,7 +184,7 @@ class BookingManagement extends React.Component {
                             />
                         </div>
                         <div className="filter__items">
-                            {/* {this.state.appliedFilters &&
+                            {this.state.appliedFilters &&
                                 this.state.appliedFilters.map(
                                     (appliedFilters, index) => {
                                         return (
@@ -300,27 +226,29 @@ class BookingManagement extends React.Component {
                                             )
                                         );
                                     },
-                                )} */}
+                                )}
                             <FontAwesomeIcon
                                 icon={faFilter}
                                 onClick={() => this.props.openModalFunction()}
                                 className="icon-filter-item"
                             />
-                            {/* <FilterModal
+                            <FilterModal
                                 filterlist={this.state.filters}
                                 filters={this.state.appliedFilters}
                                 filtersubmitfunction={this.handleFilterOption}
-                            /> */}
+                            />
                         </div>
                     </div>
-                    <div className="container-mybooking__body__items">
+                    <div className="container-bookingManagement__body__items">
                         <BookingManagementList
-                            myBookings={this.state.myBookings}
-                            handleMyBookingClicked={this.handleMyBookingClicked}
+                            bookingList={this.state.bookingList}
+                            handlebookingManagementClicked={
+                                this.handlebookingManagementClicked
+                            }
                         />
                     </div>
                 </div>
-                {/* <Pagination>
+                <Pagination>
                     <Pagination.First
                         onClick={() => this.setState({ currentPage: 1 })}
                     />
@@ -350,18 +278,25 @@ class BookingManagement extends React.Component {
                             this.setState({ currentPage: this.state.maxPage })
                         }
                     />
-                </Pagination> */}
+                </Pagination>
             </div>
         );
     }
 }
 
 const mapStateToProps = (state) => {
-    return {};
+    return {
+        bookingList: state.bookingManagement.bookingList,
+    };
 };
 
 const mapDispatchToProps = (dispatch) => {
-    return {};
+    return {
+        getBookingListFunction: (query, page, limit, filters) =>
+            dispatch(getBookingList(query, page, limit, filters)),
+        openModalFunction: () => dispatch(openModalFilter()),
+        closeModalFunction: () => dispatch(closeModalFilter()),
+    };
 };
 
 export default withRouter(
