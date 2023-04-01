@@ -72,11 +72,8 @@ class MyBookingList extends React.Component {
                                 className="icon-booking-date"
                             />
                             <label className="label-booking-date">
-                                dibuat{' '}
-                                {this.daysDiff(
-                                    myBooking.createdAt.slice(0, 10),
-                                )}{' '}
-                                hari yang lalu oleh Saya
+                                dibuat {this.daysDiff(myBooking.createdAt)} hari
+                                yang lalu oleh Saya
                             </label>
                         </div>
                         <div className="booking-time">

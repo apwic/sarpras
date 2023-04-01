@@ -417,6 +417,7 @@ button.btn-primary:disabled{
     width: fit-content;
     display: flex;
     align-items: center;
+    white-space: nowrap
 }
 
 .status-label-status {
@@ -514,6 +515,7 @@ button.btn-primary:disabled{
 .my-booking-item{
     width: 100%;
     height: auto;
+    min-width: fit-content;
     display: flex;
     flex-direction: column;
     padding: 24px 35px 24px 35px;
@@ -536,6 +538,7 @@ button.btn-primary:disabled{
 .my-booking-item__header{
     display: flex;
     justify-content: space-between;
+    gap: 16px;
 }
 
 .my-booking-item__body{
