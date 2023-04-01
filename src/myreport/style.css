@@ -49,8 +49,10 @@
 .my-report-item{
     width: 100%;
     height: auto;
+    min-width: fit-content;
     display: flex;
     flex-direction: row;
+    gap: 32px;
     padding: 24px 35px 24px 35px;
     border-radius: var(--corner-radius-large);
     background-color: var(--color-background-light);
@@ -95,14 +97,28 @@ h3.item-name{
     margin: 0;
 }
 
-.report-date{
+.item-footer{
+    width: 100%;
+    height: auto;
     display: flex;
     align-items: center;
+    margin-top: auto;
+    gap: 32px;
+}
+
+.report-date{
+    display: flex;
+    gap: 8px;
+}
+
+.report-assignment{
+    display: flex;
     gap: 8px;
 }
 
 .my-report-item__image {
     width: 16vh;
+    height: 16vh;
     background-color: black;
     border-radius: var(--corner-radius-large);
 }
@@ -134,4 +150,8 @@ button.filter-item{
 button.filter-item.selected{
     background-color: var(--color-background);
     transform: scale(1.02);
+}
+
+.btn-add {
+    margin-left: 15px;
 }
