@@ -25,6 +25,7 @@ import FacilityDetail from '../booking/facilityDetail';
 import MyBooking from '../mybooking';
 import MyBookingDetail from '../mybooking/detail';
 import MyReport from '../myreport';
+import MyReportDetail from '../myreport/detail';
 import ReportManagement from '../reportManagement';
 import BookingManagement from '../admin/bookingManagement';
 import BookingManagementDetail from '../admin/bookingManagement/detail';
@@ -197,6 +198,19 @@ class Home extends React.Component {
                                         <Topbar />
                                         <Navbar />
                                         <MyReport />
+                                    </div>
+                                }
+                            />
+                        )}
+                        {this.state.user.role ===
+                            roleConstant.BASIC_USER.name && (
+                            <Route
+                                path="/report/:id"
+                                element={
+                                    <div>
+                                        <Topbar />
+                                        <Navbar />
+                                        <MyReportDetail />
                                     </div>
                                 }
                             />

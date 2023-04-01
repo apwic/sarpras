@@ -143,11 +143,11 @@ class MyReport extends React.Component {
                         >
                             <div className="my-report-item__body">
                                 <div className="item-labels">
-                                    <ReportStatusLabel
-                                        status={reportStatusConstant.PENDING}
-                                    />
                                     <ReportTypeLabel
                                         type={reportTypeConstant.SANITATION}
+                                    />
+                                    <ReportStatusLabel
+                                        status={reportStatusConstant.PENDING}
                                     />
                                 </div>
                                 <div className="item-details">
