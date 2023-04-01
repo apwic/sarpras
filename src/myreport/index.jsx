@@ -26,7 +26,28 @@ class MyReport extends React.Component {
             currentPage: 1,
             maxPage: 1,
             query: '',
-            filters: [],
+            filters: [
+                {
+                    id: 0,
+                    name: 'status_list',
+                    display: 'Status',
+                    options: Object.values(reportStatusConstant).map(
+                        (status) => ({
+                            id: status.name,
+                            name: status.value,
+                        }),
+                    ),
+                },
+                {
+                    id: 1,
+                    name: 'category_list',
+                    display: 'Kategori',
+                    options: Object.values(reportTypeConstant).map((type) => ({
+                        id: type.name,
+                        name: type.value,
+                    })),
+                },
+            ],
             appliedFilters: [],
         };
     }
