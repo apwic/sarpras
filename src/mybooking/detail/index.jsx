@@ -1,6 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
+import { faBookOpen, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import './style.css';
 import BookingStatusLabel from '../../common/components/labels/bookingStatusLabel';
 import bookingStatusConstant from '../../common/constants/bookingStatusConstant';
@@ -9,6 +9,7 @@ import { withRouter } from '../../common/withRouter';
 import { connect } from 'react-redux';
 import LoadingScreen from '../../common/components/loadingScreen';
 import facilityTypeConstant from '../../common/constants/facilityTypeConstant';
+import FacilityTypeLabel from '../../common/components/labels/facilityTypeLabel';
 
 class MyBookingDetail extends React.Component {
     constructor(props) {
@@ -62,7 +63,7 @@ class MyBookingDetail extends React.Component {
             <div className="container-mybooking-detail">
                 <div className="container-mybooking-detail__header">
                     <FontAwesomeIcon
-                        icon={faUser}
+                        icon={faBookOpen}
                         className="icon-mybooking-detail"
                     />
                     <h1>
@@ -208,13 +209,22 @@ class MyBookingDetail extends React.Component {
                                     </tbody>
                                 </table>
                             </div>
-                            <BookingStatusLabel
-                                status={
-                                    bookingStatusConstant[
-                                        this.state.myBooking.status
-                                    ]
-                                }
-                            />
+                            <div className="booking-labels">
+                                <FacilityTypeLabel
+                                    type={
+                                        facilityTypeConstant[
+                                            this.state.myBooking.category
+                                        ]
+                                    }
+                                />
+                                <BookingStatusLabel
+                                    status={
+                                        bookingStatusConstant[
+                                            this.state.myBooking.status
+                                        ]
+                                    }
+                                />
+                            </div>
                             <div className="total-price">
                                 <h3 className="total-price__label">
                                     Total Biaya

@@ -2,7 +2,7 @@ import React from 'react';
 import './style.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    faUser,
+    faBookOpen,
     faSearch,
     faTimes,
     faFilter,
@@ -163,7 +163,10 @@ class MyBooking extends React.Component {
         return (
             <div className="container-mybooking">
                 <div className="container-mybooking__header">
-                    <FontAwesomeIcon icon={faUser} className="icon-mybooking" />
+                    <FontAwesomeIcon
+                        icon={faBookOpen}
+                        className="icon-mybooking"
+                    />
                     <h1>Peminjaman Saya</h1>
                 </div>
                 <div className="container-mybooking__body">

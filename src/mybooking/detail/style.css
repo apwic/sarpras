@@ -103,3 +103,12 @@ h3.total-price__value {
     line-height: 1.5rem;
     text-align: justify;
 }
+
+.booking-labels{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 16px;
+}
