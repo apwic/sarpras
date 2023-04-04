@@ -6,7 +6,10 @@ import {
     faTrashAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { withRouter } from '../../common/withRouter';
+import { postReport } from '../action';
 import './style.css';
+import { connect } from 'react-redux';
 
 class CreateReport extends React.Component {
     constructor(props) {
@@ -18,14 +21,27 @@ class CreateReport extends React.Component {
                 title: '',
                 description: '',
                 files: [],
+                facilities: [],
             },
             files: [],
             status_maintenance: '',
         };
         this.imageuploaderRef = React.createRef();
     }
-    handleBack = () => {};
-    handleSubmit = () => {};
+
+    handleBack = () => {
+        this.props.navigate('/report/my');
+    };
+    handleSubmit = () => {
+        const data = {
+            title: this.state.value.title,
+            category: this.state.value.type,
+            description: this.state.value.description,
+            image: this.state.value.files.map((file) => file.blob),
+        };
+        console.log(data);
+        this.props.postReportFunction(data);
+    };
 
     handleFileUpload = (e) => {
         console.log(e.target.files);
@@ -76,6 +92,7 @@ class CreateReport extends React.Component {
                                     height: '25px',
                                     marginRight: '10px',
                                 }}
+                                onClick={this.handleBack}
                             />
                             Back
                         </button>
@@ -139,9 +156,12 @@ class CreateReport extends React.Component {
                                     <option disabled hidden value={''}>
                                         Pilih Tipe Keluhan
                                     </option>
-                                    <option value="0">Kebersihan</option>
-                                    <option value="1">Kerusakan</option>
-                                    <option value="2">Kehilangan</option>
+                                    <option value="SANITATION">
+                                        Kebersihan
+                                    </option>
+                                    <option value="DEFECT">Kerusakan</option>
+                                    <option value="LOSS">Kehilangan</option>
+                                    <option value="SAFETY">Keamanan</option>
                                 </select>
                                 <br />
                                 <label
@@ -182,10 +202,12 @@ class CreateReport extends React.Component {
                                     Lokasi
                                     <p style={{ color: 'red' }}>*</p>
                                 </label>
-                                <select
-                                    className="form-select"
+                                <input
+                                    className="form-control"
+                                    type="text"
                                     id="place"
                                     name="place"
+                                    placeholder="Lokasi"
                                     value={this.state.value.place}
                                     onChange={(e) =>
                                         this.setState({
@@ -195,19 +217,7 @@ class CreateReport extends React.Component {
                                             },
                                         })
                                     }
-                                >
-                                    <option disabled hidden value={''}>
-                                        Pilih Lokasi
-                                    </option>
-                                    <option value="0">Kamar Mandi</option>
-                                    <option value="1">Ruang Kelas</option>
-                                    <option value="2">Ruang Rapat</option>
-                                    <option value="3">Ruang Khusus</option>
-                                    <option value="4">Ruang Umum</option>
-                                    <option value="5">Ruang Khusus</option>
-                                    <option value="6">Ruang Khusus</option>
-                                    <option value="7">Ruang Khusus</option>
-                                </select>
+                                />
                             </form>
                         </div>
                         <div className="item item__without__background">
@@ -325,6 +335,13 @@ class CreateReport extends React.Component {
                             <button
                                 className="btn btn-primary btn-insertfacility"
                                 onClick={this.handleSubmit}
+                                disabled={
+                                    this.state.value.title === '' ||
+                                    this.state.value.type === '' ||
+                                    this.state.value.description === '' ||
+                                    this.state.value.place === '' ||
+                                    this.state.value.files.length === 0
+                                }
                             >
                                 Tambahkan
                             </button>
@@ -336,4 +353,18 @@ class CreateReport extends React.Component {
     }
 }
 
-export default CreateReport;
+const mapStateToProps = (state) => {
+    return {
+        facilities: state.facility.facilities,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        postReportFunction: (data) => dispatch(postReport(data)),
+    };
+};
+
+export default withRouter(
+    connect(mapStateToProps, mapDispatchToProps)(CreateReport),
+);

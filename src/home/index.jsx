@@ -29,6 +29,7 @@ import MyReportDetail from '../myreport/detail';
 import ReportManagement from '../reportManagement';
 import BookingManagement from '../admin/bookingManagement';
 import BookingManagementDetail from '../admin/bookingManagement/detail';
+import CreateReport from '../myreport/createReport';
 
 class Home extends React.Component {
     constructor(props) {
@@ -211,6 +212,19 @@ class Home extends React.Component {
                                         <Topbar />
                                         <Navbar />
                                         <MyReportDetail />
+                                    </div>
+                                }
+                            />
+                        )}
+                        {this.state.user.role ===
+                            roleConstant.BASIC_USER.name && (
+                            <Route
+                                path="/report/new"
+                                element={
+                                    <div>
+                                        <Topbar />
+                                        <Navbar />
+                                        <CreateReport />
                                     </div>
                                 }
                             />

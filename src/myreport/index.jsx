@@ -56,6 +56,10 @@ class MyReport extends React.Component {
         this.props.navigate('/report/1');
     };
 
+    handleCreateNewReportClicked = () => {
+        this.props.navigate('/report/new');
+    };
+
     render() {
         return (
             <div className="container-myreport">
@@ -132,7 +136,10 @@ class MyReport extends React.Component {
                                 filtersubmitfunction={this.handleFilterOption}
                             />
                         </div>
-                        <button className="btn btn-primary btn-add">
+                        <button
+                            className="btn btn-primary btn-add"
+                            onClick={this.handleCreateNewReportClicked}
+                        >
                             + Keluhan Baru
                         </button>
                     </div>
