@@ -45,13 +45,13 @@ class bookingManagamentList extends React.Component {
         return this.state.bookingList.rows.map((booking) => {
             return (
                 <div
-                    className="my-booking-item"
+                    className="bookingList-item"
                     onClick={() =>
-                        this.props.handleMyBookingClicked(booking.id)
+                        this.props.handleBookingManagementClicked(booking.id)
                     }
                     key={booking.id}
                 >
-                    <div className="my-booking-item__header">
+                    <div className="bookingList-item__header">
                         <FacilityTypeLabel
                             type={facilityTypeConstant[booking.category]}
                         />
@@ -59,13 +59,13 @@ class bookingManagamentList extends React.Component {
                             status={bookingStatusConstant[booking.status]}
                         />
                     </div>
-                    <div className="my-booking-item__body">
+                    <div className="bookingList-item__body">
                         <h3 className="item-name">
                             {booking.facility ? booking.facility.name : '-'}
                         </h3>
                         <p>{booking.description}</p>
                     </div>
-                    <div className="my-booking-item__footer">
+                    <div className="bookingList-item__footer">
                         <div className="booking-date">
                             <FontAwesomeIcon
                                 icon={faCalendarAlt}

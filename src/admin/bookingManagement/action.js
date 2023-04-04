@@ -5,6 +5,9 @@ import {
     CLOSE_MODAL_FILTER,
     GET_BOOKING,
     SET_BOOKING,
+    SET_FACILITIES,
+    EDIT_BOOKING,
+    EDIT_BOOKING_SUCCESS,
 } from './actionTypes';
 
 export function getBookingList(query, page, limit, filters) {
@@ -41,13 +44,41 @@ export function closeModalFilter() {
 export function getBooking(id) {
     return {
         type: GET_BOOKING,
-        payload: id,
+        payload: {
+            id,
+        },
     };
 }
 
 export function setBooking(data) {
     return {
         type: SET_BOOKING,
+        payload: data,
+    };
+}
+
+export function setFacilities(data) {
+    return {
+        type: SET_FACILITIES,
+        payload: data,
+    };
+}
+
+export function editBooking(id, facility_id, cost, status) {
+    return {
+        type: EDIT_BOOKING,
+        payload: {
+            id,
+            facility_id,
+            cost,
+            status,
+        },
+    };
+}
+
+export function editBookingSuccess(data) {
+    return {
+        type: EDIT_BOOKING_SUCCESS,
         payload: data,
     };
 }

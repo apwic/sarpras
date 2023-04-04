@@ -1,4 +1,15 @@
+/* .container-bookingManagement-detail{
+    display: flex;
+    flex-direction: column;
+    padding-left: 7vh;
+    padding-right: 7vh;
+    padding-top: 3vh;
+    min-height: calc(100vh - 60px);
+    padding-bottom: 4vh;
+} */
+
 .container-bookingManagement-detail{
+    width: 80%;
     display: flex;
     flex-direction: column;
     padding-left: 7vh;
@@ -7,6 +18,43 @@
     min-height: calc(100vh - 60px);
     padding-bottom: 4vh;
 }
+
+.container-management-all{
+    display: flex;
+    flex-direction: row;
+}
+
+.editable-booking{
+    width: 20%;
+    border-left: 2px solid var(--color-text-secondary);
+}
+
+.header-editable-status{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+
+.header-editable-status p{
+    cursor: pointer;
+}
+.header-editable-status h2{
+    margin: 0;
+}
+
+.editable-booking__item{
+    margin-left: 1vh;
+    margin-right: 1vh;
+    width: calc(100% - 2vh);
+    height: 10%;
+    display: flex;
+    flex-direction: column;
+    padding-top: 1rem;
+    border-bottom:  2px solid var(--color-text-secondary);
+}
+
 
 .container-bookingManagement-detail__header{
     width: 100%;
@@ -80,7 +128,6 @@ h3.item-title{
 .item-detail td.item-detail__label{
     font-weight: bold;
 }
-
 .total-price{
     width: 100%;
     height: 100%;
@@ -92,6 +139,11 @@ h3.item-title{
 h3.total-price__label {
     font-size: 20px;
     font-weight: bold;
+}
+
+
+.item-detail__value{
+    padding-left: 30px;
 }
 
 h3.total-price__value {
@@ -272,3 +324,21 @@ h3.total-price__value {
     border-radius: var(--corner-radius);
     border: 1px solid var(--color-text-secondary);
 }
+
+.item-container-right{
+    min-height: fit-content;
+    height: fit-content;
+    width: calc(100% / 2 - 2rem);
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    gap: 1rem;
+}
+.item-container-description{
+    padding: 35px;
+    box-shadow: var(--shadow);
+    border-radius: var(--corner-radius-large);
+    background-color: var(--color-background-light);
+}
+

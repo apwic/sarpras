@@ -133,7 +133,7 @@ class BookingManagement extends React.Component {
         );
     };
 
-    handlebookingManagementClicked = (id) => {
+    handleBookingManagementClicked = (id) => {
         this.props.navigate(`/manage/booking/${id}`);
     };
 
@@ -242,8 +242,8 @@ class BookingManagement extends React.Component {
                     <div className="container-bookingManagement__body__items">
                         <BookingManagementList
                             bookingList={this.state.bookingList}
-                            handlebookingManagementClicked={
-                                this.handlebookingManagementClicked
+                            handleBookingManagementClicked={
+                                this.handleBookingManagementClicked
                             }
                         />
                     </div>

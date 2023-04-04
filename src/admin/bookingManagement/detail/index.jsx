@@ -1,7 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    faUser,
     faAngleLeft,
     faCheck,
     faPencil,
@@ -15,48 +14,24 @@ import { connect } from 'react-redux';
 import bookingStatusConstant from '../../../common/constants/bookingStatusConstant';
 import BookingStatusLabel from '../../../common/components/labels/bookingStatusLabel';
 import AlertModal from '../../../common/components/alertModal';
-import { getBooking } from '../action';
+import { getBooking, editBooking } from '../action';
 import facilityTypeConstant from '../../../common/constants/facilityTypeConstant';
+import LoadingScreen from '../../../common/components/loadingScreen';
 
 class BookingManagementDetail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            booking: {
-                attachment: [
-                    'https://storage.googleapis.com/sarpras/document/bo…g-48/cbb0fd0ba7d111b126f74526678f30d094c3cb5e.pdf',
-                ],
-                category: 'BUILDING',
-                cost: 1000,
-                createdAt: '2023-03-30T11:46:18.572Z',
-                description: 'Ngabuburit',
-                end_timestamp: '2023-04-05T13:00:00.000Z',
-                facility: {
-                    id: 74,
-                    name: 'Gedung Sate',
-                    description: 'Bukan gedung ITB',
-                },
-                facility_id: 74,
-                id: 48,
-                letter: null,
-                payment_id: null,
-                rekening_va: null,
-                start_timestamp: '2023-04-05T10:00:00.000Z',
-                status: 'PENDING',
-                updatedAt: '2023-03-30T11:46:18.915Z',
-                url: '23232323',
-                user_id: 1,
-                verifier_id: null,
-            },
+            booking: null,
             selectedEditStatus: 'Pending',
             loading: true,
             editStatusDropdown: false,
-            bookingStatus: bookingStatusConstant.PENDING,
+            bookingStatus: null,
             cost: 0,
             isOnEdit: false,
             showAlertModal: false,
             alertMessage: '',
-            gedung: ['Gedung Sate', 'Gedung Tinggi', 'Gedung Gudang'],
+            facilities: null,
             editFacilityDropdown: false,
             selectedGedung: 'Gedung Sate',
         };
@@ -64,17 +39,7 @@ class BookingManagementDetail extends React.Component {
 
     handleEditPhone = () => {
         const { isOnEdit } = this.state;
-        if (
-            isOnEdit &&
-            this.state.cost !== '' &&
-            this.state.cost !== undefined &&
-            this.state.cost !== null
-        ) {
-            this.setState({
-                showAlertModal: true,
-                alertMessage: 'Harga berhasil diubah!',
-            });
-        }
+        console.log(this.state.cost);
         document.getElementById('phone').disabled = isOnEdit;
         this.setState({ isOnEdit: !isOnEdit });
         document.getElementById('save-button').classList.toggle('hide');
@@ -82,20 +47,30 @@ class BookingManagementDetail extends React.Component {
     };
 
     componentDidMount() {
-        this.props.getBookingFunction(this.props.params.id.toString());
+        this.props.getBookingFunction(this.props.params.id);
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.bookingManagement !== this.props.bookingManagement) {
+        console.log(this.props);
+        if (prevProps.booking !== this.props.booking) {
             this.setState({
-                bookingManagement: this.props.bookingManagement,
+                booking: this.props.booking,
+                bookingStatus: bookingStatusConstant[this.props.booking.status],
+                cost: this.props.booking.cost,
+                selectedGedung: this.props.booking.facility,
+                facilities: this.props.facilities,
+                selectedEditStatus:
+                    bookingStatusConstant[this.props.booking.status],
+                loading: false,
             });
-            this.setState({ loading: false });
+        }
+        if (prevProps.facilities !== this.props.facilities) {
+            this.setState({ facilities: this.props.facilities });
         }
     }
 
     handleNavigateBack = () => {
-        this.props.navigate('/booking/my');
+        this.props.navigate('/manage/booking');
     };
 
     getDuration = (startDate, endDate) => {
@@ -116,14 +91,9 @@ class BookingManagementDetail extends React.Component {
         return duration.trim();
     };
 
-    handleEditStatusCLicked = (item) => {
+    handleEditStatusClicked = (item) => {
         this.setState({ selectedEditStatus: item });
-        if (item === 'Pending') {
-            this.setState({ bookingStatus: bookingStatusConstant.PENDING });
-        }
-        if (item === 'Approved') {
-            this.setState({ bookingStatus: bookingStatusConstant.APPROVED });
-        }
+        this.setState({ bookingStatus: bookingStatusConstant[item.name] });
     };
 
     handleEditFacilityClicked = (item) => {
@@ -147,12 +117,25 @@ class BookingManagementDetail extends React.Component {
         this.setState({ showAlertModal: false });
     };
 
+    handleSubmit = () => {
+        this.props.editBookingFunction(
+            this.props.params.id,
+            this.state.selectedGedung.id.toString(),
+            this.state.cost.toString(),
+            this.state.selectedEditStatus.name,
+        );
+        this.props.navigate('/manage/booking');
+    };
+
     render() {
         let editStatus = this.state.editStatusDropdown;
         let selectedStatus = this.state.selectedEditStatus;
         let cost = this.state.cost;
         let editFacilityDropdown = this.state.editFacilityDropdown;
         let selectedFacility = this.state.selectedGedung;
+        if (this.state.booking === null && this.state.facilities === null) {
+            return <LoadingScreen />;
+        }
         return (
             <div className="container-management-all">
                 <div className="container-bookingManagement-detail">
@@ -161,7 +144,10 @@ class BookingManagementDetail extends React.Component {
                             icon={faBookOpen}
                             className="icon-bookingManagement-detail"
                         />
-                        <h1>Manajemen Peminjaman / </h1>
+                        <h1>
+                            Manajemen Peminjaman /{' '}
+                            {this.state.booking.facility.name}
+                        </h1>
                     </div>
                     <div className="container-bookingManagement-detail__body">
                         <div className="container-bookingManagement-button-back">
@@ -230,7 +216,10 @@ class BookingManagementDetail extends React.Component {
                                                     Nama
                                                 </td>
                                                 <td className="item-detail__value">
-                                                    {/* {this.props.user.name} */}
+                                                    {
+                                                        this.state.booking.user
+                                                            .name
+                                                    }
                                                 </td>
                                             </tr>
                                             <tr>
@@ -299,8 +288,24 @@ class BookingManagementDetail extends React.Component {
                                                                 'underline',
                                                         }}
                                                     >
-                                                        {this.state.booking.url}
+                                                        Klik di sini
                                                     </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td className="item-detail__label">
+                                                    Status
+                                                </td>
+                                                <td className="item-detail__value">
+                                                    <BookingStatusLabel
+                                                        status={
+                                                            bookingStatusConstant[
+                                                                this.state
+                                                                    .booking
+                                                                    .status
+                                                            ]
+                                                        }
+                                                    />
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -311,15 +316,31 @@ class BookingManagementDetail extends React.Component {
                                         Total Biaya
                                     </h3>
                                     <h3 className="total-price__value">
-                                        Rp{this.state.booking.cost}
+                                        Rp{this.state.booking.total_price}
                                     </h3>
                                 </div>
                             </div>
-                            <div className="item-container">
-                                <h3 className="item-title">Deskripsi</h3>
-                                <div className="booking-description">
-                                    <p>{this.state.booking.description}</p>
+                            <div className="item-container-right">
+                                <div className="item-container-description">
+                                    <h3 className="item-title">Deskripsi</h3>
+                                    <div className="booking-description">
+                                        <p>{this.state.booking.description}</p>
+                                    </div>
                                 </div>
+                                <button
+                                    className="btn btn-primary btn-insertfacility"
+                                    onClick={this.handleSubmit}
+                                    disabled={
+                                        this.state.bookingStatus.name ===
+                                            this.state.booking.status &&
+                                        this.state.cost ===
+                                            this.state.booking.cost &&
+                                        this.state.selectedGedung.id ===
+                                            this.state.booking.facility.id
+                                    }
+                                >
+                                    Simpan Perubahan
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -338,7 +359,7 @@ class BookingManagementDetail extends React.Component {
                         <BookingStatusLabel status={this.state.bookingStatus} />
                     </div>
                     <div className="editable-booking__item">
-                        <h2>Harga</h2>
+                        <h2>Harga Tambahan</h2>
                         <div>
                             <input
                                 type="number"
@@ -346,7 +367,9 @@ class BookingManagementDetail extends React.Component {
                                 id="phone"
                                 value={cost}
                                 onChange={(e) => {
-                                    this.setState({ cost: e.target.value });
+                                    this.setState({
+                                        cost: parseInt(e.target.value),
+                                    });
                                 }}
                                 disabled
                             />
@@ -369,7 +392,7 @@ class BookingManagementDetail extends React.Component {
                             <h2>Fasilitas</h2>
                             <p onClick={this.editFacilityDropdown}>Edit</p>
                         </div>
-                        <p>{this.state.selectedGedung}</p>
+                        <p>{this.state.selectedGedung.name}</p>
                     </div>
                 </div>
                 <div
@@ -386,54 +409,36 @@ class BookingManagementDetail extends React.Component {
                         <h2>Edit Status</h2>
                     </div>
                     <ul>
-                        <li
-                            className={`${
-                                selectedStatus === 'Pending'
-                                    ? 'selected-status-management-booking'
-                                    : ''
-                            }`}
-                            onClick={() =>
-                                this.handleEditStatusCLicked('Pending')
-                            }
-                        >
-                            <div className="checked-logo">
-                                {selectedStatus === 'Pending' && (
-                                    <FontAwesomeIcon
-                                        icon={faCheck}
-                                        className="icon-back"
-                                        style={{
-                                            width: '20px',
-                                            height: '20px',
-                                        }}
-                                    />
-                                )}
-                            </div>
-                            <p>Pending</p>
-                        </li>
-                        <li
-                            className={`${
-                                selectedStatus === 'Approved'
-                                    ? 'selected-status-management-booking'
-                                    : ''
-                            }`}
-                            onClick={() =>
-                                this.handleEditStatusCLicked('Approved')
-                            }
-                        >
-                            <div className="checked-logo">
-                                {selectedStatus === 'Approved' && (
-                                    <FontAwesomeIcon
-                                        icon={faCheck}
-                                        className="icon-back"
-                                        style={{
-                                            width: '20px',
-                                            height: '20px',
-                                        }}
-                                    />
-                                )}
-                            </div>
-                            <p>Approved</p>
-                        </li>
+                        {Object.values(bookingStatusConstant).map(
+                            (item, index) => {
+                                return (
+                                    <li
+                                        key={index}
+                                        className={`${
+                                            selectedStatus.name === item.name
+                                                ? 'selected-status-management-booking'
+                                                : ''
+                                        }`}
+                                        onClick={() =>
+                                            this.handleEditStatusClicked(item)
+                                        }
+                                    >
+                                        <div className="checked-logo">
+                                            {selectedStatus.name ===
+                                                item.name && (
+                                                <FontAwesomeIcon
+                                                    icon={faCheck}
+                                                    className="icon-check"
+                                                />
+                                            )}
+                                        </div>
+                                        <div className="status-name">
+                                            {item.value}
+                                        </div>
+                                    </li>
+                                );
+                            },
+                        )}
                     </ul>
                 </div>
                 <div
@@ -450,12 +455,12 @@ class BookingManagementDetail extends React.Component {
                         <h2>Edit Fasilitas</h2>
                     </div>
                     <ul>
-                        {this.state.gedung.map((item, index) => {
+                        {this.state.facilities.map((item, id) => {
                             return (
                                 <li
-                                    key={index}
+                                    key={id}
                                     className={`${
-                                        selectedFacility === item
+                                        selectedFacility.id === item.id
                                             ? 'selected-status-management-booking'
                                             : ''
                                     }`}
@@ -464,7 +469,7 @@ class BookingManagementDetail extends React.Component {
                                     }
                                 >
                                     <div className="checked-logo">
-                                        {selectedFacility === item && (
+                                        {selectedFacility.id === item.id && (
                                             <FontAwesomeIcon
                                                 icon={faCheck}
                                                 className="icon-back"
@@ -475,7 +480,7 @@ class BookingManagementDetail extends React.Component {
                                             />
                                         )}
                                     </div>
-                                    <p>{item}</p>
+                                    <p>{item.name}</p>
                                 </li>
                             );
                         })}
@@ -542,12 +547,15 @@ class BookingManagementDetail extends React.Component {
 const mapStateToProps = (state) => {
     return {
         booking: state.bookingManagement.booking,
+        facilities: state.bookingManagement.facilities,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         getBookingFunction: (id) => dispatch(getBooking(id)),
+        editBookingFunction: (id, facilityId, cost, status) =>
+            dispatch(editBooking(id, facilityId, cost, status)),
     };
 };
 
