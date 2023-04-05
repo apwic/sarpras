@@ -10,6 +10,8 @@ import { withRouter } from '../../common/withRouter';
 import { postReport } from '../action';
 import './style.css';
 import { connect } from 'react-redux';
+import AlertModal from '../../common/components/alertModal';
+import LoadingScreen from '../../common/components/loadingScreen';
 
 class CreateReport extends React.Component {
     constructor(props) {
@@ -24,9 +26,23 @@ class CreateReport extends React.Component {
                 facilities: [],
             },
             files: [],
+            message: '',
             status_maintenance: '',
+            openAlertModal: false,
+            loading: false,
         };
         this.imageuploaderRef = React.createRef();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.message !== this.props.message) {
+            this.setState({
+                message: this.props.message,
+            });
+            this.setState({
+                openAlertModal: true,
+            });
+        }
     }
 
     handleBack = () => {
@@ -38,13 +54,12 @@ class CreateReport extends React.Component {
             category: this.state.value.type,
             description: this.state.value.description,
             image: this.state.value.files.map((file) => file.blob),
+            location: this.state.value.place,
         };
-        console.log(data);
         this.props.postReportFunction(data);
     };
 
     handleFileUpload = (e) => {
-        console.log(e.target.files);
         if (e.target.files.length + this.state.value.files.length > 10) {
             return;
         }
@@ -62,6 +77,14 @@ class CreateReport extends React.Component {
             },
         }));
     };
+
+    closeModalFunction = () => {
+        this.setState({
+            openAlertModal: false,
+        });
+        this.props.navigate('/report/my');
+    };
+
     handleDeleteFile = (index) => {
         this.setState((prevState) => ({
             value: {
@@ -72,6 +95,9 @@ class CreateReport extends React.Component {
     };
 
     render() {
+        if (this.state.loading) {
+            return <LoadingScreen />;
+        }
         return (
             <div className="container-createReport">
                 <div className="container-createReport__header">
@@ -348,6 +374,11 @@ class CreateReport extends React.Component {
                         </div>
                     </div>
                 </div>
+                <AlertModal
+                    show={this.state.openAlertModal}
+                    closeModalFunction={this.closeModalFunction}
+                    message={this.props.message}
+                />
             </div>
         );
     }
@@ -355,7 +386,7 @@ class CreateReport extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        facilities: state.facility.facilities,
+        message: state.myReport.messagePostReport,
     };
 };
 

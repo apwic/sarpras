@@ -2,6 +2,7 @@ import {
     OPEN_MODAL_FILTER,
     CLOSE_MODAL_FILTER,
     POST_REPORT,
+    POST_REPORT_SUCCESS,
 } from './actionTypes';
 
 export function openModalFilter() {
@@ -20,5 +21,12 @@ export function postReport(data) {
     return {
         type: POST_REPORT,
         payload: data,
+    };
+}
+
+export function postReportSuccess(message) {
+    return {
+        type: POST_REPORT_SUCCESS,
+        payload: message,
     };
 }
