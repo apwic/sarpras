@@ -1,9 +1,48 @@
 import {
+    GET_MYREPORTS,
+    SET_MYREPORTS,
+    GET_MYREPORT_CLICKED,
+    SET_MYREPORT_CLICKED,
+    SET_TOTAL_REPORTS,
     OPEN_MODAL_FILTER,
     CLOSE_MODAL_FILTER,
     POST_REPORT,
     POST_REPORT_SUCCESS,
 } from './actionTypes';
+
+export function getMyReports() {
+    return {
+        type: GET_MYREPORTS,
+    };
+}
+
+export function setMyReports(data) {
+    return {
+        type: SET_MYREPORTS,
+        payload: data,
+    };
+}
+
+export function getMyReportClicked(payload) {
+    return {
+        type: GET_MYREPORT_CLICKED,
+        payload: payload,
+    };
+}
+
+export function setMyReportClicked(data) {
+    return {
+        type: SET_MYREPORT_CLICKED,
+        payload: data,
+    };
+}
+
+export function setTotalReports(data) {
+    return {
+        type: SET_TOTAL_REPORTS,
+        payload: data,
+    };
+}
 
 export function openModalFilter() {
     return {

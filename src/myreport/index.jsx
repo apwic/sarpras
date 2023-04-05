@@ -5,18 +5,16 @@ import {
     faFilter,
     faFlag,
     faSearch,
-    faCalendarAlt,
-    faUserEdit,
     faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 import FilterModal from '../common/components/filterModal';
 import reportStatusConstant from '../common/constants/reportStatusConstant';
 import reportTypeConstant from '../common/constants/reportTypeConstant';
-import ReportStatusLabel from '../common/components/labels/reportStatusLabel';
-import ReportTypeLabel from '../common/components/labels/reportTypeLabel';
+import MyReportList from '../common/components/myReportList';
 import { withRouter } from '../common/withRouter';
-import { openModalFilter } from '../booking/action';
+import { openModalFilter, closeModalFilter, getMyReports } from './action';
 import { connect } from 'react-redux';
+import LoadingScreen from '../common/components/loadingScreen';
 
 class MyReport extends React.Component {
     constructor(props) {
@@ -52,8 +50,20 @@ class MyReport extends React.Component {
         };
     }
 
-    handleMyReportClicked = () => {
-        this.props.navigate('/report/1');
+    componentDidMount() {
+        this.props.getMyReportsFunction();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.myReports !== this.props.myReports) {
+            this.setState({
+                myReports: this.props.myReports,
+            });
+        }
+    }
+
+    handleMyReportClicked = (id) => {
+        this.props.navigate(`/report/${id}`);
     };
 
     handleCreateNewReportClicked = () => {
@@ -61,6 +71,9 @@ class MyReport extends React.Component {
     };
 
     render() {
+        if (this.state.myReports === null) {
+            return <LoadingScreen />;
+        }
         return (
             <div className="container-myreport">
                 <div className="container-myreport__header">
@@ -144,51 +157,10 @@ class MyReport extends React.Component {
                         </button>
                     </div>
                     <div className="container-myreport__body__items">
-                        <div
-                            className="my-report-item"
-                            onClick={this.handleMyReportClicked}
-                        >
-                            <div className="my-report-item__body">
-                                <div className="item-labels">
-                                    <ReportTypeLabel
-                                        type={reportTypeConstant.SANITATION}
-                                    />
-                                    <ReportStatusLabel
-                                        status={reportStatusConstant.PENDING}
-                                    />
-                                </div>
-                                <div className="item-details">
-                                    <h3 className="item-name">WC Bocor</h3>
-                                    <p>Lantai 4</p>
-                                </div>
-                                <div className="item-footer">
-                                    <div className="report-date">
-                                        <FontAwesomeIcon
-                                            icon={faCalendarAlt}
-                                            className="icon-report-date"
-                                        />
-                                        <label className="label-report-date">
-                                            dibuat 2 hari yang lalu oleh Saya
-                                        </label>
-                                    </div>
-                                    <div className="report-assignment">
-                                        <FontAwesomeIcon
-                                            icon={faUserEdit}
-                                            className="icon-report-assignment"
-                                        />
-                                        <label className="label-report-assignment">
-                                            ditugaskan kepada Djunaedi
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="my-report-item__image">
-                                <img
-                                    src="https://www.w3schools.com/howto/img_avatar.png"
-                                    alt="report image"
-                                />
-                            </div>
-                        </div>
+                        <MyReportList
+                            myReports={this.state.myReports}
+                            handleMyReportClicked={this.handleMyReportClicked}
+                        />
                     </div>
                 </div>
             </div>
@@ -198,13 +170,16 @@ class MyReport extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        modalFilter: state.myReport.modalFilter,
+        myReports: state.myReport.myReports,
+        filterModalOpen: state.myReport.filterModalOpen,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         openModalFunction: () => dispatch(openModalFilter()),
+        closeModalFunction: () => dispatch(closeModalFilter()),
+        getMyReportsFunction: () => dispatch(getMyReports()),
     };
 };
 
