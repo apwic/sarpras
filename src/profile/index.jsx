@@ -11,6 +11,7 @@ import './style.css';
 import { getUser } from '../common/auth/action';
 import { editProfile, openModal } from './action';
 import { getMyBookings } from '../mybooking/action';
+import { getMyReports } from '../myreport/action';
 import ProfilePictureCropperModal from '../common/components/imageModal';
 import AlertModal from '../common/components/alertModal';
 import LoadingScreen from '../common/components/loadingScreen';
@@ -46,6 +47,7 @@ class Profile extends React.Component {
             this.props.getUserFunction();
         }
         this.props.getTotalBookingsFunction();
+        this.props.getTotalReportsFunction();
     }
 
     componentDidUpdate(prevProps) {
@@ -61,6 +63,11 @@ class Profile extends React.Component {
         if (prevProps.totalBookings !== this.props.totalBookings) {
             this.setState({
                 totalBookings: this.props.totalBookings,
+            });
+        }
+        if (prevProps.totalReports !== this.props.totalReports) {
+            this.setState({
+                totalReports: this.props.totalReports,
             });
         }
     }
@@ -173,7 +180,9 @@ class Profile extends React.Component {
                             </div>
                             <div className="total-box">
                                 <div className="total-text">KELUHAN</div>
-                                <div className="total-number">0</div>
+                                <div className="total-number">
+                                    {this.state.totalReports}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -238,6 +247,7 @@ const mapStateToProps = (state) => {
     return {
         user: state.auth.user,
         totalBookings: state.myBooking.totalBookings,
+        totalReports: state.myReport.totalReports,
     };
 };
 
@@ -247,6 +257,7 @@ const mapDispatchToProps = (dispatch) => {
         openModalFunction: (imgUrl) => dispatch(openModal(imgUrl)),
         editProfileFunction: (user) => dispatch(editProfile(user)),
         getTotalBookingsFunction: () => dispatch(getMyBookings(1, 5, '', '')),
+        getTotalReportsFunction: () => dispatch(getMyReports()),
     };
 };
 
