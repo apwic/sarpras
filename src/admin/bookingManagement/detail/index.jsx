@@ -39,7 +39,6 @@ class BookingManagementDetail extends React.Component {
 
     handleEditPhone = () => {
         const { isOnEdit } = this.state;
-        console.log(this.state.cost);
         document.getElementById('phone').disabled = isOnEdit;
         this.setState({ isOnEdit: !isOnEdit });
         document.getElementById('save-button').classList.toggle('hide');
@@ -51,7 +50,6 @@ class BookingManagementDetail extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        console.log(this.props);
         if (prevProps.booking !== this.props.booking) {
             this.setState({
                 booking: this.props.booking,
