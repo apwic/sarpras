@@ -64,7 +64,10 @@ class ManageRoom extends React.Component {
         if (prevProps.facilities !== this.props.facilities) {
             this.setState({
                 facilities: this.props.facilities,
-                maxPage: Math.ceil(this.props.facilities.total_rows / 9),
+                maxPage:
+                    this.props.facilities.total_rows > 0
+                        ? Math.ceil(this.props.facilities.total_rows / 5)
+                        : 1,
             });
         }
         if (
@@ -148,6 +151,9 @@ class ManageRoom extends React.Component {
 
     renderPaginationNumbers = () => {
         let paginationNumbers = [];
+        if (this.state.maxPage <= 0) {
+            return <Pagination.Item active={true}>1</Pagination.Item>;
+        }
         for (let i = 1; i <= this.state.maxPage; i++) {
             paginationNumbers.push(i);
         }
