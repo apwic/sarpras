@@ -15,7 +15,7 @@ import { getMyReports } from '../myreport/action';
 import ProfilePictureCropperModal from '../common/components/imageModal';
 import AlertModal from '../common/components/alertModal';
 import LoadingScreen from '../common/components/loadingScreen';
-import { findRoleName } from '../common/constants/roleConstant';
+import roleConstant, { findRoleName } from '../common/constants/roleConstant';
 
 class Profile extends React.Component {
     constructor(props) {
@@ -172,20 +172,23 @@ class Profile extends React.Component {
                             <p>{findRoleName(role)}</p>
                             <p>{this.state.user.nim_nip}</p>
                         </div>
-                        <div className="total-container">
-                            <div className="total-box">
-                                <div className="total-text">PEMINJAMAN</div>
-                                <div className="total-number">
-                                    {this.state.totalBookings}
+                        {this.props.user.role ===
+                            roleConstant.BASIC_USER.name && (
+                            <div className="total-container">
+                                <div className="total-box">
+                                    <div className="total-text">PEMINJAMAN</div>
+                                    <div className="total-number">
+                                        {this.state.totalBookings}
+                                    </div>
+                                </div>
+                                <div className="total-box">
+                                    <div className="total-text">KELUHAN</div>
+                                    <div className="total-number">
+                                        {this.state.totalReports}
+                                    </div>
                                 </div>
                             </div>
-                            <div className="total-box">
-                                <div className="total-text">KELUHAN</div>
-                                <div className="total-number">
-                                    {this.state.totalReports}
-                                </div>
-                            </div>
-                        </div>
+                        )}
                     </div>
                     <div className="container-profile__body__content">
                         <table>
