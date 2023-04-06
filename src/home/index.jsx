@@ -27,6 +27,7 @@ import MyBookingDetail from '../mybooking/detail';
 import MyReport from '../myreport';
 import MyReportDetail from '../myreport/detail';
 import ReportManagement from '../reportManagement';
+import ReportManagementDetail from '../reportManagement/detail';
 import BookingManagement from '../admin/bookingManagement';
 import BookingManagementDetail from '../admin/bookingManagement/detail';
 import CreateReport from '../myreport/createReport';
@@ -342,6 +343,25 @@ class Home extends React.Component {
                                         <Topbar />
                                         <Navbar />
                                         <ReportManagement />
+                                    </div>
+                                }
+                            />
+                        )}
+                        {(this.state.user.role ===
+                            roleConstant.SANITATION_STAFF.name ||
+                            this.state.user.role ===
+                                roleConstant.DEFECT_STAFF.name ||
+                            this.state.user.role ===
+                                roleConstant.LOSS_STAFF.name ||
+                            this.state.user.role ===
+                                roleConstant.SAFETY_STAFF.name) && (
+                            <Route
+                                path="/manage/report/:id"
+                                element={
+                                    <div>
+                                        <Topbar />
+                                        <Navbar />
+                                        <ReportManagementDetail />
                                     </div>
                                 }
                             />

@@ -9,7 +9,7 @@ const initialState = {
     bookingList: [],
     booking: null,
     facilities: [],
-    successMessage: '',
+    responseMessage: '',
 };
 
 function bookingManagementReducer(state = initialState, action) {
@@ -21,7 +21,7 @@ function bookingManagementReducer(state = initialState, action) {
         case SET_FACILITIES:
             return { ...state, facilities: action.payload };
         case EDIT_BOOKING_SUCCESS:
-            return { ...state, successMessage: action.payload };
+            return { ...state, responseMessage: action.payload };
         default:
             return state;
     }

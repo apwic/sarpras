@@ -1,0 +1,132 @@
+.container-reportmanagement-all{
+    display: flex;
+    flex-direction: row;
+}
+
+.container-reportmanagement-detail{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    padding-left: 7vh;
+    padding-right: 3vh;
+    padding-top: 3vh;
+    min-height: calc(100vh - 60px);
+    padding-bottom: 4vh;
+}
+
+.container-reportmanagement-detail__header{
+    width: 100%;
+    height: 7vh;
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid var(--color-text-secondary);
+}
+
+.container-reportmanagement-detail__header .icon-reportmanagement{
+    width: 2.5vh;
+    height: 2.5vh;
+    margin-right: 1vh;
+}
+
+.container-reportmanagement-detail__body{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-top: 3vh;
+    row-gap: 1.5rem;
+}
+
+.container-reportmanagement-detail__body__item{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 24px 35px 24px 35px;
+    gap: 32px;
+    border-radius: var(--corner-radius-large);
+    background-color: var(--color-background-light);
+    box-shadow: var(--shadow);
+}
+
+.report-header{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.report-detail{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.report-labels{
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+}
+
+.report-picture{
+    width: 100%;
+}
+
+h3.report-title{
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.report-date-labels{
+    display: flex;
+    min-width: fit-content;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-start;
+    align-items: flex-end;
+}
+
+.assignee-report__item {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin: 0;
+}
+
+.editable-report{
+    margin: 25px 0;
+    width: 20%;
+    border-left: 1px solid var(--color-text-secondary);
+}
+
+.header-editable-status{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+
+.header-editable-status p{
+    cursor: pointer;
+}
+.header-editable-status h2{
+    margin: 0;
+}
+
+.editable-report__item{
+    margin-left: 1vh;
+    margin-right: 1vh;
+    width: calc(100% - 2vh);
+    height: auto;
+    padding-bottom: 5px;
+    display: flex;
+    flex-direction: column;
+    padding-top: 0.7rem;
+    border-bottom:  1px solid var(--color-text-secondary);
+}

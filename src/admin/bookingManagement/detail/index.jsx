@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faAngleLeft,
     faCheck,
-    faPencil,
     faSave,
     faClose,
     faBookOpen,
@@ -28,22 +27,31 @@ class BookingManagementDetail extends React.Component {
             editStatusDropdown: false,
             bookingStatus: null,
             cost: 0,
-            isOnEdit: false,
             showAlertModal: false,
             alertMessage: '',
             facilities: null,
             editFacilityDropdown: false,
             selectedGedung: 'Gedung Sate',
+            editCost: false,
         };
     }
 
     handleEditPhone = () => {
-        const { isOnEdit } = this.state;
-        console.log(this.state.cost);
-        document.getElementById('phone').disabled = isOnEdit;
-        this.setState({ isOnEdit: !isOnEdit });
+        if (
+            this.state.cost !== '' &&
+            this.state.cost !== null &&
+            this.state.cost !== undefined &&
+            this.state.cost !== this.state.booking.cost
+        ) {
+            let data = {
+                status: this.state.booking.status,
+                cost: this.state.cost,
+            };
+            this.setState({ loading: true, editCost: false });
+            this.props.editBookingFunction(this.props.params.id, data);
+        }
+        this.setState({ editCost: false });
         document.getElementById('save-button').classList.toggle('hide');
-        document.getElementById('edit-button').classList.toggle('hide');
     };
 
     componentDidMount() {
@@ -51,7 +59,6 @@ class BookingManagementDetail extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        console.log(this.props);
         if (prevProps.booking !== this.props.booking) {
             this.setState({
                 booking: this.props.booking,
@@ -66,6 +73,19 @@ class BookingManagementDetail extends React.Component {
         }
         if (prevProps.facilities !== this.props.facilities) {
             this.setState({ facilities: this.props.facilities });
+        }
+        if (prevProps.message !== this.props.message) {
+            if (this.props.message && this.props.message.message) {
+                this.setState({
+                    showAlertModal: true,
+                    alertMessage: 'Booking berhasil diubah!',
+                });
+            } else if (this.props.message && this.props.message.error_message) {
+                this.setState({
+                    showAlertModal: true,
+                    alertMessage: this.props.message.error_message,
+                });
+            }
         }
     }
 
@@ -92,12 +112,26 @@ class BookingManagementDetail extends React.Component {
     };
 
     handleEditStatusClicked = (item) => {
-        this.setState({ selectedEditStatus: item });
-        this.setState({ bookingStatus: bookingStatusConstant[item.name] });
+        this.setState({ editStatusDropdown: false });
+        const data = {
+            status: item.name,
+        };
+        if (item.name !== this.state.booking.status) {
+            this.setState({ loading: true });
+            this.props.editBookingFunction(this.props.params.id, data);
+        }
     };
 
     handleEditFacilityClicked = (item) => {
-        this.setState({ selectedGedung: item });
+        this.setState({ editFacilityDropdown: false });
+        const data = {
+            status: this.state.booking.status,
+            facility_id: item.id,
+        };
+        if (item.id !== this.state.booking.facility.id) {
+            this.setState({ loading: true });
+            this.props.editBookingFunction(this.props.params.id, data);
+        }
     };
 
     editStatusDropdown = () => {
@@ -117,6 +151,10 @@ class BookingManagementDetail extends React.Component {
         this.setState({ showAlertModal: false });
     };
 
+    handleEditCost = () => {
+        this.setState({ editCost: !this.state.editCost });
+    };
+
     handleSubmit = () => {
         this.props.editBookingFunction(
             this.props.params.id,
@@ -133,7 +171,10 @@ class BookingManagementDetail extends React.Component {
         let cost = this.state.cost;
         let editFacilityDropdown = this.state.editFacilityDropdown;
         let selectedFacility = this.state.selectedGedung;
-        if (this.state.booking === null && this.state.facilities === null) {
+        if (
+            (this.state.booking === null && this.state.facilities === null) ||
+            this.state.loading
+        ) {
             return <LoadingScreen />;
         }
         return (
@@ -327,20 +368,6 @@ class BookingManagementDetail extends React.Component {
                                         <p>{this.state.booking.description}</p>
                                     </div>
                                 </div>
-                                <button
-                                    className="btn btn-primary btn-insertfacility"
-                                    onClick={this.handleSubmit}
-                                    disabled={
-                                        this.state.bookingStatus.name ===
-                                            this.state.booking.status &&
-                                        this.state.cost ===
-                                            this.state.booking.cost &&
-                                        this.state.selectedGedung.id ===
-                                            this.state.booking.facility.id
-                                    }
-                                >
-                                    Simpan Perubahan
-                                </button>
                             </div>
                         </div>
                     </div>
@@ -359,9 +386,43 @@ class BookingManagementDetail extends React.Component {
                         <BookingStatusLabel status={this.state.bookingStatus} />
                     </div>
                     <div className="editable-booking__item">
-                        <h2>Harga Tambahan</h2>
+                        <div className="header-editable-status">
+                            <h2>Harga Tambahan</h2>
+                            <p
+                                className="clickable-edit"
+                                onClick={this.handleEditCost}
+                            >
+                                Edit
+                            </p>
+                        </div>
                         <div>
-                            <input
+                            {this.state.editCost ? (
+                                <>
+                                    <input
+                                        type="number"
+                                        name="phone"
+                                        id="phone"
+                                        value={cost}
+                                        onChange={(e) => {
+                                            this.setState({
+                                                cost: parseInt(e.target.value),
+                                            });
+                                        }}
+                                    />
+                                    {this.state.booking.cost !==
+                                    this.state.cost ? (
+                                        <FontAwesomeIcon
+                                            icon={faSave}
+                                            className="icon-save"
+                                            id="save-button"
+                                            onClick={this.handleEditPhone}
+                                        />
+                                    ) : null}
+                                </>
+                            ) : (
+                                <p>Rp{this.state.booking.cost}</p>
+                            )}
+                            {/* <input
                                 type="number"
                                 name="phone"
                                 id="phone"
@@ -384,7 +445,7 @@ class BookingManagementDetail extends React.Component {
                                 className="icon-save hide"
                                 id="save-button"
                                 onClick={this.handleEditPhone}
-                            />
+                            /> */}
                         </div>
                     </div>
                     <div className="editable-booking__item">
@@ -548,14 +609,14 @@ const mapStateToProps = (state) => {
     return {
         booking: state.bookingManagement.booking,
         facilities: state.bookingManagement.facilities,
+        message: state.bookingManagement.responseMessage,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         getBookingFunction: (id) => dispatch(getBooking(id)),
-        editBookingFunction: (id, facilityId, cost, status) =>
-            dispatch(editBooking(id, facilityId, cost, status)),
+        editBookingFunction: (id, data) => dispatch(editBooking(id, data)),
     };
 };
 

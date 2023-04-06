@@ -15,7 +15,7 @@ import { getMyReportsApi, getMyReportClickedApi, postReportApi } from './api';
 function* postReport(action) {
     try {
         const response = yield call(postReportApi, action.payload);
-        yield put(postReportSuccess(response.message));
+        yield put(postReportSuccess(response));
     } catch (error) {
         console.log(error);
     }

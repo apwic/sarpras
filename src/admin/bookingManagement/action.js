@@ -64,14 +64,12 @@ export function setFacilities(data) {
     };
 }
 
-export function editBooking(id, facility_id, cost, status) {
+export function editBooking(id, data) {
     return {
         type: EDIT_BOOKING,
         payload: {
             id,
-            facility_id,
-            cost,
-            status,
+            data,
         },
     };
 }

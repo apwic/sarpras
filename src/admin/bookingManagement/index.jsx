@@ -129,7 +129,7 @@ class BookingManagement extends React.Component {
             event.target.value,
             this.state.currentPage,
             5,
-            this.state.filters,
+            this.convertToFilterString(this.state.appliedFilters),
         );
     };
 
