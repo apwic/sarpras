@@ -72,6 +72,12 @@ button.back-btn {
     position: relative;
 }
 
+.video__circle{
+    width: 20px;
+    height: 20px;
+    margin: 5px 10px;
+}
+
 .container-createReport .item__without__background {
     padding: 0;
     background-color: transparent;

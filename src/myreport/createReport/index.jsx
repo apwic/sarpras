@@ -4,6 +4,7 @@ import {
     faAngleLeft,
     faPhotoVideo,
     faTrashAlt,
+    faPlayCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { withRouter } from '../../common/withRouter';
@@ -269,10 +270,11 @@ class CreateReport extends React.Component {
                                     className="form-picture-title"
                                     htmlFor="insertPicture"
                                 >
-                                    Tambahkan Foto
+                                    Tambahkan Foto / Video
                                 </h3>
                                 <label style={{ paddingBottom: '2px' }}>
-                                    Anda bisa menambahkan sampai 10 foto.
+                                    Anda bisa menambahkan sampai 10 foto /
+                                    video.
                                 </label>
                                 <div className="form-picture-info">
                                     <button
@@ -282,12 +284,12 @@ class CreateReport extends React.Component {
                                             this.imageuploaderRef.current.click();
                                         }}
                                     >
-                                        Tambahkan Gambar
+                                        Tambahkan Gambar / Video
                                     </button>
                                     <input
                                         className="input-file"
                                         type="file"
-                                        accept="image/*"
+                                        accept="image/*,video/*"
                                         id="photo-facility-files"
                                         onChange={this.handleFileUpload}
                                         ref={this.imageuploaderRef}
@@ -332,11 +334,20 @@ class CreateReport extends React.Component {
                                                     );
                                                 }}
                                             >
-                                                <img
-                                                    className="picture__thumbnail"
-                                                    src={file.url}
-                                                    alt="image"
-                                                />
+                                                {file.blob.type.startsWith(
+                                                    'video',
+                                                ) ? (
+                                                    <FontAwesomeIcon
+                                                        icon={faPlayCircle}
+                                                        className="video__circle"
+                                                    />
+                                                ) : (
+                                                    <img
+                                                        className="picture__thumbnail"
+                                                        src={file.url}
+                                                        alt="image"
+                                                    />
+                                                )}
                                                 <p>
                                                     {file.blob.name
                                                         ? file.blob.name
