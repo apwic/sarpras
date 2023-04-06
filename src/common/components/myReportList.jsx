@@ -87,7 +87,7 @@ class MyReportList extends React.Component {
                                     oleh Saya
                                 </label>
                             </div>
-                            {myReport.user_assigned && (
+                            {myReport.user_assigned_name && (
                                 <div className="report-assignment">
                                     <FontAwesomeIcon
                                         icon={faUserEdit}
@@ -95,7 +95,7 @@ class MyReportList extends React.Component {
                                     />
                                     <label className="label-report-assignment">
                                         ditugaskan kepada{' '}
-                                        {myReport.user_assigned.name}
+                                        {myReport.user_assigned_name}
                                     </label>
                                 </div>
                             )}
