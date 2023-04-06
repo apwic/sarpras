@@ -30,12 +30,19 @@ class MyBookingList extends React.Component {
         }
     }
 
-    daysDiff = (date) => {
+    getCreatedDateDiff = (date) => {
         const today = new Date();
         const bookingDate = new Date(date);
         const diffTime = today - bookingDate;
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        return diffDays;
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        if (diffDays === 0) {
+            const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
+            if (diffHours === 0) {
+                return 'baru dibuat';
+            }
+            return 'dibuat ' + diffHours + ' jam yang lalu';
+        }
+        return 'dibuat ' + diffDays + ' hari yang lalu';
     };
 
     render() {
@@ -72,8 +79,8 @@ class MyBookingList extends React.Component {
                                 className="icon-booking-date"
                             />
                             <label className="label-booking-date">
-                                dibuat {this.daysDiff(myBooking.createdAt)} hari
-                                yang lalu oleh Saya
+                                {this.getCreatedDateDiff(myBooking.createdAt)}{' '}
+                                oleh Saya
                             </label>
                         </div>
                         <div className="booking-time">

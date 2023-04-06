@@ -30,12 +30,19 @@ class MyReportList extends React.Component {
         }
     }
 
-    daysDiff = (date) => {
+    getCreatedDateDiff = (date) => {
         const today = new Date();
         const bookingDate = new Date(date);
         const diffTime = today - bookingDate;
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        return diffDays;
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
+        if (diffDays === 0) {
+            if (diffHours === 0) {
+                return 'baru dibuat';
+            }
+            return 'dibuat' + diffHours + ' jam yang lalu';
+        }
+        return 'dibuat' + diffDays + ' hari yang lalu';
     };
 
     render() {
@@ -74,8 +81,8 @@ class MyReportList extends React.Component {
                                     className="icon-report-date"
                                 />
                                 <label className="label-report-date">
-                                    dibuat {this.daysDiff(myReport.createdAt)}{' '}
-                                    hari yang lalu oleh Saya
+                                    {this.daysDiff(myReport.createdAt)} oleh
+                                    Saya
                                 </label>
                             </div>
                             {myReport.user_assigned && (
