@@ -81,8 +81,10 @@ class MyReportList extends React.Component {
                                     className="icon-report-date"
                                 />
                                 <label className="label-report-date">
-                                    {this.daysDiff(myReport.createdAt)} oleh
-                                    Saya
+                                    {this.getCreatedDateDiff(
+                                        myReport.createdAt,
+                                    )}{' '}
+                                    oleh Saya
                                 </label>
                             </div>
                             {myReport.user_assigned && (
