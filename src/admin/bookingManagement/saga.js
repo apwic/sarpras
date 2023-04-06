@@ -1,6 +1,12 @@
 import { call, takeLatest, put } from '@redux-saga/core/effects';
 import { GET_BOOKING_LIST, GET_BOOKING, EDIT_BOOKING } from './actionTypes';
-import { setBookingList, setBooking, setFacilities } from './action';
+import {
+    setBookingList,
+    setBooking,
+    setFacilities,
+    getBooking,
+    editBookingSuccess,
+} from './action';
 import { getBookingListApi, getBookingApi, editBookingApi } from './api';
 import { getFacilitiesApi } from '../../booking/api';
 
@@ -36,7 +42,8 @@ function* getBookingSaga(action) {
 function* editBookingSaga(action) {
     try {
         const response = yield call(editBookingApi, action.payload);
-        yield put(setBooking(response.message));
+        yield put(editBookingSuccess(response));
+        yield put(getBooking(action.payload.id));
     } catch (error) {
         console.log(error);
     }
