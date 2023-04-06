@@ -39,6 +39,7 @@ class Profile extends React.Component {
                   },
             no_telp: this.props.user ? this.props.user.no_telp : '',
             totalBookings: this.props.totalBookings,
+            totalReports: this.props.totalReports,
         };
     }
 
@@ -257,7 +258,7 @@ const mapDispatchToProps = (dispatch) => {
         openModalFunction: (imgUrl) => dispatch(openModal(imgUrl)),
         editProfileFunction: (user) => dispatch(editProfile(user)),
         getTotalBookingsFunction: () => dispatch(getMyBookings(1, 5, '', '')),
-        getTotalReportsFunction: () => dispatch(getMyReports()),
+        getTotalReportsFunction: () => dispatch(getMyReports(1, 5, '', '')),
     };
 };
 
