@@ -12,6 +12,7 @@ import './style.css';
 import { connect } from 'react-redux';
 import AlertModal from '../../common/components/alertModal';
 import LoadingScreen from '../../common/components/loadingScreen';
+import LoadingOverlay from '../../common/components/loadingOverlay';
 
 class CreateReport extends React.Component {
     constructor(props) {
@@ -36,12 +37,23 @@ class CreateReport extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (prevProps.message !== this.props.message) {
-            this.setState({
-                message: this.props.message,
-            });
-            this.setState({
-                openAlertModal: true,
-            });
+            document.querySelector('.loading-overlay').classList.remove('show');
+            if (this.props.message && this.props.message.message) {
+                this.setState({
+                    openAlertModal: true,
+                    message: this.props.message.message,
+                });
+                clearInterval(this.intervalId);
+                this.intervalId = setInterval(() => {
+                    this.handleBack();
+                    clearInterval(this.intervalId);
+                }, 1000);
+            } else if (this.props.message && this.props.message.error_message) {
+                this.setState({
+                    openAlertModal: true,
+                    message: this.props.message.error_message,
+                });
+            }
         }
     }
 
@@ -57,6 +69,7 @@ class CreateReport extends React.Component {
             location: this.state.value.place,
         };
         this.props.postReportFunction(data);
+        document.querySelector('.loading-overlay').classList.add('show');
     };
 
     handleFileUpload = (e) => {
@@ -100,6 +113,7 @@ class CreateReport extends React.Component {
         }
         return (
             <div className="container-createReport">
+                <LoadingOverlay />
                 <div className="container-createReport__header">
                     <FontAwesomeIcon
                         icon={faFlag}
@@ -377,7 +391,7 @@ class CreateReport extends React.Component {
                 <AlertModal
                     show={this.state.openAlertModal}
                     closeModalFunction={this.closeModalFunction}
-                    message={this.props.message}
+                    message={this.state.message}
                 />
             </div>
         );
