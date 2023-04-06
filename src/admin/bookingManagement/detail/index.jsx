@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faAngleLeft,
     faCheck,
-    faPencil,
     faSave,
     faClose,
     faBookOpen,
@@ -28,7 +27,6 @@ class BookingManagementDetail extends React.Component {
             editStatusDropdown: false,
             bookingStatus: null,
             cost: 0,
-            isOnEdit: false,
             showAlertModal: false,
             alertMessage: '',
             facilities: null,
@@ -39,9 +37,7 @@ class BookingManagementDetail extends React.Component {
     }
 
     handleEditPhone = () => {
-        const { isOnEdit } = this.state;
         if (
-            isOnEdit &&
             this.state.cost !== '' &&
             this.state.cost !== null &&
             this.state.cost !== undefined &&
@@ -54,13 +50,8 @@ class BookingManagementDetail extends React.Component {
             this.setState({ loading: true, editCost: false });
             this.props.editBookingFunction(this.props.params.id, data);
         }
-        if (isOnEdit) {
-            this.setState({ editCost: false });
-        }
-        document.getElementById('phone').disabled = isOnEdit;
-        this.setState({ isOnEdit: !isOnEdit });
+        this.setState({ editCost: false });
         document.getElementById('save-button').classList.toggle('hide');
-        document.getElementById('edit-button').classList.toggle('hide');
     };
 
     componentDidMount() {
@@ -417,20 +408,16 @@ class BookingManagementDetail extends React.Component {
                                                 cost: parseInt(e.target.value),
                                             });
                                         }}
-                                        disabled
                                     />
-                                    <FontAwesomeIcon
-                                        icon={faPencil}
-                                        className="icon-pencil"
-                                        id="edit-button"
-                                        onClick={this.handleEditPhone}
-                                    />
-                                    <FontAwesomeIcon
-                                        icon={faSave}
-                                        className="icon-save hide"
-                                        id="save-button"
-                                        onClick={this.handleEditPhone}
-                                    />
+                                    {this.state.booking.cost !==
+                                    this.state.cost ? (
+                                        <FontAwesomeIcon
+                                            icon={faSave}
+                                            className="icon-save"
+                                            id="save-button"
+                                            onClick={this.handleEditPhone}
+                                        />
+                                    ) : null}
                                 </>
                             ) : (
                                 <p>Rp{this.state.booking.cost}</p>
