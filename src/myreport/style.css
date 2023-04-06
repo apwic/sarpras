@@ -97,13 +97,22 @@ h3.item-name{
     margin: 0;
 }
 
+h4.item-location{
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0;
+}
+
 .item-footer{
     width: 100%;
     height: auto;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     margin-top: auto;
-    gap: 32px;
+    column-gap: 32px;
+    row-gap: 16px;
+    white-space: nowrap;
 }
 
 .report-date{

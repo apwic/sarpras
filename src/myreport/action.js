@@ -10,9 +10,15 @@ import {
     POST_REPORT_SUCCESS,
 } from './actionTypes';
 
-export function getMyReports() {
+export function getMyReports(page, limit, query, filters) {
     return {
         type: GET_MYREPORTS,
+        payload: {
+            page,
+            limit,
+            query,
+            filters,
+        },
     };
 }
 

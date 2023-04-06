@@ -21,11 +21,11 @@ function* postReport(action) {
     }
 }
 
-function* getMyReports() {
+function* getMyReports(action) {
     try {
-        const response = yield call(getMyReportsApi);
+        const response = yield call(getMyReportsApi, action.payload);
         yield put(setMyReports(response.data));
-        yield put(setTotalReports(response.data.length));
+        yield put(setTotalReports(response.data.total_rows));
     } catch (error) {
         console.log(error);
     }

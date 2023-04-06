@@ -42,7 +42,7 @@ class MyReportList extends React.Component {
         if (this.state.myReports.length === 0) {
             return <EmptyScreen />;
         }
-        return this.state.myReports.map((myReport) => {
+        return this.state.myReports.rows.map((myReport) => {
             return (
                 <div
                     className="my-report-item"
@@ -62,6 +62,9 @@ class MyReportList extends React.Component {
                         </div>
                         <div className="item-details">
                             <h3 className="item-name">{myReport.title}</h3>
+                            <h4 className="item-location">
+                                {myReport.location}
+                            </h4>
                             <p>{myReport.description}</p>
                         </div>
                         <div className="item-footer">
@@ -75,15 +78,18 @@ class MyReportList extends React.Component {
                                     hari yang lalu oleh Saya
                                 </label>
                             </div>
-                            <div className="report-assignment">
-                                <FontAwesomeIcon
-                                    icon={faUserEdit}
-                                    className="icon-report-assignment"
-                                />
-                                <label className="label-report-assignment">
-                                    ditugaskan kepada Djunaedi
-                                </label>
-                            </div>
+                            {myReport.user_assigned && (
+                                <div className="report-assignment">
+                                    <FontAwesomeIcon
+                                        icon={faUserEdit}
+                                        className="icon-report-assignment"
+                                    />
+                                    <label className="label-report-assignment">
+                                        ditugaskan kepada{' '}
+                                        {myReport.user_assigned.name}
+                                    </label>
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div className="my-report-item__image">

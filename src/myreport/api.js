@@ -10,9 +10,19 @@ export const postReportApi = async (data) => {
         });
 };
 
-export const getMyReportsApi = () => {
+export const getMyReportsApi = (payload) => {
     return wretchInstance()
-        .url(import.meta.env.VITE_REST_API_URL + '/issue/my')
+        .url(
+            import.meta.env.VITE_REST_API_URL +
+                '/issue/my' +
+                '?q=' +
+                payload.query +
+                '&page=' +
+                payload.page +
+                '&limit=' +
+                payload.limit +
+                (payload.filters !== '' ? '&' + payload.filters : ''),
+        )
         .headers({
             'Content-Type': 'application/json',
         })
