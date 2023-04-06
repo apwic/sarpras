@@ -9,6 +9,7 @@ import myBookingReducer from '../mybooking/reducer';
 import bookingManagementReducer from '../admin/bookingManagement/reducer';
 import myReportReducer from '../myreport/reducer';
 import rootSaga from './saga';
+import reportManagementReducer from '../reportManagement/reducer';
 
 const rootReducer = combineReducers({
     dashboard: dashboardReducer,
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
     myBooking: myBookingReducer,
     bookingManagement: bookingManagementReducer,
     myReport: myReportReducer,
+    reportManagement: reportManagementReducer,
 });
 
 const sagaMiddleware = createSagaMiddleware();
