@@ -6,6 +6,7 @@ import {
     faSave,
     faClose,
     faBookOpen,
+    faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 import './style.css';
 import { withRouter } from '../../../common/withRouter';
@@ -383,17 +384,74 @@ class BookingManagementDetail extends React.Component {
                                 Edit
                             </p>
                         </div>
+                        <div
+                            className={`edit-dropdown ${
+                                !editStatus ? 'hide' : ''
+                            }`}
+                        >
+                            <div className="modal-edit-header">
+                                <FontAwesomeIcon
+                                    icon={faClose}
+                                    className="icon-close"
+                                    onClick={this.editStatusDropdown}
+                                />
+                                <h2>Edit Status</h2>
+                            </div>
+                            <ul>
+                                {Object.values(bookingStatusConstant).map(
+                                    (item, index) => {
+                                        return (
+                                            <li
+                                                key={index}
+                                                className={`${
+                                                    selectedStatus.name ===
+                                                    item.name
+                                                        ? 'selected-management-booking'
+                                                        : ''
+                                                }`}
+                                                onClick={() =>
+                                                    this.handleEditStatusClicked(
+                                                        item,
+                                                    )
+                                                }
+                                            >
+                                                <div className="checked-logo">
+                                                    {selectedStatus.name ===
+                                                        item.name && (
+                                                        <FontAwesomeIcon
+                                                            icon={faCheck}
+                                                            className="icon-check"
+                                                        />
+                                                    )}
+                                                </div>
+                                                <div className="status-name">
+                                                    {item.value}
+                                                </div>
+                                            </li>
+                                        );
+                                    },
+                                )}
+                            </ul>
+                        </div>
                         <BookingStatusLabel status={this.state.bookingStatus} />
                     </div>
                     <div className="editable-booking__item">
                         <div className="header-editable-status">
                             <h2>Harga Tambahan</h2>
-                            <p
-                                className="clickable-edit"
-                                onClick={this.handleEditCost}
-                            >
-                                Edit
-                            </p>
+                            {this.state.editCost ? (
+                                <FontAwesomeIcon
+                                    icon={faTimes}
+                                    className="clickable-edit"
+                                    onClick={this.handleEditCost}
+                                />
+                            ) : (
+                                <p
+                                    className="clickable-edit"
+                                    onClick={this.handleEditCost}
+                                >
+                                    Edit
+                                </p>
+                            )}
                         </div>
                         <div>
                             {this.state.editCost ? (
@@ -422,30 +480,6 @@ class BookingManagementDetail extends React.Component {
                             ) : (
                                 <p>Rp{this.state.booking.cost}</p>
                             )}
-                            {/* <input
-                                type="number"
-                                name="phone"
-                                id="phone"
-                                value={cost}
-                                onChange={(e) => {
-                                    this.setState({
-                                        cost: parseInt(e.target.value),
-                                    });
-                                }}
-                                disabled
-                            />
-                            <FontAwesomeIcon
-                                icon={faPencil}
-                                className="icon-pencil"
-                                id="edit-button"
-                                onClick={this.handleEditPhone}
-                            />
-                            <FontAwesomeIcon
-                                icon={faSave}
-                                className="icon-save hide"
-                                id="save-button"
-                                onClick={this.handleEditPhone}
-                            /> */}
                         </div>
                     </div>
                     <div className="editable-booking__item">
@@ -453,102 +487,56 @@ class BookingManagementDetail extends React.Component {
                             <h2>Fasilitas</h2>
                             <p onClick={this.editFacilityDropdown}>Edit</p>
                         </div>
-                        <p>{this.state.selectedGedung.name}</p>
-                    </div>
-                </div>
-                <div
-                    className={`edit-status-dropdown ${
-                        !editStatus ? 'hide' : ''
-                    }`}
-                >
-                    <div className="modal-edit-status-header">
-                        <FontAwesomeIcon
-                            icon={faClose}
-                            className="icon-close"
-                            onClick={this.editStatusDropdown}
-                        />
-                        <h2>Edit Status</h2>
-                    </div>
-                    <ul>
-                        {Object.values(bookingStatusConstant).map(
-                            (item, index) => {
-                                return (
-                                    <li
-                                        key={index}
-                                        className={`${
-                                            selectedStatus.name === item.name
-                                                ? 'selected-status-management-booking'
-                                                : ''
-                                        }`}
-                                        onClick={() =>
-                                            this.handleEditStatusClicked(item)
-                                        }
-                                    >
-                                        <div className="checked-logo">
-                                            {selectedStatus.name ===
-                                                item.name && (
-                                                <FontAwesomeIcon
-                                                    icon={faCheck}
-                                                    className="icon-check"
-                                                />
-                                            )}
-                                        </div>
-                                        <div className="status-name">
-                                            {item.value}
-                                        </div>
-                                    </li>
-                                );
-                            },
-                        )}
-                    </ul>
-                </div>
-                <div
-                    className={`edit-facility-dropdown ${
-                        !editFacilityDropdown ? 'hide' : ''
-                    }`}
-                >
-                    <div className="modal-edit-status-header">
-                        <FontAwesomeIcon
-                            icon={faClose}
-                            className="icon-close"
-                            onClick={this.editFacilityDropdown}
-                        />
-                        <h2>Edit Fasilitas</h2>
-                    </div>
-                    <ul>
-                        {this.state.facilities.map((item, id) => {
-                            return (
-                                <li
-                                    key={id}
-                                    className={`${
-                                        selectedFacility.id === item.id
-                                            ? 'selected-status-management-booking'
-                                            : ''
-                                    }`}
-                                    onClick={() =>
-                                        this.handleEditFacilityClicked(item)
-                                    }
-                                >
-                                    <div className="checked-logo">
-                                        {selectedFacility.id === item.id && (
-                                            <FontAwesomeIcon
-                                                icon={faCheck}
-                                                className="icon-back"
-                                                style={{
-                                                    width: '20px',
-                                                    height: '20px',
-                                                }}
-                                            />
-                                        )}
-                                    </div>
-                                    <p>{item.name}</p>
-                                </li>
-                            );
-                        })}
-                        {/* <li
+                        <div
+                            className={`edit-dropdown ${
+                                !editFacilityDropdown ? 'hide' : ''
+                            }`}
+                        >
+                            <div className="modal-edit-header">
+                                <FontAwesomeIcon
+                                    icon={faClose}
+                                    className="icon-close"
+                                    onClick={this.editFacilityDropdown}
+                                />
+                                <h2>Edit Fasilitas</h2>
+                            </div>
+                            <ul>
+                                {this.state.facilities.map((item, id) => {
+                                    return (
+                                        <li
+                                            key={id}
+                                            className={`${
+                                                selectedFacility.id === item.id
+                                                    ? 'selected-management-booking'
+                                                    : ''
+                                            }`}
+                                            onClick={() =>
+                                                this.handleEditFacilityClicked(
+                                                    item,
+                                                )
+                                            }
+                                        >
+                                            <div className="checked-logo">
+                                                {selectedFacility.id ===
+                                                    item.id && (
+                                                    <FontAwesomeIcon
+                                                        icon={faCheck}
+                                                        className="icon-back"
+                                                        style={{
+                                                            width: '20px',
+                                                            height: '20px',
+                                                        }}
+                                                    />
+                                                )}
+                                            </div>
+                                            <p>{item.name}</p>
+                                        </li>
+                                    );
+                                })}
+                                {/* <li
                             className={`${
                                 selectedStatus === 'Pending'
-                                    ? 'selected-status-management-booking'
+                                    ? 'selected-management-booking'
                                     : ''
                             }`}
                             onClick={() =>
@@ -572,7 +560,7 @@ class BookingManagementDetail extends React.Component {
                         <li
                             className={`${
                                 selectedStatus === 'Approved'
-                                    ? 'selected-status-management-booking'
+                                    ? 'selected-management-booking'
                                     : ''
                             }`}
                             onClick={() =>
@@ -593,7 +581,10 @@ class BookingManagementDetail extends React.Component {
                             </div>
                             <p>Approved</p>
                         </li> */}
-                    </ul>
+                            </ul>
+                        </div>
+                        <p>{this.state.selectedGedung.name}</p>
+                    </div>
                 </div>
                 <AlertModal
                     show={this.state.showAlertModal}

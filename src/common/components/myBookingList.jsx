@@ -7,6 +7,7 @@ import facilityTypeConstant from '../constants/facilityTypeConstant';
 import FacilityTypeLabel from './labels/facilityTypeLabel';
 import EmptyScreen from './emptyScreen';
 import BookingStatusLabel from './labels/bookingStatusLabel';
+import { getCreatedDateDiff } from '../tools';
 
 class MyBookingList extends React.Component {
     constructor(props) {
@@ -29,21 +30,6 @@ class MyBookingList extends React.Component {
             });
         }
     }
-
-    getCreatedDateDiff = (date) => {
-        const today = new Date();
-        const bookingDate = new Date(date);
-        const diffTime = today - bookingDate;
-        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-        if (diffDays === 0) {
-            const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
-            if (diffHours === 0) {
-                return 'baru dibuat';
-            }
-            return 'dibuat ' + diffHours + ' jam yang lalu';
-        }
-        return 'dibuat ' + diffDays + ' hari yang lalu';
-    };
 
     render() {
         if (this.state.myBookings.length === 0) {
@@ -79,8 +65,8 @@ class MyBookingList extends React.Component {
                                 className="icon-booking-date"
                             />
                             <label className="label-booking-date">
-                                {this.getCreatedDateDiff(myBooking.createdAt)}{' '}
-                                oleh Saya
+                                {getCreatedDateDiff(myBooking.createdAt)} oleh
+                                Saya
                             </label>
                         </div>
                         <div className="booking-time">

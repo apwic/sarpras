@@ -7,6 +7,7 @@ import facilityTypeConstant from '../constants/facilityTypeConstant';
 import FacilityTypeLabel from './labels/facilityTypeLabel';
 import EmptyScreen from './emptyScreen';
 import BookingStatusLabel from './labels/bookingStatusLabel';
+import { getCreatedDateDiff } from '../tools';
 
 class bookingManagamentList extends React.Component {
     constructor(props) {
@@ -72,9 +73,8 @@ class bookingManagamentList extends React.Component {
                                 className="icon-booking-date"
                             />
                             <label className="label-booking-date">
-                                dibuat{' '}
-                                {this.daysDiff(booking.createdAt.slice(0, 10))}{' '}
-                                hari yang lalu oleh {booking.user.name}
+                                {getCreatedDateDiff(booking.createdAt)} oleh{' '}
+                                {booking.user.name}
                             </label>
                         </div>
                         <div className="booking-time">

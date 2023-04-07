@@ -33,3 +33,20 @@ export const getReportsApi = (payload) => {
             return response;
         });
 };
+
+export const editReportApi = (payload) => {
+    return wretchInstance()
+        .url(
+            import.meta.env.VITE_REST_API_URL +
+                '/issue/' +
+                payload.id +
+                '/staff',
+        )
+        .headers({
+            'Content-Type': 'application/json',
+        })
+        .put(payload.data)
+        .json((response) => {
+            return response;
+        });
+};

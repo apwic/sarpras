@@ -16,6 +16,7 @@ import ReportTypeLabel from '../../common/components/labels/reportTypeLabel';
 import { getMyReportClicked } from '../action';
 import { connect } from 'react-redux';
 import LoadingScreen from '../../common/components/loadingScreen';
+import { getCreatedDateDiff } from '../../common/tools';
 
 class MyReportDetail extends React.Component {
     constructor(props) {
@@ -41,21 +42,6 @@ class MyReportDetail extends React.Component {
 
     handleNavigateBack = () => {
         this.props.navigate('/report/my');
-    };
-
-    getCreatedDateDiff = (date) => {
-        const today = new Date();
-        const reportDate = new Date(date);
-        const diffTime = today - reportDate;
-        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-        if (diffDays === 0) {
-            const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
-            if (diffHours === 0) {
-                return 'baru dibuat';
-            }
-            return 'dibuat ' + diffHours + ' jam yang lalu';
-        }
-        return 'dibuat ' + diffDays + ' hari yang lalu';
     };
 
     render() {
@@ -103,7 +89,7 @@ class MyReportDetail extends React.Component {
                                         className="icon-report-date"
                                     />
                                     <label className="label-report-date">
-                                        {this.getCreatedDateDiff(
+                                        {getCreatedDateDiff(
                                             this.state.myReport.createdAt,
                                         )}{' '}
                                         oleh Saya

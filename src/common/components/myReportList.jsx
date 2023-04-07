@@ -7,6 +7,8 @@ import reportTypeConstant from '../constants/reportTypeConstant';
 import ReportStatusLabel from './labels/reportStatusLabel';
 import ReportTypeLabel from './labels/reportTypeLabel';
 import EmptyScreen from './emptyScreen';
+import { getCreatedDateDiff } from '../tools';
+import { connect } from 'react-redux';
 
 class MyReportList extends React.Component {
     constructor(props) {
@@ -29,21 +31,6 @@ class MyReportList extends React.Component {
             });
         }
     }
-
-    getCreatedDateDiff = (date) => {
-        const today = new Date();
-        const bookingDate = new Date(date);
-        const diffTime = today - bookingDate;
-        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-        if (diffDays === 0) {
-            const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
-            if (diffHours === 0) {
-                return 'baru dibuat';
-            }
-            return 'dibuat ' + diffHours + ' jam yang lalu';
-        }
-        return 'dibuat ' + diffDays + ' hari yang lalu';
-    };
 
     render() {
         if (this.state.myReports.length === 0) {
@@ -81,10 +68,11 @@ class MyReportList extends React.Component {
                                     className="icon-report-date"
                                 />
                                 <label className="label-report-date">
-                                    {this.getCreatedDateDiff(
-                                        myReport.createdAt,
-                                    )}{' '}
-                                    oleh Saya
+                                    {getCreatedDateDiff(myReport.createdAt)}{' '}
+                                    oleh{' '}
+                                    {myReport.creator.id === this.props.user.id
+                                        ? 'Saya'
+                                        : myReport.creator.name}
                                 </label>
                             </div>
                             {myReport.user_assigned_name && (
@@ -94,7 +82,7 @@ class MyReportList extends React.Component {
                                         className="icon-report-assignment"
                                     />
                                     <label className="label-report-assignment">
-                                        ditugaskan kepada{' '}
+                                        Ditugaskan kepada{' '}
                                         {myReport.user_assigned_name}
                                     </label>
                                 </div>
@@ -117,4 +105,14 @@ class MyReportList extends React.Component {
     }
 }
 
-export default MyReportList;
+const mapStateToProps = (state) => {
+    return {
+        user: state.auth.user,
+    };
+};
+
+const mapDispatchToProps = () => {
+    return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyReportList);

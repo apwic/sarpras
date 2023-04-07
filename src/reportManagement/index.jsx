@@ -4,13 +4,9 @@ import {
     faFilter,
     faFlag,
     faSearch,
-    faCalendarAlt,
     faTimes,
 } from '@fortawesome/free-solid-svg-icons';
-import ReportStatusLabel from '../common/components/labels/reportStatusLabel';
 import reportStatusConstant from '../common/constants/reportStatusConstant';
-import ReportTypeLabel from '../common/components/labels/reportTypeLabel';
-import reportTypeConstant from '../common/constants/reportTypeConstant';
 import { Pagination } from 'react-bootstrap';
 import { withRouter } from '../common/withRouter';
 import { connect } from 'react-redux';
@@ -18,6 +14,7 @@ import { getReports } from './action';
 import LoadingScreen from '../common/components/loadingScreen';
 import FilterModal from '../common/components/filterModal';
 import { closeModalFilter, openModalFilter } from '../booking/action';
+import MyReportList from '../common/components/myReportList';
 
 class ReportManagement extends React.Component {
     constructor(props) {
@@ -58,12 +55,26 @@ class ReportManagement extends React.Component {
         });
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps, prevState) {
         if (prevProps.reports !== this.props.reports) {
             this.setState({
                 reports: this.props.reports,
                 maxPage: Math.ceil(this.props.reports.total_rows / 5),
             });
+        }
+        if (
+            prevState.currentPage !== this.state.currentPage &&
+            prevState.q === this.state.q
+        ) {
+            this.setState({
+                reports: [],
+            });
+            this.props.getReportsFunction(
+                this.state.currentPage,
+                5,
+                this.state.q,
+                this.convertToFilterString(this.state.appliedFilters),
+            );
         }
     }
 
@@ -79,7 +90,7 @@ class ReportManagement extends React.Component {
 
     convertToFilterString = (filters) => {
         if (filters.length === 0) {
-            return '';
+            return 'category=' + this.props.user.role.replace('_STAFF', '');
         }
         let filterString = '';
         for (let i = 0; i < filters.length; i++) {
@@ -91,7 +102,9 @@ class ReportManagement extends React.Component {
             }
         }
         filterString +=
-            '&category=' + this.props.user.role.replace('_STAFF', '');
+            (filterString === '' ? '' : '&') +
+            'category=' +
+            this.props.user.role.replace('_STAFF', '');
         return filterString;
     };
 
@@ -212,56 +225,12 @@ class ReportManagement extends React.Component {
                         </div>
                     </div>
                     <div className="container-myreport__body__items">
-                        {this.state.reports.rows.map((report) => (
-                            <div
-                                className="my-report-item"
-                                onClick={() =>
-                                    this.props.navigate('/manage/report/4')
-                                }
-                                key={report.id}
-                            >
-                                <div className="my-report-item__body">
-                                    <div className="item-labels">
-                                        <ReportTypeLabel
-                                            type={
-                                                reportTypeConstant[
-                                                    report.category
-                                                ]
-                                            }
-                                        />
-                                        <ReportStatusLabel
-                                            status={
-                                                reportStatusConstant[
-                                                    report.status
-                                                ]
-                                            }
-                                        />
-                                    </div>
-                                    <div className="item-details">
-                                        <h3 className="item-name">
-                                            {report.title}
-                                        </h3>
-                                        <p>{report.location}</p>
-                                    </div>
-                                    <div className="report-date">
-                                        <FontAwesomeIcon
-                                            icon={faCalendarAlt}
-                                            className="icon-report-date"
-                                        />
-                                        <label className="label-report-date">
-                                            dibuat 2 hari yang lalu oleh Arip
-                                            Dandi
-                                        </label>
-                                    </div>
-                                </div>
-                                <div className="my-report-item__image">
-                                    <img
-                                        src={report.image}
-                                        alt="report image"
-                                    />
-                                </div>
-                            </div>
-                        ))}
+                        <MyReportList
+                            myReports={this.state.reports}
+                            handleMyReportClicked={(id) =>
+                                this.props.navigate(`/manage/report/${id}`)
+                            }
+                        />
                     </div>
                     <Pagination>
                         <Pagination.First

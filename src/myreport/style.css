@@ -118,11 +118,13 @@ h4.item-location{
 .report-date{
     display: flex;
     gap: 8px;
+    align-items: center;
 }
 
 .report-assignment{
     display: flex;
     gap: 8px;
+    align-items: center;
 }
 
 .my-report-item__image {

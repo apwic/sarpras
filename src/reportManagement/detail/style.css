@@ -111,7 +111,7 @@ h3.report-title{
 }
 
 
-.header-editable-status p{
+.header-editable-status .clickable-edit{
     cursor: pointer;
 }
 .header-editable-status h2{
@@ -128,4 +128,15 @@ h3.report-title{
     flex-direction: column;
     padding-top: 0.7rem;
     border-bottom:  1px solid var(--color-text-secondary);
+}
+
+.editable-report input {
+    width: 80%;
+    font-weight: bold;
+    height: 30px;
+    padding-left: 10px;
+    font-size: var(--font-size-body);
+    color: var(--color-text-primary);
+    border-radius: var(--corner-radius);
+    border: 1px solid var(--color-text-secondary);
 }

@@ -225,3 +225,12 @@ button.btn-secondary:hover {
   border: 1px solid red;
   background: rgb(255, 248, 248);
 }
+
+.swiper-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+img {
+  background-color: var(--color-background-light);
+}
