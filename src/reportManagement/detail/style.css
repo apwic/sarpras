@@ -78,15 +78,14 @@
 h3.report-title{
     font-size: 20px;
     font-weight: bold;
-    margin: 0;
+    margin-bottom: 8px;
 }
 
 .report-date-labels{
     display: flex;
     min-width: fit-content;
     flex-direction: column;
-    flex-wrap: wrap;
-    gap: 8px;
+    gap: 12px;
     justify-content: flex-start;
     align-items: flex-end;
 }

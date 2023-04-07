@@ -35,14 +35,14 @@ class MyReportList extends React.Component {
         const bookingDate = new Date(date);
         const diffTime = today - bookingDate;
         const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-        const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
         if (diffDays === 0) {
+            const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
             if (diffHours === 0) {
                 return 'baru dibuat';
             }
-            return 'dibuat' + diffHours + ' jam yang lalu';
+            return 'dibuat ' + diffHours + ' jam yang lalu';
         }
-        return 'dibuat' + diffDays + ' hari yang lalu';
+        return 'dibuat ' + diffDays + ' hari yang lalu';
     };
 
     render() {
@@ -102,7 +102,14 @@ class MyReportList extends React.Component {
                         </div>
                     </div>
                     <div className="my-report-item__image">
-                        <img src={myReport.image} alt="report image" />
+                        <img
+                            src={
+                                myReport.image
+                                    ? myReport.image[0]
+                                    : 'https://www.w3schools.com/howto/img_avatar.png'
+                            }
+                            alt="report image"
+                        />
                     </div>
                 </div>
             );

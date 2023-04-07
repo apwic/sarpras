@@ -13,25 +13,55 @@ import reportStatusConstant from '../../common/constants/reportStatusConstant';
 import reportTypeConstant from '../../common/constants/reportTypeConstant';
 import ReportStatusLabel from '../../common/components/labels/reportStatusLabel';
 import ReportTypeLabel from '../../common/components/labels/reportTypeLabel';
+import { getMyReportClicked } from '../action';
+import { connect } from 'react-redux';
+import LoadingScreen from '../../common/components/loadingScreen';
 
 class MyReportDetail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             myReport: null,
-            images: [
-                'https://www.w3schools.com/w3images/lights.jpg',
-                'https://www.w3schools.com/w3images/nature.jpg',
-                'https://www.w3schools.com/w3images/mountains.jpg',
-            ],
+            loading: true,
         };
+    }
+
+    componentDidMount() {
+        this.props.getMyReportClickedFunction(this.props.params.id.toString());
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.myReport !== this.props.myReport) {
+            this.setState({
+                myReport: this.props.myReport,
+            });
+            this.setState({ loading: false });
+        }
     }
 
     handleNavigateBack = () => {
         this.props.navigate('/report/my');
     };
 
+    getCreatedDateDiff = (date) => {
+        const today = new Date();
+        const reportDate = new Date(date);
+        const diffTime = today - reportDate;
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        if (diffDays === 0) {
+            const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
+            if (diffHours === 0) {
+                return 'baru dibuat';
+            }
+            return 'dibuat ' + diffHours + ' jam yang lalu';
+        }
+        return 'dibuat ' + diffDays + ' hari yang lalu';
+    };
+
     render() {
+        if (this.state.loading) {
+            return <LoadingScreen />;
+        }
         return (
             <div className="container-myreport-detail">
                 <div className="container-myreport-detail__header">
@@ -59,8 +89,12 @@ class MyReportDetail extends React.Component {
                     <div className="container-myreport-detail__body__item">
                         <div className="report-header">
                             <div className="report-detail">
-                                <h3 className="report-title">WC Bocor</h3>
-                                <p className="report-place">Labtek V</p>
+                                <h3 className="report-title">
+                                    {this.state.myReport.title}
+                                </h3>
+                                <h4 className="report-location">
+                                    {this.state.myReport.location}
+                                </h4>
                             </div>
                             <div className="report-date-labels">
                                 <div className="report-date">
@@ -69,15 +103,26 @@ class MyReportDetail extends React.Component {
                                         className="icon-report-date"
                                     />
                                     <label className="label-report-date">
-                                        dibuat 2 hari yang lalu oleh Saya
+                                        {this.getCreatedDateDiff(
+                                            this.state.myReport.createdAt,
+                                        )}{' '}
+                                        oleh Saya
                                     </label>
                                 </div>
                                 <div className="report-labels">
                                     <ReportTypeLabel
-                                        type={reportTypeConstant.SANITATION}
+                                        type={
+                                            reportTypeConstant[
+                                                this.state.myReport.category
+                                            ]
+                                        }
                                     />
                                     <ReportStatusLabel
-                                        status={reportStatusConstant.PENDING}
+                                        status={
+                                            reportStatusConstant[
+                                                this.state.myReport.status
+                                            ]
+                                        }
                                     />
                                 </div>
                             </div>
@@ -99,16 +144,32 @@ class MyReportDetail extends React.Component {
                                     clickable: true,
                                 }}
                             >
-                                {this.state.images.map((image, index) => (
-                                    <SwiperSlide
-                                        key={index}
-                                        className="swiper-slide"
-                                    >
-                                        <div className="image-swiper">
-                                            <img src={image} alt="report" />
-                                        </div>
+                                {this.state.myReport.image.length > 0 ? (
+                                    this.state.myReport.image.map(
+                                        (image, index) => {
+                                            return (
+                                                <SwiperSlide
+                                                    key={index}
+                                                    className="swiper-slide"
+                                                >
+                                                    <div className="image-swiper">
+                                                        <img
+                                                            src={image}
+                                                            alt="report"
+                                                        />
+                                                    </div>
+                                                </SwiperSlide>
+                                            );
+                                        },
+                                    )
+                                ) : (
+                                    <SwiperSlide className="swiper-slide">
+                                        <h1>
+                                            Tidak ada gambar yang dapat
+                                            ditampilkan
+                                        </h1>
                                     </SwiperSlide>
-                                ))}
+                                )}
 
                                 <div className="slider-controler">
                                     <div className="swiper-button-prev slider-arrow">
@@ -121,12 +182,9 @@ class MyReportDetail extends React.Component {
                                 </div>
                             </Swiper>
                         </div>
-                        <div className="report-description">
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur
-                                adipiscing elit. Sed euismod, nisl sed
-                                consectetur lacinia, nunc nisl ultricies nunc,
-                                ultricies nisl nunc vel nunc. Nulla facilisi.
+                        <div className="report-information">
+                            <p className="report-description">
+                                {this.state.myReport.description}
                             </p>
                         </div>
                     </div>
@@ -136,4 +194,18 @@ class MyReportDetail extends React.Component {
     }
 }
 
-export default withRouter(MyReportDetail);
+const mapStateToProps = (state) => {
+    return {
+        myReport: state.myReport.myReportClicked,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getMyReportClickedFunction: (id) => dispatch(getMyReportClicked(id)),
+    };
+};
+
+export default withRouter(
+    connect(mapStateToProps, mapDispatchToProps)(MyReportDetail),
+);
