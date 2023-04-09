@@ -109,6 +109,7 @@ button.back-btn {
 .container-review .icon-star {
     width: 40px;
     height: 40px;
+    cursor: pointer;
 }
 
 .container-review .icon-star-selected {

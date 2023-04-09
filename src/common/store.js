@@ -5,11 +5,12 @@ import dashboardReducer from '../dashboard/reducer';
 import profileReducer from '../profile/reducer';
 import supeUserReducer from '../superuser/reducer';
 import authReducer from './auth/reducer';
-import myBookingReducer from '../mybooking/reducer';
+import myBookingReducer from '../myBooking/reducer';
 import bookingManagementReducer from '../admin/bookingManagement/reducer';
 import myReportReducer from '../myreport/reducer';
 import rootSaga from './saga';
 import reportManagementReducer from '../reportManagement/reducer';
+import reviewReducer from '../review/reducer';
 
 const rootReducer = combineReducers({
     dashboard: dashboardReducer,
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
     bookingManagement: bookingManagementReducer,
     myReport: myReportReducer,
     reportManagement: reportManagementReducer,
+    review: reviewReducer,
 });
 
 const sagaMiddleware = createSagaMiddleware();

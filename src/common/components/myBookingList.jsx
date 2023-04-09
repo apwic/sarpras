@@ -40,7 +40,10 @@ class MyBookingList extends React.Component {
                 <div
                     className="my-booking-item"
                     onClick={() =>
-                        this.props.handleMyBookingClicked(myBooking.id)
+                        this.props.handleMyBookingClicked(
+                            myBooking.id,
+                            myBooking.status,
+                        )
                     }
                     key={myBooking.id}
                 >

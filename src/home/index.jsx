@@ -22,8 +22,8 @@ import ManageSelasar from '../admin/selasar';
 import InsertFacility from '../admin/insertFacility';
 import LoadingScreen from '../common/components/loadingScreen';
 import FacilityDetail from '../booking/facilityDetail';
-import MyBooking from '../mybooking';
-import MyBookingDetail from '../mybooking/detail';
+import MyBooking from '../myBooking';
+import MyBookingDetail from '../myBooking/detail';
 import MyReport from '../myreport';
 import MyReportDetail from '../myreport/detail';
 import ReportManagement from '../reportManagement';
@@ -31,6 +31,7 @@ import ReportManagementDetail from '../reportManagement/detail';
 import BookingManagement from '../admin/bookingManagement';
 import BookingManagementDetail from '../admin/bookingManagement/detail';
 import CreateReport from '../myreport/createReport';
+import BookingReview from '../review/bookingReview';
 
 class Home extends React.Component {
     constructor(props) {
@@ -187,6 +188,19 @@ class Home extends React.Component {
                                         <Topbar />
                                         <Navbar />
                                         <MyBookingDetail />
+                                    </div>
+                                }
+                            />
+                        )}
+                        {this.state.user.role ===
+                            roleConstant.BASIC_USER.name && (
+                            <Route
+                                path="/booking/:id/review"
+                                element={
+                                    <div>
+                                        <Topbar />
+                                        <Navbar />
+                                        <BookingReview />
                                     </div>
                                 }
                             />

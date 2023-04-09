@@ -134,8 +134,12 @@ class MyBooking extends React.Component {
         );
     };
 
-    handleMyBookingClicked = (id) => {
-        this.props.navigate(`/booking/${id}`);
+    handleMyBookingClicked = (id, status) => {
+        if (status === bookingStatusConstant.WAITING_FOR_RATING.name) {
+            this.props.navigate(`/booking/${id}/review`);
+        } else {
+            this.props.navigate(`/booking/${id}`);
+        }
     };
 
     renderPaginationNumbers = () => {

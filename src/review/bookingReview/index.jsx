@@ -7,14 +7,89 @@ import FacilityTypeLabel from '../../common/components/labels/facilityTypeLabel'
 import facilityTypeConstant from '../../common/constants/facilityTypeConstant';
 import BookingStatusLabel from '../../common/components/labels/bookingStatusLabel';
 import bookingStatusConstant from '../../common/constants/bookingStatusConstant';
+import { getMyBookingClicked } from '../../myBooking/action';
+import { withRouter } from '../../common/withRouter';
+import { connect } from 'react-redux';
+import LoadingScreen from '../../common/components/loadingScreen';
+import { setBookingReview } from '../action';
+import LoadingOverlay from '../../common/components/loadingOverlay';
+import AlertModal from '../../common/components/alertModal';
 
 class BookingReview extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            booking: null,
+            star: 0,
+            comment: '',
+            showAlertModal: false,
+            alertMessage: '',
+        };
+    }
+
+    componentDidMount() {
+        this.props.getMyBookingClickedFunction(this.props.params.id);
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.myBooking !== this.props.myBooking) {
+            if (
+                this.props.myBooking.status !==
+                bookingStatusConstant.WAITING_FOR_RATING.name
+            ) {
+                this.props.navigate('/booking/my');
+            }
+            this.setState({
+                booking: this.props.myBooking,
+            });
+        }
+        if (
+            prevProps.bookingReviewResponse !== this.props.bookingReviewResponse
+        ) {
+            if (this.props.bookingReviewResponse.message) {
+                document
+                    .querySelector('.loading-overlay')
+                    .classList.remove('show');
+                this.setState({
+                    showAlertModal: true,
+                    alertMessage: this.props.bookingReviewResponse.message,
+                });
+                clearInterval(this.intervalId);
+                this.intervalId = setInterval(() => {
+                    this.props.navigate('/booking/' + this.state.booking.id);
+                    clearInterval(this.intervalId);
+                }, 1000);
+            } else if (this.props.bookingReviewResponse.error_message) {
+                document
+                    .querySelector('.loading-overlay')
+                    .classList.remove('show');
+                this.setState({
+                    showAlertModal: true,
+                    alertMessage:
+                        this.props.bookingReviewResponse.error_message,
+                });
+            }
+        }
+    }
+
+    handleSubmit = () => {
+        this.props.setBookingReviewFunction(
+            this.state.booking.id,
+            this.state.star,
+            this.state.comment,
+        );
+        document.querySelector('.loading-overlay').classList.add('show');
+    };
+
     handleClickReview = (e) => {
         const star = document.getElementsByClassName('icon-star');
         const value =
             e.target.nodeName === 'svg'
                 ? e.target.getAttribute('values')
                 : e.target.parentNode.getAttribute('values');
+        this.setState({
+            star: value,
+        });
         for (let i = 0; i < star.length; i++) {
             if (i < value) {
                 star[i].classList.add('icon-star-selected');
@@ -24,16 +99,35 @@ class BookingReview extends React.Component {
         }
     };
 
+    handleBack = () => {
+        this.props.navigate('/booking/my');
+    };
+
+    closeAlertModal = () => {
+        this.setState({
+            showAlertModal: false,
+        });
+    };
+
     render() {
+        if (!this.state.booking) {
+            return <LoadingScreen />;
+        }
         return (
             <div className="container-review">
+                <LoadingOverlay />
+                <AlertModal
+                    show={this.state.showAlertModal}
+                    message={this.state.alertMessage}
+                    closeModalFunction={this.closeAlertModal}
+                />
                 <div className="container-review__header">
                     <FontAwesomeIcon icon={faUser} className="icon-review" />
                     <h1>Peminjaman Saya / Penilaian Peminjaman</h1>
                 </div>
                 <div className="container-review__body">
                     <div className="container-review__body__item">
-                        <button className="back-btn">
+                        <button className="back-btn" onClick={this.handleBack}>
                             <FontAwesomeIcon
                                 icon={faAngleLeft}
                                 className="icon-back"
@@ -49,10 +143,14 @@ class BookingReview extends React.Component {
                     <div className="container-review__body__item">
                         <div className="item">
                             <div className="item__header">
-                                <h2>Honda Brio</h2>
+                                <h2>{this.state.booking.facility.name}</h2>
                                 <div className="item__header__status">
                                     <FacilityTypeLabel
-                                        type={facilityTypeConstant.VEHICLE}
+                                        type={
+                                            facilityTypeConstant[
+                                                this.state.booking.category
+                                            ]
+                                        }
                                     />
                                     <BookingStatusLabel
                                         status={
@@ -65,7 +163,6 @@ class BookingReview extends React.Component {
                                 <br />
                                 <label
                                     className="form-label"
-                                    htmlFor="comment"
                                     style={{
                                         display: 'flex',
                                         alignItems: 'center',
@@ -133,11 +230,24 @@ class BookingReview extends React.Component {
                                     id="comment"
                                     rows="8"
                                     placeholder="Masukkan komentar..."
+                                    value={this.state.comment}
+                                    onChange={(e) =>
+                                        this.setState({
+                                            comment: e.target.value,
+                                        })
+                                    }
                                 ></textarea>
                                 <br />
                             </form>
                             <div className="btn-submit-right">
-                                <button className="btn btn-primary btn-submit">
+                                <button
+                                    className="btn btn-primary btn-submit"
+                                    disabled={
+                                        this.state.star === 0 ||
+                                        this.state.comment === ''
+                                    }
+                                    onClick={this.handleSubmit}
+                                >
                                     Kirim
                                 </button>
                             </div>
@@ -149,4 +259,21 @@ class BookingReview extends React.Component {
     }
 }
 
-export default BookingReview;
+const mapStateToProps = (state) => {
+    return {
+        myBooking: state.myBooking.myBookingClicked,
+        bookingReviewResponse: state.review.bookingReviewResponse,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getMyBookingClickedFunction: (id) => dispatch(getMyBookingClicked(id)),
+        setBookingReviewFunction: (id, rating, description) =>
+            dispatch(setBookingReview(id, rating, description)),
+    };
+};
+
+export default withRouter(
+    connect(mapStateToProps, mapDispatchToProps)(BookingReview),
+);
