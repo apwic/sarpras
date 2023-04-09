@@ -1797,7 +1797,8 @@ class InsertFacility extends React.Component {
                                     </label>
                                     <GoogleMapReact
                                         bootstrapURLKeys={{
-                                            key: 'AIzaSyC6tTnH6WyfO2M_S5SeYIFyYV-4pRFjEtw',
+                                            key: import.meta.env
+                                                .VITE_GOOGLE_MAPS_API_KEY,
                                         }}
                                         defaultCenter={{
                                             lat:
