@@ -176,6 +176,7 @@ class BookingManagement extends React.Component {
                                 type="text"
                                 name="bookingSearch"
                                 placeholder="Pencarian"
+                                value={this.state.query}
                                 onChange={this.handleSearch}
                             />
                             <FontAwesomeIcon

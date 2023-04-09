@@ -145,7 +145,6 @@ class FacilityDetail extends React.Component {
                 description: this.state.description,
                 start_timestamp: this.state.start_timestamp.toISOString(),
                 end_timestamp: this.state.end_timestamp.toISOString(),
-                cost: this.state.cost,
                 file: this.state.file,
                 url: this.state.url,
             };

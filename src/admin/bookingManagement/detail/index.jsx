@@ -38,16 +38,25 @@ class BookingManagementDetail extends React.Component {
     }
 
     handleEditPhone = () => {
-        if (
-            this.state.cost !== '' &&
-            this.state.cost !== null &&
-            this.state.cost !== undefined &&
-            this.state.cost !== this.state.booking.cost
-        ) {
-            let data = {
-                status: this.state.booking.status,
-                cost: this.state.cost,
-            };
+        if (this.state.cost !== this.state.booking.cost) {
+            let data;
+            if (
+                this.state.cost === '' ||
+                this.state.cost === null ||
+                this.state.cost === undefined ||
+                isNaN(parseInt(this.state.cost))
+            ) {
+                data = {
+                    status: this.state.booking.status,
+                    cost: 0,
+                };
+            } else {
+                data = {
+                    status: this.state.booking.status,
+                    cost: parseInt(this.state.cost),
+                };
+            }
+            console.log(data);
             this.setState({ loading: true, editCost: false });
             this.props.editBookingFunction(this.props.params.id, data);
         }
@@ -463,7 +472,7 @@ class BookingManagementDetail extends React.Component {
                                         value={cost}
                                         onChange={(e) => {
                                             this.setState({
-                                                cost: parseInt(e.target.value),
+                                                cost: e.target.value,
                                             });
                                         }}
                                     />
@@ -533,54 +542,6 @@ class BookingManagementDetail extends React.Component {
                                         </li>
                                     );
                                 })}
-                                {/* <li
-                            className={`${
-                                selectedStatus === 'Pending'
-                                    ? 'selected-management-booking'
-                                    : ''
-                            }`}
-                            onClick={() =>
-                                this.handleEditStatusCLicked('Pending')
-                            }
-                        >
-                            <div className="checked-logo">
-                                {selectedStatus === 'Pending' && (
-                                    <FontAwesomeIcon
-                                        icon={faCheck}
-                                        className="icon-back"
-                                        style={{
-                                            width: '20px',
-                                            height: '20px',
-                                        }}
-                                    />
-                                )}
-                            </div>
-                            <p>Pending</p>
-                        </li>
-                        <li
-                            className={`${
-                                selectedStatus === 'Approved'
-                                    ? 'selected-management-booking'
-                                    : ''
-                            }`}
-                            onClick={() =>
-                                this.handleEditStatusCLicked('Approved')
-                            }
-                        >
-                            <div className="checked-logo">
-                                {selectedStatus === 'Approved' && (
-                                    <FontAwesomeIcon
-                                        icon={faCheck}
-                                        className="icon-back"
-                                        style={{
-                                            width: '20px',
-                                            height: '20px',
-                                        }}
-                                    />
-                                )}
-                            </div>
-                            <p>Approved</p>
-                        </li> */}
                             </ul>
                         </div>
                         <p>{this.state.selectedGedung.name}</p>
