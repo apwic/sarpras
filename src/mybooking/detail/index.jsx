@@ -1,6 +1,10 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBookOpen, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
+import {
+    faBookOpen,
+    faAngleLeft,
+    faStar,
+} from '@fortawesome/free-solid-svg-icons';
 import './style.css';
 import BookingStatusLabel from '../../common/components/labels/bookingStatusLabel';
 import bookingStatusConstant from '../../common/constants/bookingStatusConstant';
@@ -26,6 +30,14 @@ class MyBookingDetail extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (prevProps.myBooking !== this.props.myBooking) {
+            if (
+                this.props.myBooking.status ===
+                bookingStatusConstant.WAITING_FOR_RATING.name
+            ) {
+                this.props.navigate(
+                    '/booking/' + this.props.myBooking.id + '/review',
+                );
+            }
             this.setState({
                 myBooking: this.props.myBooking,
             });
@@ -234,11 +246,74 @@ class MyBookingDetail extends React.Component {
                                 </h3>
                             </div>
                         </div>
-                        <div className="item-container">
-                            <h3 className="item-title">Deskripsi</h3>
-                            <div className="booking-description">
-                                <p>{this.state.myBooking.description}</p>
+                        <div className="item-container-transparent">
+                            <div className="item-container-right2">
+                                <h3 className="item-title">Deskripsi</h3>
+                                <div className="booking-description">
+                                    <p>{this.state.myBooking.description}</p>
+                                </div>
                             </div>
+                            {this.state.myBooking.status ===
+                                bookingStatusConstant.DONE.name && (
+                                <div className="item-container-right2">
+                                    <h3 className="item-title">Penilaian</h3>
+                                    <div className="form-stars">
+                                        <FontAwesomeIcon
+                                            icon={faStar}
+                                            className={
+                                                this.state.myBooking.review
+                                                    .rating >= 1
+                                                    ? 'icon-star icon-star-selected'
+                                                    : 'icon-star'
+                                            }
+                                        />
+                                        <FontAwesomeIcon
+                                            icon={faStar}
+                                            className={
+                                                this.state.myBooking.review
+                                                    .rating >= 2
+                                                    ? 'icon-star icon-star-selected'
+                                                    : 'icon-star'
+                                            }
+                                        />
+                                        <FontAwesomeIcon
+                                            icon={faStar}
+                                            className={
+                                                this.state.myBooking.review
+                                                    .rating >= 3
+                                                    ? 'icon-star icon-star-selected'
+                                                    : 'icon-star'
+                                            }
+                                        />
+                                        <FontAwesomeIcon
+                                            icon={faStar}
+                                            className={
+                                                this.state.myBooking.review
+                                                    .rating >= 4
+                                                    ? 'icon-star icon-star-selected'
+                                                    : 'icon-star'
+                                            }
+                                        />
+                                        <FontAwesomeIcon
+                                            icon={faStar}
+                                            className={
+                                                this.state.myBooking.review
+                                                    .rating >= 5
+                                                    ? 'icon-star selected'
+                                                    : 'icon-star'
+                                            }
+                                        />
+                                    </div>
+                                    <div className="booking-description">
+                                        <p>
+                                            {
+                                                this.state.myBooking.review
+                                                    .description
+                                            }
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
