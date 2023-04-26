@@ -56,7 +56,6 @@ class BookingManagementDetail extends React.Component {
                     cost: parseInt(this.state.cost),
                 };
             }
-            console.log(data);
             this.setState({ loading: true, editCost: false });
             this.props.editBookingFunction(this.props.params.id, data);
         }

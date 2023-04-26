@@ -177,10 +177,10 @@ class ManageSelasar extends React.Component {
         });
     };
 
-    handleDeleteFacility = (id) => {
+    handleDeleteFacility = () => {
         this.props.deleteFacilityFunction(
             'selasar',
-            id,
+            this.state.facilityToDelete,
             this.state.currentPage,
             this.state.q,
             this.convertToFilterString(this.state.appliedFilters),
