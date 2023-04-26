@@ -17,6 +17,7 @@ class AlertModal extends React.Component {
             clearInterval(this.intervalId);
             this.intervalId = setInterval(() => {
                 this.props.closeModalFunction();
+                clearInterval(this.intervalId);
             }, 5000);
         }
         if (this.props.show === false) {
