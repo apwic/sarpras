@@ -52,7 +52,7 @@ class MyReportDetail extends React.Component {
             <div className="container-myreport-detail">
                 <div className="container-myreport-detail__header">
                     <FontAwesomeIcon icon={faFlag} className="icon-myreport" />
-                    <h1>Keluhan Saya</h1>
+                    <h1>Keluhan Saya / {this.state.myReport.title}</h1>
                 </div>
                 <div className="container-myreport-detail__body">
                     <div className="container-myreport-detail__body__nav">
