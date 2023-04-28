@@ -329,7 +329,11 @@ class ReportManagementDetail extends React.Component {
                             show={this.state.editStatus}
                             onClose={() => this.setState({ editStatus: false })}
                             title="Status"
-                            itemConstants={reportStatusConstant}
+                            itemConstants={Object.values(
+                                reportStatusConstant,
+                            ).filter(
+                                (item) => item !== reportStatusConstant.DONE,
+                            )}
                             selected={this.state.report.status}
                             handleClicked={this.handleStatusChange}
                         />
