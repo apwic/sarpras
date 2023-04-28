@@ -18,7 +18,7 @@ export const setBookingReviewApi = (payload) => {
 
 export const setReportReviewApi = (payload) => {
     return wretchInstance()
-        .url(import.meta.env.VITE_REST_API_URL + '/booking/review')
+        .url(import.meta.env.VITE_REST_API_URL + '/issue/review')
         .headers({
             'Content-Type': 'application/json',
         })

@@ -18,6 +18,10 @@ class ReportStatusLabel extends React.Component {
             this.setState({ color: '#ED9121' });
         } else if (this.props.status === reportStatusConstant.DONE) {
             this.setState({ color: '#00B140' });
+        } else if (
+            this.props.status === reportStatusConstant.WAITING_FOR_RATING
+        ) {
+            this.setState({ color: '#00B140' });
         } else if (this.props.status === reportStatusConstant.CANCELED) {
             this.setState({ color: '#D70D0D' });
         }

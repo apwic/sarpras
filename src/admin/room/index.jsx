@@ -177,10 +177,10 @@ class ManageRoom extends React.Component {
         });
     };
 
-    handleDeleteFacility = (id) => {
+    handleDeleteFacility = () => {
         this.props.deleteFacilityFunction(
             'room',
-            id,
+            this.state.facilityToDelete,
             this.state.currentPage,
             this.state.q,
             this.convertToFilterString(this.state.appliedFilters),

@@ -32,6 +32,7 @@ import BookingManagement from '../admin/bookingManagement';
 import BookingManagementDetail from '../admin/bookingManagement/detail';
 import CreateReport from '../myreport/createReport';
 import BookingReview from '../review/bookingReview';
+import ReportReview from '../review/reportReview';
 
 class Home extends React.Component {
     constructor(props) {
@@ -227,6 +228,19 @@ class Home extends React.Component {
                                         <Topbar />
                                         <Navbar />
                                         <MyReportDetail />
+                                    </div>
+                                }
+                            />
+                        )}
+                        {this.state.user.role ===
+                            roleConstant.BASIC_USER.name && (
+                            <Route
+                                path="/report/:id/review"
+                                element={
+                                    <div>
+                                        <Topbar />
+                                        <Navbar />
+                                        <ReportReview />
                                     </div>
                                 }
                             />

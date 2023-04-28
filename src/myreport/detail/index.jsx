@@ -5,6 +5,7 @@ import {
     faFlag,
     faArrowLeft,
     faCalendarAlt,
+    faStar,
 } from '@fortawesome/free-solid-svg-icons';
 import { withRouter } from '../../common/withRouter';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -33,6 +34,14 @@ class MyReportDetail extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (prevProps.myReport !== this.props.myReport) {
+            if (
+                this.props.myReport.status ===
+                reportStatusConstant.WAITING_FOR_RATING.name
+            ) {
+                this.props.navigate(
+                    '/report/' + this.props.myReport.id + '/review',
+                );
+            }
             this.setState({
                 myReport: this.props.myReport,
             });
@@ -156,7 +165,6 @@ class MyReportDetail extends React.Component {
                                         </h1>
                                     </SwiperSlide>
                                 )}
-
                                 <div className="slider-controler">
                                     <div className="swiper-button-prev slider-arrow">
                                         <ion-icon name="arrow-back-outline"></ion-icon>
@@ -174,6 +182,57 @@ class MyReportDetail extends React.Component {
                             </p>
                         </div>
                     </div>
+                    {this.state.myReport.status ===
+                        reportStatusConstant.DONE.name && (
+                        <div className="container-myreport-detail__body__item">
+                            <h3 className="item-title">Penilaian</h3>
+                            <div className="form-stars">
+                                <FontAwesomeIcon
+                                    icon={faStar}
+                                    className={
+                                        this.state.myReport.review.rating >= 1
+                                            ? 'icon-star icon-star-selected'
+                                            : 'icon-star'
+                                    }
+                                />
+                                <FontAwesomeIcon
+                                    icon={faStar}
+                                    className={
+                                        this.state.myReport.review.rating >= 2
+                                            ? 'icon-star icon-star-selected'
+                                            : 'icon-star'
+                                    }
+                                />
+                                <FontAwesomeIcon
+                                    icon={faStar}
+                                    className={
+                                        this.state.myReport.review.rating >= 3
+                                            ? 'icon-star icon-star-selected'
+                                            : 'icon-star'
+                                    }
+                                />
+                                <FontAwesomeIcon
+                                    icon={faStar}
+                                    className={
+                                        this.state.myReport.review.rating >= 4
+                                            ? 'icon-star icon-star-selected'
+                                            : 'icon-star'
+                                    }
+                                />
+                                <FontAwesomeIcon
+                                    icon={faStar}
+                                    className={
+                                        this.state.myReport.review.rating >= 5
+                                            ? 'icon-star selected'
+                                            : 'icon-star'
+                                    }
+                                />
+                            </div>
+                            <div className="booking-description">
+                                <p>{this.state.myReport.review.description}</p>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         );

@@ -96,7 +96,6 @@ class CreateReport extends React.Component {
         this.setState({
             openAlertModal: false,
         });
-        this.props.navigate('/report/my');
     };
 
     handleDeleteFile = (index) => {

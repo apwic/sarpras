@@ -41,7 +41,10 @@ class MyReportList extends React.Component {
                 <div
                     className="my-report-item"
                     onClick={() =>
-                        this.props.handleMyReportClicked(myReport.id)
+                        this.props.handleMyReportClicked(
+                            myReport.id,
+                            myReport.status,
+                        )
                     }
                     key={myReport.id}
                 >

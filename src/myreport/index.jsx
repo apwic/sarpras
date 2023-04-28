@@ -104,8 +104,12 @@ class MyReport extends React.Component {
         return filterString;
     };
 
-    handleMyReportClicked = (id) => {
-        this.props.navigate(`/report/${id}`);
+    handleMyReportClicked = (id, status) => {
+        if (status === reportStatusConstant.WAITING_FOR_RATING.name) {
+            this.props.navigate(`/report/${id}/review`);
+        } else {
+            this.props.navigate(`/report/${id}`);
+        }
     };
 
     handleCreateNewReportClicked = () => {

@@ -9,6 +9,7 @@ import {
 
 const initialState = {
     myReports: [],
+    myReportClicked: null,
     messagePostReport: '',
 };
 
