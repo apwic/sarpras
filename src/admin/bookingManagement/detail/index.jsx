@@ -407,8 +407,15 @@ class BookingManagementDetail extends React.Component {
                                 <h2>Edit Status</h2>
                             </div>
                             <ul>
-                                {Object.values(bookingStatusConstant).map(
-                                    (item, index) => {
+                                {Object.values(bookingStatusConstant)
+                                    .filter((item) => {
+                                        return (
+                                            item !==
+                                                bookingStatusConstant.WAITING_FOR_RATING &&
+                                            item !== bookingStatusConstant.DONE
+                                        );
+                                    })
+                                    .map((item, index) => {
                                         return (
                                             <li
                                                 key={index}
@@ -438,8 +445,7 @@ class BookingManagementDetail extends React.Component {
                                                 </div>
                                             </li>
                                         );
-                                    },
-                                )}
+                                    })}
                             </ul>
                         </div>
                         <BookingStatusLabel status={this.state.bookingStatus} />
