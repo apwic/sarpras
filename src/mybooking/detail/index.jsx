@@ -155,6 +155,16 @@ class MyBookingDetail extends React.Component {
                                         </tr>
                                         <tr>
                                             <td className="item-detail__label">
+                                                Unit
+                                            </td>
+                                            <td className="item-detail__value">
+                                                {this.state.myBooking.unit
+                                                    ? this.state.myBooking.unit
+                                                    : '-'}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="item-detail__label">
                                                 Waktu Mulai Sewa
                                             </td>
                                             <td className="item-detail__value">
@@ -239,10 +249,10 @@ class MyBookingDetail extends React.Component {
                             </div>
                             <div className="total-price">
                                 <h3 className="total-price__label">
-                                    Total Biaya
+                                    Detail Biaya
                                 </h3>
                                 <h3 className="total-price__value">
-                                    Rp{this.state.myBooking.cost}
+                                    Rp{this.state.myBooking.total_price}
                                 </h3>
                             </div>
                         </div>

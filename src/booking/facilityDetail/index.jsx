@@ -145,6 +145,7 @@ class FacilityDetail extends React.Component {
                 description: this.state.description,
                 start_timestamp: this.state.start_timestamp.toISOString(),
                 end_timestamp: this.state.end_timestamp.toISOString(),
+                unit: this.state.unit,
                 file: this.state.file,
                 url: this.state.url,
             };
@@ -526,13 +527,14 @@ class FacilityDetail extends React.Component {
                                         }}
                                     >
                                         Unit
+                                        <p style={{ color: 'red' }}>*</p>
                                     </label>
                                     <input
                                         className="form-control"
                                         type="text"
                                         name="unitName"
                                         id="booking-unit"
-                                        placeholder="Masukan unit anda"
+                                        placeholder="Masukkan unit anda"
                                         value={this.state.unit}
                                         onChange={(e) => {
                                             this.setState({
@@ -557,7 +559,7 @@ class FacilityDetail extends React.Component {
                                         type="number"
                                         name="phoneNumber"
                                         id="booking-phone"
-                                        placeholder="Masukan nomor telepon penanggung jawab"
+                                        placeholder="Masukkan nomor telepon penanggung jawab"
                                         onChange={(e) => {
                                             this.setState({
                                                 phoneNumber: e.target.value,

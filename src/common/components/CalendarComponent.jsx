@@ -76,7 +76,10 @@ class ComponentCalendar extends React.Component {
         const eventsHolidayMatch = this.props.events.holiday;
         const events = eventsFacilityMatch.map((booking) => ({
             id: booking.id,
-            title: booking.user.name + ', ' + booking.facility.name,
+            title:
+                (booking.unit ? booking.unit : '-') +
+                ', ' +
+                booking.facility.name,
             start: booking.start_timestamp,
             end: booking.end_timestamp,
             color: booking.status === 'PENDING' ? '#ED9121' : '#00B140',
