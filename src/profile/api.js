@@ -9,3 +9,12 @@ export const editProfileAPI = async (profile) => {
             return response;
         });
 };
+
+export const readAllNotificationsAPI = async () => {
+    return wretchInstance()
+        .url(import.meta.env.VITE_REST_API_URL + '/notification/read-all')
+        .put()
+        .json((response) => {
+            return response;
+        });
+};

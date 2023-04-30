@@ -385,12 +385,14 @@ class BookingManagementDetail extends React.Component {
                     <div className="editable-booking__item">
                         <div className="header-editable-status">
                             <h2>Status</h2>
-                            <p
-                                className="clickable-edit"
-                                onClick={this.editStatusDropdown}
-                            >
-                                Edit
-                            </p>
+                            {this.state.booking.status !== 'DONE' && (
+                                <p
+                                    className="clickable-edit"
+                                    onClick={this.editStatusDropdown}
+                                >
+                                    Edit
+                                </p>
+                            )}
                         </div>
                         <div
                             className={`edit-dropdown ${
@@ -459,12 +461,14 @@ class BookingManagementDetail extends React.Component {
                                     onClick={this.handleEditCost}
                                 />
                             ) : (
-                                <p
-                                    className="clickable-edit"
-                                    onClick={this.handleEditCost}
-                                >
-                                    Edit
-                                </p>
+                                this.state.booking.status !== 'DONE' && (
+                                    <p
+                                        className="clickable-edit"
+                                        onClick={this.handleEditCost}
+                                    >
+                                        Edit
+                                    </p>
+                                )
                             )}
                         </div>
                         <div>
@@ -499,7 +503,9 @@ class BookingManagementDetail extends React.Component {
                     <div className="editable-booking__item">
                         <div className="header-editable-status">
                             <h2>Fasilitas</h2>
-                            <p onClick={this.editFacilityDropdown}>Edit</p>
+                            {this.state.booking.status !== 'DONE' && (
+                                <p onClick={this.editFacilityDropdown}>Edit</p>
+                            )}
                         </div>
                         <div
                             className={`edit-dropdown ${

@@ -1,8 +1,8 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 
 import { getUser } from '../common/auth/action';
-import { EDIT_PROFILE } from './actionTypes';
-import { editProfileAPI } from './api';
+import { EDIT_PROFILE, READ_ALL_NOTIFICATIONS } from './actionTypes';
+import { editProfileAPI, readAllNotificationsAPI } from './api';
 
 function* editProfile(action) {
     try {
@@ -13,6 +13,17 @@ function* editProfile(action) {
     }
 }
 
-const profileSaga = [takeLatest(EDIT_PROFILE, editProfile)];
+function* readAllNotifications() {
+    try {
+        yield call(readAllNotificationsAPI);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const profileSaga = [
+    takeLatest(EDIT_PROFILE, editProfile),
+    takeLatest(READ_ALL_NOTIFICATIONS, readAllNotifications),
+];
 
 export default profileSaga;

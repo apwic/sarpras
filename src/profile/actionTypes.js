@@ -1,3 +1,4 @@
 export const OPEN_MODAL = 'OPEN_MODAL';
 export const CLOSE_MODAL = 'CLOSE_MODAL';
 export const EDIT_PROFILE = 'EDIT_PROFILE';
+export const READ_ALL_NOTIFICATIONS = 'READ_ALL_NOTIFICATIONS';
