@@ -15,6 +15,7 @@ import { storage } from '../storage';
 // import { listenForNotifications } from '../../profile/action';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { readAllNotifications } from '../../profile/action';
+import { Spinner } from 'react-bootstrap';
 
 class Topbar extends React.Component {
     constructor(props) {
@@ -23,14 +24,13 @@ class Topbar extends React.Component {
             profileDropdown: false,
             notificationDropdown: false,
             user: {},
-            notifications: [],
+            notifications: null,
             unreadNotification: false,
         };
     }
 
     componentDidMount() {
         this.props.getUserFunction();
-        // this.props.getNotificationFunction();
         if (localStorage.getItem('showSidebar') === null) {
             localStorage.setItem('showSidebar', true);
         }
@@ -195,7 +195,13 @@ class Topbar extends React.Component {
                         !notificationDropdown ? 'hide' : ''
                     }`}
                 >
-                    {this.state.notifications.length > 0 ? (
+                    {this.state.notifications === null ? (
+                        <Spinner
+                            className="overlay-notif"
+                            animation="border"
+                            variant="primary"
+                        />
+                    ) : this.state.notifications.length > 0 ? (
                         this.state.notifications.map((notification) =>
                             // <p key={notification.id}>{notification.message}</p>
                             notification.is_read ? (

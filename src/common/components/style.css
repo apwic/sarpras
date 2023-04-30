@@ -285,6 +285,13 @@
     margin: 10px 10px;
 }
 
+.overlay-notif{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 .notification-dropdown.hide {
     display: none;
 }
