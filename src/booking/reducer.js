@@ -11,6 +11,7 @@ import {
     DELETE_RESPONSE,
     NEW_BOOKING_RESPONSE,
     SET_BOOKING,
+    SET_BOOKING_OVERVIEW,
 } from './actionTypes';
 
 const initialState = {
@@ -25,6 +26,7 @@ const initialState = {
     delete_message: null,
     new_booking_message: null,
     booking: null,
+    booking_overview: null,
 };
 
 function facilityReducer(state = initialState, action) {
@@ -53,6 +55,8 @@ function facilityReducer(state = initialState, action) {
             return { ...state, new_booking_message: action.payload };
         case SET_BOOKING:
             return { ...state, booking: action.payload };
+        case SET_BOOKING_OVERVIEW:
+            return { ...state, booking_overview: action.payload };
         default:
             return state;
     }

@@ -146,3 +146,12 @@ export const getBookingApi = (id) => {
             return response;
         });
 };
+
+export const getBookingOverviewApi = (id) => {
+    return wretchInstance()
+        .url(import.meta.env.VITE_REST_API_URL + '/booking/' + id + '/overview')
+        .get()
+        .json((response) => {
+            return response;
+        });
+};

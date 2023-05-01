@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Button, Spinner } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { getBooking } from '../../booking/action';
+import { getBookingOverview } from '../../booking/action';
 
 class EventDetailModal extends React.Component {
     constructor(props) {
@@ -100,12 +100,12 @@ class EventDetailModal extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        booking: state.facility.booking,
+        booking: state.facility.booking_overview,
     };
 };
 const mapDispatchToProps = (dispatch) => {
     return {
-        getBookingFunction: (id) => dispatch(getBooking(id)),
+        getBookingFunction: (id) => dispatch(getBookingOverview(id)),
     };
 };
 

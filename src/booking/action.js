@@ -21,6 +21,8 @@ import {
     NEW_BOOKING_RESPONSE,
     GET_BOOKING,
     SET_BOOKING,
+    GET_BOOKING_OVERVIEW,
+    SET_BOOKING_OVERVIEW,
 } from './actionTypes';
 
 export function openModalFilter() {
@@ -203,6 +205,22 @@ export function getBooking(id) {
 export function setBooking(data) {
     return {
         type: SET_BOOKING,
+        payload: data,
+    };
+}
+
+export function getBookingOverview(id) {
+    return {
+        type: GET_BOOKING_OVERVIEW,
+        payload: {
+            id,
+        },
+    };
+}
+
+export function setBookingOverview(data) {
+    return {
+        type: SET_BOOKING_OVERVIEW,
         payload: data,
     };
 }
