@@ -57,7 +57,11 @@ class MyBookingList extends React.Component {
                     </div>
                     <div className="my-booking-item__body">
                         <h3 className="item-name">
-                            {myBooking.facility ? myBooking.facility.name : '-'}
+                            {myBooking.facility
+                                ? (myBooking.unit ? myBooking.unit : '-') +
+                                  ', ' +
+                                  myBooking.facility.name
+                                : '-'}
                         </h3>
                         <p>{myBooking.description}</p>
                     </div>

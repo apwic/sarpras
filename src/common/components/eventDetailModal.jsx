@@ -37,7 +37,9 @@ class EventDetailModal extends React.Component {
                     <Modal.Header closeButton>
                         <Modal.Title>
                             {this.state.booking
-                                ? this.state.booking.user.name +
+                                ? (this.state.booking.unit
+                                      ? this.state.booking.unit
+                                      : '-') +
                                   ', ' +
                                   this.state.booking.facility.name
                                 : ''}

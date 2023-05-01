@@ -249,7 +249,7 @@ class MyBookingDetail extends React.Component {
                             </div>
                             <div className="total-price">
                                 <h3 className="total-price__label">
-                                    Detail Biaya
+                                    Total Biaya
                                 </h3>
                                 <h3 className="total-price__value">
                                     Rp{this.state.myBooking.total_price}
