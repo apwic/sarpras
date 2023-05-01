@@ -274,6 +274,17 @@ class BookingManagementDetail extends React.Component {
                                             </tr>
                                             <tr>
                                                 <td className="item-detail__label">
+                                                    Unit
+                                                </td>
+                                                <td className="item-detail__value">
+                                                    {this.state.booking.unit
+                                                        ? this.state.booking
+                                                              .unit
+                                                        : '-'}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td className="item-detail__label">
                                                     Waktu Sewa
                                                 </td>
                                                 <td className="item-detail__value">

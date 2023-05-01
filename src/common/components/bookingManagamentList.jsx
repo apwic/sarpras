@@ -62,7 +62,11 @@ class bookingManagamentList extends React.Component {
                     </div>
                     <div className="bookingList-item__body">
                         <h3 className="item-name">
-                            {booking.facility ? booking.facility.name : '-'}
+                            {booking.facility
+                                ? (booking.unit ? booking.unit : '-') +
+                                  ', ' +
+                                  booking.facility.name
+                                : '-'}
                         </h3>
                         <p>{booking.description}</p>
                     </div>
