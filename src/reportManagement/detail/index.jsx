@@ -234,7 +234,9 @@ class ReportManagementDetail extends React.Component {
                                     }
                                 />
                             ) : (
-                                this.state.report.status !== 'DONE' && (
+                                this.state.report.status !== 'DONE' &&
+                                this.state.report.status !==
+                                    'WAITING_FOR_RATING' && (
                                     <p
                                         className="clickable-edit"
                                         onClick={() =>
@@ -288,16 +290,20 @@ class ReportManagementDetail extends React.Component {
                     <div className="editable-report__item">
                         <div className="header-editable-status">
                             <h2>Kategori</h2>
-                            {this.state.report.status !== 'DONE' && (
-                                <p
-                                    className="clickable-edit"
-                                    onClick={() =>
-                                        this.setState({ editCategory: true })
-                                    }
-                                >
-                                    Edit
-                                </p>
-                            )}
+                            {this.state.report.status !== 'DONE' &&
+                                this.state.report.status !==
+                                    'WAITING_FOR_RATING' && (
+                                    <p
+                                        className="clickable-edit"
+                                        onClick={() =>
+                                            this.setState({
+                                                editCategory: true,
+                                            })
+                                        }
+                                    >
+                                        Edit
+                                    </p>
+                                )}
                         </div>
                         <StaffEditPopup
                             show={this.state.editCategory}
@@ -318,18 +324,21 @@ class ReportManagementDetail extends React.Component {
                     <div className="editable-report__item">
                         <div className="header-editable-status">
                             <h2>Status</h2>
-                            {this.state.report.status !== 'DONE' && (
-                                <p
-                                    className="clickable-edit"
-                                    onClick={() =>
-                                        this.setState({
-                                            editStatus: !this.state.editStatus,
-                                        })
-                                    }
-                                >
-                                    Edit
-                                </p>
-                            )}
+                            {this.state.report.status !== 'DONE' &&
+                                this.state.report.status !==
+                                    'WAITING_FOR_RATING' && (
+                                    <p
+                                        className="clickable-edit"
+                                        onClick={() =>
+                                            this.setState({
+                                                editStatus:
+                                                    !this.state.editStatus,
+                                            })
+                                        }
+                                    >
+                                        Edit
+                                    </p>
+                                )}
                         </div>
                         <StaffEditPopup
                             show={this.state.editStatus}
@@ -343,11 +352,19 @@ class ReportManagementDetail extends React.Component {
                             selected={this.state.report.status}
                             handleClicked={this.handleStatusChange}
                         />
-                        <ReportStatusLabel
-                            status={
-                                reportStatusConstant[this.state.report.status]
-                            }
-                        />
+                        {this.state.report.status === 'WAITING_FOR_RATING' ? (
+                            <ReportStatusLabel
+                                status={reportStatusConstant['DONE']}
+                            />
+                        ) : (
+                            <ReportStatusLabel
+                                status={
+                                    reportStatusConstant[
+                                        this.state.report.status
+                                    ]
+                                }
+                            />
+                        )}
                     </div>
                 </div>
             </div>

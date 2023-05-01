@@ -53,9 +53,17 @@ class MyReportList extends React.Component {
                             <ReportTypeLabel
                                 type={reportTypeConstant[myReport.category]}
                             />
-                            <ReportStatusLabel
-                                status={reportStatusConstant[myReport.status]}
-                            />
+                            {myReport.status === 'WAITING_FOR_RATING' ? (
+                                <ReportStatusLabel
+                                    status={reportStatusConstant['DONE']}
+                                />
+                            ) : (
+                                <ReportStatusLabel
+                                    status={
+                                        reportStatusConstant[myReport.status]
+                                    }
+                                />
+                            )}
                         </div>
                         <div className="item-details">
                             <h3 className="item-name">{myReport.title}</h3>
