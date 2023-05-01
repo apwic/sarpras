@@ -234,17 +234,19 @@ class ReportManagementDetail extends React.Component {
                                     }
                                 />
                             ) : (
-                                <p
-                                    className="clickable-edit"
-                                    onClick={() =>
-                                        this.setState({
-                                            editAssignee:
-                                                !this.state.editAssignee,
-                                        })
-                                    }
-                                >
-                                    Edit
-                                </p>
+                                this.state.report.status !== 'DONE' && (
+                                    <p
+                                        className="clickable-edit"
+                                        onClick={() =>
+                                            this.setState({
+                                                editAssignee:
+                                                    !this.state.editAssignee,
+                                            })
+                                        }
+                                    >
+                                        Edit
+                                    </p>
+                                )
                             )}
                         </div>
                         <div className="assignee-report__item">
@@ -286,14 +288,16 @@ class ReportManagementDetail extends React.Component {
                     <div className="editable-report__item">
                         <div className="header-editable-status">
                             <h2>Kategori</h2>
-                            <p
-                                className="clickable-edit"
-                                onClick={() =>
-                                    this.setState({ editCategory: true })
-                                }
-                            >
-                                Edit
-                            </p>
+                            {this.state.report.status !== 'DONE' && (
+                                <p
+                                    className="clickable-edit"
+                                    onClick={() =>
+                                        this.setState({ editCategory: true })
+                                    }
+                                >
+                                    Edit
+                                </p>
+                            )}
                         </div>
                         <StaffEditPopup
                             show={this.state.editCategory}
@@ -314,16 +318,18 @@ class ReportManagementDetail extends React.Component {
                     <div className="editable-report__item">
                         <div className="header-editable-status">
                             <h2>Status</h2>
-                            <p
-                                className="clickable-edit"
-                                onClick={() =>
-                                    this.setState({
-                                        editStatus: !this.state.editStatus,
-                                    })
-                                }
-                            >
-                                Edit
-                            </p>
+                            {this.state.report.status !== 'DONE' && (
+                                <p
+                                    className="clickable-edit"
+                                    onClick={() =>
+                                        this.setState({
+                                            editStatus: !this.state.editStatus,
+                                        })
+                                    }
+                                >
+                                    Edit
+                                </p>
+                            )}
                         </div>
                         <StaffEditPopup
                             show={this.state.editStatus}
