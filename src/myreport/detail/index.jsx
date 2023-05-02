@@ -223,7 +223,7 @@ class MyReportDetail extends React.Component {
                                     icon={faStar}
                                     className={
                                         this.state.myReport.review.rating >= 5
-                                            ? 'icon-star selected'
+                                            ? 'icon-star icon-star-selected'
                                             : 'icon-star'
                                     }
                                 />

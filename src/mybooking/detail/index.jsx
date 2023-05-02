@@ -309,7 +309,7 @@ class MyBookingDetail extends React.Component {
                                             className={
                                                 this.state.myBooking.review
                                                     .rating >= 5
-                                                    ? 'icon-star selected'
+                                                    ? 'icon-star icon-star-selected'
                                                     : 'icon-star'
                                             }
                                         />
