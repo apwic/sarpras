@@ -49,7 +49,7 @@ class BookingBuilding extends React.Component {
                 facilities: this.props.facilities,
                 maxPage:
                     this.props.facilities.total_rows > 0
-                        ? Math.ceil(this.props.facilities.total_rows / 5)
+                        ? Math.ceil(this.props.facilities.total_rows / 9)
                         : 1,
             });
         }
