@@ -27,7 +27,7 @@ class BookingStatusLabel extends React.Component {
         } else if (
             this.props.status === bookingStatusConstant.WAITING_FOR_RATING
         ) {
-            this.setState({ color: '#ED9121' });
+            this.setState({ color: '#8caf00' });
         } else if (this.props.status === bookingStatusConstant.DONE) {
             this.setState({ color: '#00B140' });
         }
