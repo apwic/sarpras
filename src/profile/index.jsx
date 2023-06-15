@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import './style.css';
 import { getUser } from '../common/auth/action';
 import { editProfile, openModal } from './action';
-import { getMyBookings } from '../myBooking/action';
+import { getMyBookings } from '../mybooking/action';
 import { getMyReports } from '../myreport/action';
 import ProfilePictureCropperModal from '../common/components/imageModal';
 import AlertModal from '../common/components/alertModal';

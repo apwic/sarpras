@@ -5,7 +5,7 @@ import dashboardReducer from '../dashboard/reducer';
 import profileReducer from '../profile/reducer';
 import supeUserReducer from '../superuser/reducer';
 import authReducer from './auth/reducer';
-import myBookingReducer from '../myBooking/reducer';
+import myBookingReducer from '../mybooking/reducer';
 import bookingManagementReducer from '../admin/bookingManagement/reducer';
 import myReportReducer from '../myreport/reducer';
 import rootSaga from './saga';

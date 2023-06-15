@@ -7,7 +7,7 @@ import FacilityTypeLabel from '../../common/components/labels/facilityTypeLabel'
 import facilityTypeConstant from '../../common/constants/facilityTypeConstant';
 import BookingStatusLabel from '../../common/components/labels/bookingStatusLabel';
 import bookingStatusConstant from '../../common/constants/bookingStatusConstant';
-import { getMyBookingClicked } from '../../myBooking/action';
+import { getMyBookingClicked } from '../../mybooking/action';
 import { withRouter } from '../../common/withRouter';
 import { connect } from 'react-redux';
 import LoadingScreen from '../../common/components/loadingScreen';
