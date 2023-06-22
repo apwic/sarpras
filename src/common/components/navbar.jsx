@@ -8,6 +8,9 @@ import {
     faBookOpen,
     faFlag,
     faCog,
+    faListCheck,
+    faHotel,
+    faUniversity,
 } from '@fortawesome/free-solid-svg-icons';
 import { connect } from 'react-redux';
 import { setCalendar } from '../../dashboard/action';
@@ -23,6 +26,7 @@ class Navbar extends React.Component {
             BookingExpand: false,
             AdminExpand: false,
             Active: 'Dashboard',
+            TestingServiceExpand: false,
             user: {},
         };
         this.sidebarRef = React.createRef();
@@ -224,6 +228,7 @@ class Navbar extends React.Component {
         let BookingExpand = this.state.BookingExpand;
         let AdminExpand = this.state.AdminExpand;
         let Active = this.state.Active;
+        let TestingServiceExpand = this.state.TestingServiceExpand;
 
         return (
             <div className="left-sidebar" ref={this.sidebarRef}>
@@ -338,6 +343,24 @@ class Navbar extends React.Component {
                                 >
                                     Peminjaman Saya
                                 </li>
+                                <li
+                                    onClick={() =>
+                                        this.handleRouteOnclick(
+                                            '/booking/building',
+                                        )
+                                    }
+                                >
+                                    Laboratorium
+                                </li>
+                                <li
+                                    onClick={() =>
+                                        this.handleRouteOnclick(
+                                            '/booking/building',
+                                        )
+                                    }
+                                >
+                                    Peralatan
+                                </li>
                             </ul>
                         </div>
                     )}
@@ -356,6 +379,111 @@ class Navbar extends React.Component {
                                     icon={faFlag}
                                 />
                                 <h3 className="header-name">Keluhan</h3>
+                            </div>
+                        </div>
+                    )}
+                    {this.state.user.role === roleConstant.BASIC_USER.name && (
+                        <div
+                            className={`expanding-element ${
+                                TestingServiceExpand ? 'expanded' : ''
+                            }`}
+                        >
+                            <div
+                                className="header"
+                                onClick={() =>
+                                    this.setState({
+                                        TestingServiceExpand:
+                                            !TestingServiceExpand,
+                                    })
+                                }
+                            >
+                                <FontAwesomeIcon
+                                    icon={
+                                        TestingServiceExpand
+                                            ? faCaretDown
+                                            : faCaretRight
+                                    }
+                                />
+                                <FontAwesomeIcon
+                                    className="header-icon"
+                                    icon={faListCheck}
+                                />
+                                <h3 className="header-name">
+                                    Layanan Pengujian
+                                </h3>
+                            </div>
+                            <ul>
+                                <li
+                                    onClick={() =>
+                                        this.handleRouteOnclick(
+                                            '/booking/building',
+                                        )
+                                    }
+                                >
+                                    Kualitas Udara
+                                </li>
+                                <li
+                                    onClick={() =>
+                                        this.handleRouteOnclick('/booking/room')
+                                    }
+                                >
+                                    Kualitas Air
+                                </li>
+                                <li
+                                    onClick={() =>
+                                        this.handleRouteOnclick('/booking/room')
+                                    }
+                                >
+                                    Kualitas Beton
+                                </li>
+                            </ul>
+                        </div>
+                    )}
+                    {this.state.user.role === roleConstant.BASIC_USER.name && (
+                        <div className="element">
+                            <div
+                                className={'header'}
+                                onClick={() =>
+                                    this.handleRouteOnclick('/report/my')
+                                }
+                            >
+                                <FontAwesomeIcon
+                                    className="header-icon"
+                                    icon={faHotel}
+                                />
+                                <h3 className="header-name">Asrama</h3>
+                            </div>
+                        </div>
+                    )}
+                    {this.state.user.role === roleConstant.BASIC_USER.name && (
+                        <div className="element">
+                            <div
+                                className={'header'}
+                                onClick={() =>
+                                    this.handleRouteOnclick('/booking/room')
+                                }
+                            >
+                                <FontAwesomeIcon
+                                    className="header-icon"
+                                    icon={faUniversity}
+                                />
+                                <h3 className="header-name">ITB Jatinangor</h3>
+                            </div>
+                        </div>
+                    )}
+                    {this.state.user.role === roleConstant.BASIC_USER.name && (
+                        <div className="element">
+                            <div
+                                className={'header'}
+                                onClick={() =>
+                                    this.handleRouteOnclick('/booking/vehicle')
+                                }
+                            >
+                                <FontAwesomeIcon
+                                    className="header-icon"
+                                    icon={faUniversity}
+                                />
+                                <h3 className="header-name">ITB Cirebon</h3>
                             </div>
                         </div>
                     )}
